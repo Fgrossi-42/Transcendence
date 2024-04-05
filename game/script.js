@@ -184,7 +184,6 @@ var Game = {
                 }
             }
         }
- 
         // Handle the end of round transition
         // Check to see if the playerLeft won the round.
         if (this.playerLeft.score === rounds[this.round]) {
