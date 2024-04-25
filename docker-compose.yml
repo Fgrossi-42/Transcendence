@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+
+  django-app:
+    build: ./Transceso_di_sotto/
+    container_name: django
+    restart: always
+    networks:
+      - my-network
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Transceso_di_sotto/db/:/app/db/
+
+
+networks:
+  my-network:
+    driver: bridge
