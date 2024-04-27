@@ -3,16 +3,29 @@ version: '3'
 services:
 
   django-app:
-    build: ./Transceso_di_sotto/
+    build: ./django-app/
     container_name: django
     restart: always
+    depends_on:
+      - db
     networks:
       - my-network
     ports:
       - "8000:8000"
-    volumes:
-      - ./Transceso_di_sotto/db/:/app/db/
+    
+    env_file:
+      - ./.env
 
+  db:
+    container_name: postegres-db
+    image: postgres:15
+    restart: always
+    env_file:
+      - ./.env
+    networks:
+      - my-network
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data/
 
 networks:
   my-network:
