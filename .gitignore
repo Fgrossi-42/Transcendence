@@ -5,3 +5,5 @@
 
 ## marimatt python virtual env
 venv-trascendence
+
+postgres_data/*
