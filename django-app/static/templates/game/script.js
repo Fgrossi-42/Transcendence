@@ -318,22 +318,27 @@ var Game = {
  
     listen: function () {
         document.addEventListener('keydown', function (key) {
-            // Handle the 'Press any key to begin' function and start the game.
+			// Handle the 'Press any key to begin' function and start the game.
             if (Pong.running === false) {
-                Pong.running = true;
+				Pong.running = true;
                 window.requestAnimationFrame(Pong.loop);
+				return ; 
             }
- 
-            // Handle up arrow and w key events
-            if (key.keyCode === 87) Pong.playerLeft.move = DIRECTION.UP;
-            if (key.keyCode === 38) Pong.playerRight.move = DIRECTION.UP;
-            // Handle down arrow and s key events
-            if (key.keyCode === 83) Pong.playerLeft.move = DIRECTION.DOWN;
-            if (key.keyCode === 40) Pong.playerRight.move = DIRECTION.DOWN;
+			key.preventDefault();
+
+            // Handle o == 79 and w == 87 key events
+            if (key.key === 'w') Pong.playerLeft.move = DIRECTION.UP;
+            if (key.key === 'o') Pong.playerRight.move = DIRECTION.UP;
+            // Handle k == 75 and s == 83 key events
+            if (key.key === 's') Pong.playerLeft.move = DIRECTION.DOWN;
+            if (key.key === 'k') Pong.playerRight.move = DIRECTION.DOWN;
         });
  
         // Stop the playerLeft from moving when there are no keys being pressed.
-        document.addEventListener('keyup', function (key) { Pong.playerLeft.move = DIRECTION.IDLE; });
+        document.addEventListener('keyup', function (key) { 
+			Pong.playerLeft.move = DIRECTION.IDLE;
+			Pong.playerRight.move = DIRECTION.IDLE;
+		});
     },
  
     // Reset the ball location, the playerLeft turns and set a delay before the next round begins.
