@@ -359,7 +359,8 @@
 // var Pong = Object.assign({}, Game);
 // Pong.initialize();
 
-const socket = new WebSocket('ws://' + window.location.host + '/ws/game/');
+console.log("try to fetch " + 'ws://' + window.location.host + '/ws/game/')
+// const socket = new WebSocket('ws://' + window.location.host + '/ws/game/');
 
 socket.onmessage = function(e) {
     const data = JSON.parse(e.data);

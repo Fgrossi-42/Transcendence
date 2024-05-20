@@ -3,7 +3,8 @@
 <head>
     <title>Pong Game</title>
     <script>
-        const socket = new WebSocket('ws://' + window.location.host + '/ws/game/');
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/game/123/');
+        // const socket = new WebSocket('ws://' + window.location.host + '/ws/game/');
 
         socket.onmessage = function(e) {
             const data = JSON.parse(e.data);
@@ -42,6 +43,7 @@
 <body>
     <h1>Pong Game</h1>
     <canvas id="pongCanvas"></canvas>
-    <script src="{% static 'templates/game/script.js' %}"></script>
+    <!-- <script src="{% static 'templates/game/script.js' %}"></script> -->
+    <script src="script.js"></script>
 </body>
 </html>
