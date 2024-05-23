@@ -45,13 +45,13 @@
         <!-- Content will be loaded here -->
     </div>
     <script>
-        $(document).ready(function(){
-
+        $(document).ready(function() {
+    
             function changeNavbarImage(imagePath) {
                 $('#navbar-image').attr('src', imagePath);
             }
-
-            function loadPage(page) {
+    
+            function loadPage(page, addToHistory = true) {
                 $.ajax({
                     url: page + '/',
                     method: 'GET',
@@ -59,21 +59,24 @@
                         $('#content').html(data);
                         initializeCollapse();
                         executeScripts($('#content'));
+                        if (addToHistory) {
+                            history.pushState({ page: page }, '', page);
+                        }
                     }
                 });
             }
-
+    
             function executeScripts(container) {
-                container.find('script').each(function(){
+                container.find('script').each(function() {
                     $.globalEval(this.text || this.textContent || this.innerHTML || '');
                 });
             }
-
+    
             function initializeCollapse() {
                 var navbarToggler = document.querySelector('.navbar-toggler');
                 var navbarCollapse = document.querySelector(navbarToggler.dataset.bsTarget);
                 if (navbarToggler && navbarCollapse) {
-                    navbarToggler.addEventListener('click', function () {
+                    navbarToggler.addEventListener('click', function() {
                         if (navbarCollapse.classList.contains('show')) {
                             $(navbarCollapse).collapse('hide');
                         } else {
@@ -82,37 +85,58 @@
                     });
                 }
             }
-
-            $('#start-link').click(function(e){
+    
+            $('#start-link').click(function(e) {
                 e.preventDefault();
                 changeNavbarImage('{% static "images/image.png" %}');
                 loadPage('start');
             });
-            $('#pong-link').click(function(e){
+            $('#pong-link').click(function(e) {
                 e.preventDefault();
                 changeNavbarImage('{% static "images/pong.png" %}');
                 loadPage('pong');
             });
-            $('#chat-link').click(function(e){
+            $('#chat-link').click(function(e) {
                 e.preventDefault();
                 changeNavbarImage('{% static "images/chat.png" %}');
                 loadPage('chat');
             });
-            $('#dashboard-link').click(function(e){
+            $('#dashboard-link').click(function(e) {
                 e.preventDefault();
                 changeNavbarImage('{% static "images/dashboard.png" %}');
                 loadPage('dashboard');
             });
-            $('#friends-link').click(function(e){
+            $('#friends-link').click(function(e) {
                 e.preventDefault();
                 changeNavbarImage('{% static "images/friends.png" %}');
                 loadPage('friends');
             });
+    
+            // Initial load
             changeNavbarImage('{% static "images/image.png" %}');
-
-            loadPage('start');
+            loadPage('start', false);
+    
+            // Handle browser back/forward button
+            window.onpopstate = function(event) {
+                if (event.state && event.state.page) {
+                    changeNavbarImage(getImagePathForPage(event.state.page));
+                    loadPage(event.state.page, false);
+                }
+            };
+    
+            function getImagePathForPage(page) {
+                switch (page) {
+                    case 'start': return '{% static "images/image.png" %}';
+                    case 'pong': return '{% static "images/pong.png" %}';
+                    case 'chat': return '{% static "images/chat.png" %}';
+                    case 'dashboard': return '{% static "images/dashboard.png" %}';
+                    case 'friends': return '{% static "images/friends.png" %}';
+                    default: return '{% static "images/image.png" %}';
+                }
+            }
         });
     </script>
+    
 
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>

@@ -285,3 +285,98 @@ var Game = {
 var Pong = Object.assign({}, Game);
 Pong.initialize();
 
+
+
+
+
+
+
+
+
+
+var Tournament = {
+    players: [],
+    bracket: [],
+    currentRound: [],
+    roundNumber: 0,
+
+    initialize: function() {
+        // Collect 8 player names
+        for (var i = 0; i < 8; i++) {
+            var playerName = prompt("Enter the name of player " + (i + 1));
+            this.players.push(playerName);
+        }
+
+        // Sort players alphabetically
+        this.players.sort();
+
+        // Initialize the bracket with the sorted players
+        this.bracket = [...this.players];
+        
+        // Initialize the first round
+        this.nextRound();
+    },
+
+    nextRound: function() {
+        if (this.bracket.length === 1) {
+            alert("Tournament Winner: " + this.bracket[0]);
+            return;
+        }
+
+        this.currentRound = [];
+
+        // Create matchups for the current round
+        for (var i = 0; i < this.bracket.length; i += 2) {
+            this.currentRound.push([this.bracket[i], this.bracket[i + 1]]);
+        }
+
+        // Display the current round matchups
+        this.displayMatchups();
+        this.displayNextPlayers();
+
+        // Start the first matchup
+        this.startMatchup(0);
+    },
+
+    displayMatchups: function() {
+        var matchupText = "Round " + (this.roundNumber + 1) + " Matchups:\n";
+        this.currentRound.forEach(matchup => {
+            matchupText += matchup[0] + " vs " + matchup[1] + "\n";
+        });
+        alert(matchupText);
+    },
+
+    displayNextPlayers: function() {
+        var nextPlayersText = "Next Players:\n";
+        for (var i = this.currentRound.length; i < this.bracket.length; i++) {
+            nextPlayersText += this.bracket[i] + "\n";
+        }
+        alert(nextPlayersText);
+    },
+
+    startMatchup: function(matchupIndex) {
+        if (matchupIndex >= this.currentRound.length) {
+            this.endRound();
+            return;
+        }
+
+        var matchup = this.currentRound[matchupIndex];
+        alert("Starting match: " + matchup[0] + " vs " + matchup[1]);
+        setTimeout(() => {
+            var winner = matchup[Math.floor(Math.random() * 2)];
+            alert("Winner: " + winner);
+            this.bracket[matchupIndex] = winner;
+            this.startMatchup(matchupIndex + 1);
+        }, 3000); // Simulate a delay for the game
+    },
+
+    endRound: function() {
+        this.roundNumber++;
+        this.bracket = this.bracket.slice(0, this.currentRound.length);
+        this.nextRound();
+    }
+};
+
+// Start the tournament
+// Tournament.initialize();
+
