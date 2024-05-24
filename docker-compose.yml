@@ -1,4 +1,8 @@
-version: '3'
+version: '3.8'
+
+networks:
+  my-network:
+    driver: bridge
 
 services:
 
@@ -16,16 +20,17 @@ services:
       - ./.env
 
   db:
-    container_name: postegres-db
-    image: postgres:15
+    image: postgres:latest
     restart: always
     env_file:
       - ./.env
     networks:
       - my-network
+    ports:
+      - "5432:5432"
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data/
+      - postgres_data:/var/lib/postgresql/data/
 
-networks:
-  my-network:
-    driver: bridge
+volumes:
+  postgres_data:
+
