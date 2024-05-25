@@ -25,7 +25,7 @@
                 <a class="nav-link" href="" id="start-link">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="" id="pong-link">Pong</a>
+                <a class="nav-link" href="" id="game-link">game</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="" id="friends-link">Friends</a>
@@ -91,10 +91,10 @@
                 changeNavbarImage('{% static "images/image.png" %}');
                 loadPage('start');
             });
-            $('#pong-link').click(function(e) {
+            $('#game-link').click(function(e) {
                 e.preventDefault();
                 changeNavbarImage('{% static "images/pong.png" %}');
-                loadPage('pong');
+                loadPage('game');
             });
             $('#chat-link').click(function(e) {
                 e.preventDefault();
@@ -127,7 +127,7 @@
             function getImagePathForPage(page) {
                 switch (page) {
                     case 'start': return '{% static "images/image.png" %}';
-                    case 'pong': return '{% static "images/pong.png" %}';
+                    case 'game': return '{% static "images/pong.png" %}';
                     case 'chat': return '{% static "images/chat.png" %}';
                     case 'dashboard': return '{% static "images/dashboard.png" %}';
                     case 'friends': return '{% static "images/friends.png" %}';

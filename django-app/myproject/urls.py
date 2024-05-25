@@ -5,7 +5,7 @@ from myapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),  # Root URL pattern
-    path('pong/', views.pong, name='pong'),
+    path('game/', views.game, name='game'),
     path('chat/', views.chat, name='chat'),
     path('start/', views.start, name='start'),
     path('dashboard/', views.dashboard, name='dashboard'),

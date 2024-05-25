@@ -3,8 +3,8 @@ from django.shortcuts import render
 def home(request):
     return render(request, 'home.html')
 
-def pong(request):
-    return render(request, 'pong.html')
+def game(request):
+    return render(request, 'game.html')
 
 def chat(request):
     return render(request, 'chat.html')
