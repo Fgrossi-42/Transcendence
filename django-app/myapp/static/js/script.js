@@ -7,6 +7,89 @@ var DIRECTION = {
     RIGHT: 4
 };
 
+
+
+// Global Variables for Tournament Management
+var players = [];
+var tournamentBracket = [];
+var currentMatch = 0;
+var matchResults = [];
+
+// Initialize Tournament
+function initializeTournament() {
+    players = [];
+    for (let i = 0; i < 8; i++) {
+        let playerName = prompt("Enter name for Player " + (i + 1));
+        if (playerName) {
+            players.push(playerName);
+        } else {
+            i--;
+        }
+    }
+    shuffle(players);
+    tournamentBracket = createBracket(players);
+    currentMatch = 0;
+    matchResults = [];
+    startNextMatch();
+}
+
+// Shuffle Array
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+// Create Bracket
+function createBracket(players) {
+    let bracket = [];
+    for (let i = 0; i < players.length; i += 2) {
+        bracket.push([players[i], players[i + 1]]);
+    }
+    return bracket;
+}
+
+// Start Next Match
+function startNextMatch() {
+    if (currentMatch < tournamentBracket.length) {
+        let match = tournamentBracket[currentMatch];
+        alert("Next match: " + match[0] + " vs " + match[1]);
+        Pong.initialize(match[0], match[1]);
+    } else {
+        if (tournamentBracket.length > 1) {
+            advanceTournament();
+        } else {
+            alert("Champion: " + tournamentBracket[0][0]);
+        }
+    }
+}
+
+// Advance Tournament
+function advanceTournament() {
+    let winners = [];
+    for (let i = 0; i < matchResults.length; i++) {
+        winners.push(matchResults[i]);
+    }
+    tournamentBracket = createBracket(winners);
+    currentMatch = 0;
+    matchResults = [];
+    startNextMatch();
+}
+
+// Record Match Winner
+function recordMatchWinner(winner) {
+    matchResults.push(winner);
+    currentMatch++;
+    startNextMatch();
+}
+
+
+
+
+
+
+
 var rounds = [5, 5, 3, 3, 2];
 
 // The ball object (The cube that bounces back and forth)
@@ -303,5 +386,9 @@ var Game = {
 
 var Pong = Object.assign({}, Game);
 document.getElementById('startTournamentButton').addEventListener('click', function() {
-    Pong.initialize();
+    initializeTournament();
 });
+
+// document.getElementById('startTournamentButton').addEventListener('click', function() {
+//     Pong.initialize();
+// });
