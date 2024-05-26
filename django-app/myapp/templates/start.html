@@ -45,7 +45,7 @@
         <div class="col-12 p-5 mx-auto">
           <h1 class="display-3 fw-normal p-5">A normal game of Pong</h1>
           <p class="lead fw-normal col-7 mx-auto pb-5">by the proud minds of Fgrossi, Gfezzuog, Marimatt and Cbuszinznzkziznkzkyiznkynzyiznkyzkziziznzkziznkzkyiznkynzyiznkykziznykyknziznzkziznkzkyiznkynzyiznkyynzkyiznkrzynkykyzkznyiznyizkyiny</p>
-          <a class="btn btn-outline-secondary p-3"id="pong-link">start playing</a>
+          <a class="btn btn-outline-secondary p-3"id="game-link">start playing</a>
         </div>
       </div>
     
@@ -74,7 +74,7 @@
       $(document).ready(function(){
           function loadPage(page) {
               $.ajax({
-                  url: page + '/',
+                  url: '/' + page,
                   method: 'GET',
                   success: function(data) {
                       $('#content').html(data);
@@ -101,9 +101,9 @@
                   });
               }
           }
-          $('#pong-link').click(function(e){
+          $('#game-link').click(function(e){
               e.preventDefault();
-              loadPage('pong');
+              loadPage('game');
           });
 
       });
