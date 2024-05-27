@@ -54,6 +54,7 @@ function createBracket(players) {
 function startNextMatch() {
     if (currentMatch < tournamentBracket.length) {
         let match = tournamentBracket[currentMatch];
+        Pong.finalize();
         alert("Next match: " + match[0] + " vs " + match[1]);
         Pong.initialize(match[0], match[1]);
     } else {
@@ -90,7 +91,7 @@ function recordMatchWinner(winner) {
 
 
 
-var rounds = [5, 5, 3, 3, 2];
+var rounds = [3];
 
 // The ball object (The cube that bounces back and forth)
 var Ball = {
@@ -150,6 +151,19 @@ var Game = {
         Pong.listen();
     },
     
+    finalize: function() {
+        // Clean up resources and reset state
+        this.running = false;
+        this.over = false;
+        this.turn = null;
+        this.timer = this.round = 0;
+        this.playerLeft = null;
+        this.playerRight = null;
+        this.ball = null;
+        this.canvas = null;
+        this.context = null;
+        this.color = '#212529';
+    },
 
     endGameMenu: function (text) {
         Pong.context.font = '45px Courier New';
@@ -166,11 +180,6 @@ var Game = {
             Pong.canvas.width / 2,
             Pong.canvas.height / 2 + 15
         );
-
-        setTimeout(function () {
-            Pong = Object.assign({}, Game);
-            Pong.initialize();
-        }, 3000);
     },
 
     menu: function () {
