@@ -15,23 +15,6 @@ var tournamentBracket = [];
 var currentMatch = 0;
 var matchResults = [];
 
-// Initialize Tournament
-function initializeTournament() {
-    players = [];
-    for (let i = 0; i < 8; i++) {
-        let playerName = prompt("Enter name for Player " + (i + 1));
-        if (playerName) {
-            players.push(playerName);
-        } else {
-            i--;
-        }
-    }
-    shuffle(players);
-    tournamentBracket = createBracket(players);
-    currentMatch = 0;
-    matchResults = [];
-    startNextMatch();
-}
 
 // Shuffle Array
 function shuffle(array) {
@@ -84,12 +67,6 @@ function recordMatchWinner(winner) {
     currentMatch++;
     startNextMatch();
 }
-
-
-
-
-
-
 
 var rounds = [3];
 
@@ -392,9 +369,22 @@ var Game = {
     },
 };
 
-Pong.finalize();
 var Pong = Object.assign({}, Game);
-document.getElementById('startTournamentButton').addEventListener('click', function() {
-    initializeTournament();
-});
 
+// Initialize Tournament
+export function initializeTournament() {
+    players = [];
+    for (let i = 0; i < 8; i++) {
+        let playerName = prompt("Enter name for Player " + (i + 1));
+        if (playerName) {
+            players.push(playerName);
+        } else {
+            i--;
+        }
+    }
+    shuffle(players);
+    tournamentBracket = createBracket(players);
+    currentMatch = 0;
+    matchResults = [];
+    startNextMatch();
+}

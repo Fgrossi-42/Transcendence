@@ -41,7 +41,7 @@ var Ai = {
 };
  
 var Game = {
-    initialize: function () {
+    initializeAI: function () {
         this.canvas = document.querySelector('canvas');
         this.context = this.canvas.getContext('2d');
  
@@ -64,7 +64,7 @@ var Game = {
         PongAI.menu();
         PongAI.listen();
     },
- 
+
     endGameMenu: function (text) {
         // Change the canvas font size and color
         PongAI.context.font = '45px Courier New';
@@ -89,7 +89,7 @@ var Game = {
  
         setTimeout(function () {
             PongAI = Object.assign({}, Game);
-            PongAI.initialize();
+            PongAI.initializeAI();
         }, 3000);
     },
  
@@ -358,6 +358,7 @@ var Game = {
 };
  
 var PongAI = Object.assign({}, Game);
-document.getElementById('startgameVSaiButton').addEventListener('click', function() {
-    PongAI.initialize();
-});
+
+export function initializeAI () {
+	Game.initializeAI();
+}

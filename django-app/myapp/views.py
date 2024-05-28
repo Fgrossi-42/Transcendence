@@ -1,31 +1,50 @@
 # views.py
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 
-def home(request):
+## >-------------------------------------
+## PER FLAVIO, CHRISTIAN E GIOELE:
+## >-------------------------------------
+"""
+	In python è utile usare il "typing" --> ovvero da questo:
+
+	def home(request):
+		return render(request, 'home.html')
+
+	si passa a questo:
+
+	def home(request: HttpRequest) -> HttpResponse:
+		return render(request, 'home.html')
+
+	Vedrete che tutte le funzioncine e i parametri 
+	vengono colorati dall'interpreter, (ctrl + shift + P  poi scrivi 'interpreter');
+	il codice diventa più intelligibile.
+"""
+
+def home(request: HttpRequest) -> HttpResponse:
     return render(request, 'home.html')
 
-def start(request):
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+def start(request: HttpRequest) -> HttpResponse:
+    if request.headers.get('x-requested-with', None) == 'XMLHttpRequest':
         return render(request, 'start.html')
     return render(request, 'home.html')
 
-def game(request):
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+def game(request: HttpRequest) -> HttpResponse:
+    if request.headers.get('x-requested-with', None) == 'XMLHttpRequest':
         return render(request, 'game.html')
     return render(request, 'home.html')
 
-def chat(request):
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+def chat(request: HttpRequest) -> HttpResponse:
+    if request.headers.get('x-requested-with', None) == 'XMLHttpRequest':
         return render(request, 'chat.html')
     return render(request, 'home.html')
 
-def dashboard(request):
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+def dashboard(request: HttpRequest) -> HttpResponse:
+    if request.headers.get('x-requested-with', None) == 'XMLHttpRequest':
         return render(request, 'dashboard.html')
     return render(request, 'home.html')
 
-def friends(request):
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+def friends(request: HttpRequest) -> HttpResponse:
+    if request.headers.get('x-requested-with', None) == 'XMLHttpRequest':
         return render(request, 'friends.html')
     return render(request, 'home.html')
