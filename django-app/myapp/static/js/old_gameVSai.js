@@ -24,7 +24,7 @@ var Ball = {
         };
     }
 };
- 
+
 // The ai object (The two lines that move up and down)
 var Ai = {
     new: function (side) {
@@ -39,7 +39,7 @@ var Ai = {
         };
     }
 };
- 
+
 var Game = {
     initialize: function () {
         this.canvas = document.querySelector('canvas');
@@ -358,6 +358,7 @@ var Game = {
 };
  
 var PongAI = Object.assign({}, Game);
+
 document.getElementById('startgameVSaiButton').addEventListener('click', function() {
     PongAI.initialize();
 });

@@ -51,13 +51,6 @@ function advanceTournament() {
     startNextMatch();
 }
 
-// Record Match Winner
-// function recordMatchWinner(winner) {
-//     matchResults.push(winner);
-//     currentMatch++;
-//     startNextMatch();
-// }
-
 // Initialize Tournament
 export function initializeTournament() {
     players = [];
