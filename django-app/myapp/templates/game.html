@@ -46,8 +46,12 @@
     <div class="bg-light offset-1" style="width: 2%; height: 30%;border-radius: 200px 200px 200px 200px;"></div>
 </div> -->
 <button id="startTournamentButton">Start Tournament</button>
+<button id="startgameVSplayerButton">Start game VS player</button>
+<button id="startgameVSaiButton">Start Game vs AI</button>
 <div class="position-relative text-center bg-dark mx-auto text-white pt-5" style="width: 1200px; height: 650px; border-radius: 200px 200px 200px 200px;">
 
+  <canvas></canvas>
+  <canvas></canvas>
   <canvas></canvas>
   
 </div>
@@ -56,7 +60,9 @@
     <span class="text-muted text-center">made by Fgrossi, Gfezzuog, Marimatt and Cbuszzkzizkziznkziznkynzyiznkykziznykyknziznzkzisnsksnisiy</span>
   </div>
 </footer>
-<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/script.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}" defer></script>
+    <script src="{% static 'js/tournament.js' %}" defer></script>
+    <script src="{% static 'js/gameVSai.js' %}" defer></script>
+    <script src="{% static 'js/gameVSplayer.js' %}" defer></script>
   </body>
 </html>

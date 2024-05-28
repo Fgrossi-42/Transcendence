@@ -7,91 +7,7 @@ var DIRECTION = {
     RIGHT: 4
 };
 
-
-
-// Global Variables for Tournament Management
-var players = [];
-var tournamentBracket = [];
-var currentMatch = 0;
-var matchResults = [];
-
-// Initialize Tournament
-function initializeTournament() {
-    players = [];
-    for (let i = 0; i < 8; i++) {
-        let playerName = prompt("Enter name for Player " + (i + 1));
-        if (playerName) {
-            players.push(playerName);
-        } else {
-            i--;
-        }
-    }
-    shuffle(players);
-    tournamentBracket = createBracket(players);
-    currentMatch = 0;
-    matchResults = [];
-    startNextMatch();
-}
-
-// Shuffle Array
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-}
-
-// Create Bracket
-function createBracket(players) {
-    let bracket = [];
-    for (let i = 0; i < players.length; i += 2) {
-        bracket.push([players[i], players[i + 1]]);
-    }
-    return bracket;
-}
-
-// Start Next Match
-function startNextMatch() {
-    if (currentMatch < tournamentBracket.length) {
-        let match = tournamentBracket[currentMatch];
-        Pong.finalize();
-        alert("Next match: " + match[0] + " vs " + match[1]);
-        Pong.initialize(match[0], match[1]);
-    } else {
-        if (tournamentBracket.length > 1) {
-            advanceTournament();
-        } else {
-            alert("Champion: " + tournamentBracket[0][0]);
-        }
-    }
-}
-
-// Advance Tournament
-function advanceTournament() {
-    let winners = [];
-    for (let i = 0; i < matchResults.length; i++) {
-        winners.push(matchResults[i]);
-    }
-    tournamentBracket = createBracket(winners);
-    currentMatch = 0;
-    matchResults = [];
-    startNextMatch();
-}
-
-// Record Match Winner
-function recordMatchWinner(winner) {
-    matchResults.push(winner);
-    currentMatch++;
-    startNextMatch();
-}
-
-
-
-
-
-
-
-var rounds = [3];
+var rounds = [5, 5, 3, 3, 2];
 
 // The ball object (The cube that bounces back and forth)
 var Ball = {
@@ -124,66 +40,56 @@ var Paddle = {
 };
 
 var Game = {
-    initialize: function (playerLeftName, playerRightName) {
+    initialize: function () {
         this.canvas = document.querySelector('canvas');
         this.context = this.canvas.getContext('2d');
-    
+
         this.canvas.width = 2000;
         this.canvas.height = 1100;
-    
+
         this.canvas.style.width = (this.canvas.width / 2) + 'px';
         this.canvas.style.height = (this.canvas.height / 2) + 'px';
-    
+
         this.playerLeft = Paddle.new.call(this, 'left');
         this.playerRight = Paddle.new.call(this, 'right');
         this.ball = Ball.new.call(this);
-    
+
         this.playerRight.speed = 8;
         this.running = this.over = false;
         this.turn = this.playerRight;
         this.timer = this.round = 0;
         this.color = '#212529';
-    
-        this.playerLeft.name = playerLeftName;
-        this.playerRight.name = playerRightName;
-    
-        Pong.menu();
-        Pong.listen();
-    },
-    
-    finalize: function() {
-        // Clean up resources and reset state
-        this.running = false;
-        this.over = false;
-        this.turn = null;
-        this.timer = this.round = 0;
-        this.playerLeft = null;
-        this.playerRight = null;
-        this.ball = null;
-        this.canvas = null;
-        this.context = null;
-        this.color = '#212529';
+
+        PongPlayer.menu();
+        PongPlayer.listen();
     },
 
     endGameMenu: function (text) {
-        Pong.context.font = '45px Courier New';
-        Pong.context.fillStyle = this.color;
+        PongPlayer.context.font = '45px Courier New';
+        PongPlayer.context.fillStyle = this.color;
 
-        Pong.context.fillRect(
-            Pong.canvas.width / 2 - 350,
-            Pong.canvas.height / 2 - 48,
+        PongPlayer.context.fillRect(
+            PongPlayer.canvas.width / 2 - 350,
+            PongPlayer.canvas.height / 2 - 48,
             700,
             100
         );
 
-        Pong.context.fillText(text,
-            Pong.canvas.width / 2,
-            Pong.canvas.height / 2 + 15
+        PongPlayer.context.fillStyle = '#ffffff';
+
+        PongPlayer.context.fillText(text,
+            PongPlayer.canvas.width / 2,
+            PongPlayer.canvas.height / 2 + 15
         );
+
+        setTimeout(function () {
+            PongPlayer = Object.assign({}, Game);
+            PongPlayer.initialize();
+        }, 3000);
     },
 
     menu: function () {
-        Pong.draw();
+        PongPlayer.draw();
 
         this.context.font = '50px Courier New';
         this.context.fillStyle = this.color;
@@ -209,7 +115,7 @@ var Game = {
             this.handlePaddleMovement(this.playerLeft);
             this.handlePaddleMovement(this.playerRight);
 
-            if (Pong._turnDelayIsOver.call(this) && this.turn) {
+            if (PongPlayer._turnDelayIsOver.call(this) && this.turn) {
                 this.ball.moveX = this.turn === this.playerLeft ? DIRECTION.LEFT : DIRECTION.RIGHT;
                 this.ball.moveY = [DIRECTION.UP, DIRECTION.DOWN][Math.round(Math.random())];
                 this.ball.y = Math.floor(Math.random() * (this.canvas.height - 200)) + 200;
@@ -224,8 +130,8 @@ var Game = {
     },
 
     handleBallBoundaries: function() {
-        if (this.ball.x <= 0) Pong._resetTurn.call(this, this.playerRight, this.playerLeft);
-        if (this.ball.x >= this.canvas.width - this.ball.width) Pong._resetTurn.call(this, this.playerLeft, this.playerRight);
+        if (this.ball.x <= 0) PongPlayer._resetTurn.call(this, this.playerRight, this.playerLeft);
+        if (this.ball.x >= this.canvas.width - this.ball.width) PongPlayer._resetTurn.call(this, this.playerLeft, this.playerRight);
         if (this.ball.y <= 0) this.ball.moveY = DIRECTION.DOWN;
         if (this.ball.y >= this.canvas.height - this.ball.height) this.ball.moveY = DIRECTION.UP;
     },
@@ -263,14 +169,14 @@ var Game = {
         if (this.playerLeft.score === rounds[this.round]) {
             if (!rounds[this.round + 1]) {
                 this.over = true;
-                setTimeout(function () { Pong.endGameMenu('Left Player Wins!'); }, 1000);
+                setTimeout(function () { PongPlayer.endGameMenu('Left Player Wins!'); }, 1000);
             } else {
                 this.advanceToNextRound();
             }
         } else if (this.playerRight.score === rounds[this.round]) {
             if (!rounds[this.round + 1]) {
                 this.over = true;
-                setTimeout(function () { Pong.endGameMenu('Right Player Wins!'); }, 1000);
+                setTimeout(function () { PongPlayer.endGameMenu('Right Player Wins!'); }, 1000);
             } else {
                 this.advanceToNextRound();
             }
@@ -311,11 +217,11 @@ var Game = {
 
         // Draw the round number
         this.context.font = '30px Courier New';
-        this.context.fillText('Round ' + (Pong.round + 1), (this.canvas.width / 2), 35);
+        this.context.fillText('Round ' + (PongPlayer.round + 1), (this.canvas.width / 2), 35);
 
         // Draw the current round score
         this.context.font = '40px Courier';
-        this.context.fillText(rounds[Pong.round] ? rounds[Pong.round] : rounds[Pong.round - 1], (this.canvas.width / 2), 100);
+        this.context.fillText(rounds[PongPlayer.round] ? rounds[PongPlayer.round] : rounds[PongPlayer.round - 1], (this.canvas.width / 2), 100);
     },
 
     drawPaddle: function(paddle) {
@@ -323,7 +229,7 @@ var Game = {
     },
 
     drawBall: function() {
-        if (Pong._turnDelayIsOver.call(this)) {
+        if (PongPlayer._turnDelayIsOver.call(this)) {
             this.context.fillRect(this.ball.x, this.ball.y, this.ball.width, this.ball.height);
         }
     },
@@ -339,30 +245,30 @@ var Game = {
     },
 
     loop: function () {
-        Pong.update();
-        Pong.draw();
+        PongPlayer.update();
+        PongPlayer.draw();
 
-        if (!Pong.over) requestAnimationFrame(Pong.loop);
+        if (!PongPlayer.over) requestAnimationFrame(PongPlayer.loop);
     },
 
     listen: function () {
         document.addEventListener('keydown', function (key) {
-            if (Pong.running === false) {
-                Pong.running = true;
-                window.requestAnimationFrame(Pong.loop);
+            if (PongPlayer.running === false) {
+                PongPlayer.running = true;
+                window.requestAnimationFrame(PongPlayer.loop);
                 return;
             }
             key.preventDefault();
 
-            if (key.key === 'w') Pong.playerLeft.move = DIRECTION.UP;
-            if (key.key === 'o') Pong.playerRight.move = DIRECTION.UP;
-            if (key.key === 's') Pong.playerLeft.move = DIRECTION.DOWN;
-            if (key.key === 'k') Pong.playerRight.move = DIRECTION.DOWN;
+            if (key.key === 'w') PongPlayer.playerLeft.move = DIRECTION.UP;
+            if (key.key === 'o') PongPlayer.playerRight.move = DIRECTION.UP;
+            if (key.key === 's') PongPlayer.playerLeft.move = DIRECTION.DOWN;
+            if (key.key === 'k') PongPlayer.playerRight.move = DIRECTION.DOWN;
         });
 
         document.addEventListener('keyup', function (key) {
-            if (key.key === 'w' || key.key === 's') Pong.playerLeft.move = DIRECTION.IDLE;
-            if (key.key === 'o' || key.key === 'k') Pong.playerRight.move = DIRECTION.IDLE;
+            if (key.key === 'w' || key.key === 's') PongPlayer.playerLeft.move = DIRECTION.IDLE;
+            if (key.key === 'o' || key.key === 'k') PongPlayer.playerRight.move = DIRECTION.IDLE;
         });
     },
 
@@ -371,33 +277,15 @@ var Game = {
         this.turn = loser;
         this.timer = (new Date()).getTime();
         victor.score++;
-    
-        if (victor.score === rounds[this.round]) {
-            if (!rounds[this.round + 1]) {
-                this.over = true;
-                let winnerName = victor === this.playerLeft ? this.playerLeft.name : this.playerRight.name;
-                setTimeout(function () {
-                    Pong.endGameMenu(winnerName + ' Wins!');
-                    recordMatchWinner(winnerName);
-                }, 1000);
-            } else {
-                this.advanceToNextRound();
-            }
-        }
     },
-    
 
     _turnDelayIsOver: function () {
         return ((new Date()).getTime() - this.timer >= 1000);
     },
 };
 
-
-var Pong = Object.assign({}, Game);
-document.getElementById('startTournamentButton').addEventListener('click', function() {
-    initializeTournament();
+PongPlayer.finalize();
+var PongPlayer = Object.assign({}, Game);
+document.getElementById('startgameVSplayerButton').addEventListener('click', function() {
+    PongPlayer.initialize();
 });
-
-// document.getElementById('startTournamentButton').addEventListener('click', function() {
-//     Pong.initialize();
-// });
