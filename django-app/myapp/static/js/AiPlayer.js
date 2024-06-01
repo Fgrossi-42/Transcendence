@@ -11,7 +11,6 @@ addEventListener("error", error => {
 
 const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
 
-
 async function playGameAI() {
 
 	console.log("starting loop AI");
