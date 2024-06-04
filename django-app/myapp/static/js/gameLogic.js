@@ -1,3 +1,4 @@
+
 // Global Variables
 var DIRECTION = {
     IDLE: 0,
@@ -66,6 +67,7 @@ var Game = {
     
         Pong.menu();
         Pong.listen();
+        setCurrentGame(this);
     },
 
     finalize: function() {
@@ -197,9 +199,6 @@ var Game = {
     advanceToNextRound: function() {
         this.color = this.color;
         this.playerLeft.score = this.playerRight.score = 0;
-        this.playerLeft.speed += 1;
-        this.playerRight.speed += 1;
-        this.ball.speed += 1;
         this.round += 1;
     },
 

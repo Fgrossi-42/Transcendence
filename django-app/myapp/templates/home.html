@@ -25,13 +25,7 @@
                 <a class="nav-link" href="" id="start-link">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="" id="game-link">game "Player VS Player"</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="" id="gameVsAI-link">game "Player VS AI"</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="" id="gameVstourn-link">game "Players tournament"</a>
+                <a class="nav-link" href="" id="game-link">game</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="" id="friends-link">Friends</a>
@@ -119,16 +113,6 @@ $('#game-link').click(function(e) {
     e.preventDefault();
     changeNavbarImage('{% static "images/pong.png" %}');
     loadPage('game');
-});
-$('#gameVsAI-link').click(function(e) {
-    e.preventDefault();
-    changeNavbarImage('{% static "images/pong.png" %}');
-    loadPage('gameVsAI');
-});
-$('#gameVstourn-link').click(function(e) {
-    e.preventDefault();
-    changeNavbarImage('{% static "images/pong.png" %}');
-    loadPage('gameVstourn');
 });
 $('#chat-link').click(function(e) {
     e.preventDefault();

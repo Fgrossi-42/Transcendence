@@ -34,16 +34,6 @@ def game(request: HttpRequest) -> HttpResponse:
         return render(request, 'game.html')
     return render(request, 'home.html')
 
-def gameVsAI(request: HttpRequest) -> HttpResponse:
-    if request.headers.get('x-requested-with', None) == 'XMLHttpRequest':
-        return render(request, 'gameVsAI.html')
-    return render(request, 'home.html')
-
-def gameVstourn(request: HttpRequest) -> HttpResponse:
-    if request.headers.get('x-requested-with', None) == 'XMLHttpRequest':
-        return render(request, 'gameVstourn.html')
-    return render(request, 'home.html')
-
 def chat(request: HttpRequest) -> HttpResponse:
     if request.headers.get('x-requested-with', None) == 'XMLHttpRequest':
         return render(request, 'chat.html')

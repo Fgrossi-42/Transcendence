@@ -24,7 +24,6 @@ export function initializeAI () {
         handleAIEvent(event.data);
     };
 
-	alert("Be the Force with you!");
 	Pong.initialize(playerLeftName, playerRightName, rounds);
 }
 
