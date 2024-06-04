@@ -20,7 +20,7 @@ services:
       - ./.env
 
   db:
-    image: postgres:latest
+    build: ./postgre/
     restart: always
     env_file:
       - ./.env
