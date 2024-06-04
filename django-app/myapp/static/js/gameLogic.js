@@ -38,7 +38,7 @@ var Paddle = {
     }
 };
 
-export const Pong = {
+var Game = {
     initialize: function (playerLeftName, playerRightName, rounds) {
 
 		this.canvas = document.querySelector('canvas');
@@ -63,19 +63,9 @@ export const Pong = {
         this.playerLeft.name = playerLeftName;
         this.playerRight.name = playerRightName;
 		this.rounds = rounds
-
-        // Bind methods to the current context
-        this.menu = this.menu.bind(this);
-        this.listen = this.listen.bind(this);
-        this.loop = this.loop.bind(this);
-        this.update = this.update.bind(this);
-        this.draw = this.draw.bind(this);
-        this.endGameMenu = this.endGameMenu.bind(this);
-        this._turnDelayIsOver = this._turnDelayIsOver.bind(this);
-        this._resetTurn = this._resetTurn.bind(this);
-
-        this.menu();
-        this.listen();
+    
+        Pong.menu();
+        Pong.listen();
     },
 
     finalize: function() {
@@ -93,25 +83,24 @@ export const Pong = {
     },
 
     endGameMenu: function (text) {
-		console.log("calling endGameMenu with text", text);
-        this.context.font = '45px Courier New';
-        this.context.fillStyle = this.color;
+        Pong.context.font = '45px Courier New';
+        Pong.context.fillStyle = this.color;
 
-        this.context.fillRect(
-            this.canvas.width / 2 - 350,
-            this.canvas.height / 2 - 48,
+        Pong.context.fillRect(
+            Pong.canvas.width / 2 - 350,
+            Pong.canvas.height / 2 - 48,
             700,
             100
         );
 
-        this.context.fillText(text,
-            this.canvas.width / 2,
-            this.canvas.height / 2 + 15
+        Pong.context.fillText(text,
+            Pong.canvas.width / 2,
+            Pong.canvas.height / 2 + 15
         );
     },
 
     menu: function () {
-        this.draw();
+        Pong.draw();
 
         this.context.font = '50px Courier New';
         this.context.fillStyle = this.color;
@@ -137,7 +126,7 @@ export const Pong = {
             this.handlePaddleMovement(this.playerLeft);
             this.handlePaddleMovement(this.playerRight);
 
-            if (this._turnDelayIsOver.call(this) && this.turn) {
+            if (Pong._turnDelayIsOver.call(this) && this.turn) {
                 this.ball.moveX = this.turn === this.playerLeft ? DIRECTION.LEFT : DIRECTION.RIGHT;
                 this.ball.moveY = [DIRECTION.UP, DIRECTION.DOWN][Math.round(Math.random())];
                 this.ball.y = Math.floor(Math.random() * (this.canvas.height - 200)) + 200;
@@ -152,8 +141,8 @@ export const Pong = {
     },
 
     handleBallBoundaries: function() {
-        if (this.ball.x <= 0) this._resetTurn.call(this, this.playerRight, this.playerLeft);
-        if (this.ball.x >= this.canvas.width - this.ball.width) this._resetTurn.call(this, this.playerLeft, this.playerRight);
+        if (this.ball.x <= 0) Pong._resetTurn.call(this, this.playerRight, this.playerLeft);
+        if (this.ball.x >= this.canvas.width - this.ball.width) Pong._resetTurn.call(this, this.playerLeft, this.playerRight);
         if (this.ball.y <= 0) this.ball.moveY = DIRECTION.DOWN;
         if (this.ball.y >= this.canvas.height - this.ball.height) this.ball.moveY = DIRECTION.UP;
     },
@@ -191,16 +180,14 @@ export const Pong = {
         if (this.playerLeft.score === this.rounds[this.round]) {
             if (!this.rounds[this.round + 1]) {
                 this.over = true;
-				this.endGameMenu(this.playerLeftName + 'Wins!');
-                // setTimeout(function () { this.endGameMenu(this.playerLeftName + 'Wins!'); }, 1000);
+                setTimeout(function () { Pong.endGameMenu('Left Player Wins!'); }, 1000);
             } else {
                 this.advanceToNextRound();
             }
         } else if (this.playerRight.score === this.rounds[this.round]) {
             if (!this.rounds[this.round + 1]) {
                 this.over = true;
-				this.endGameMenu(this.playerRightName + 'Wins!');
-                // setTimeout(function () { this.endGameMenu(this.playerRightName + 'Wins!'); }, 1000);
+                setTimeout(function () { Pong.endGameMenu('Right Player Wins!'); }, 1000);
             } else {
                 this.advanceToNextRound();
             }
@@ -241,11 +228,11 @@ export const Pong = {
 
         // Draw the round number
         this.context.font = '30px Courier New';
-        this.context.fillText('Round ' + (this.round + 1), (this.canvas.width / 2), 35);
+        this.context.fillText('Round ' + (Pong.round + 1), (this.canvas.width / 2), 35);
 
         // Draw the current round score
         this.context.font = '40px Courier';
-        this.context.fillText(this.rounds[this.round] ? this.rounds[this.round] : this.rounds[this.round - 1], (this.canvas.width / 2), 100);
+        this.context.fillText(this.rounds[Pong.round] ? this.rounds[Pong.round] : this.rounds[Pong.round - 1], (this.canvas.width / 2), 100);
     },
 
     drawPaddle: function(paddle) {
@@ -253,7 +240,7 @@ export const Pong = {
     },
 
     drawBall: function() {
-        if (this._turnDelayIsOver.call(this)) {
+        if (Pong._turnDelayIsOver.call(this)) {
             this.context.fillRect(this.ball.x, this.ball.y, this.ball.width, this.ball.height);
         }
     },
@@ -269,58 +256,47 @@ export const Pong = {
     },
 
     loop: function () {
-        this.update();
-        this.draw();
+        Pong.update();
+        Pong.draw();
 
-        if (!this.over) requestAnimationFrame(this.loop);
+        if (!Pong.over) requestAnimationFrame(Pong.loop);
     },
 
     listen: function () {
-        document.addEventListener('keydown', (key) => {
-            if (this.running === false) {
-                this.running = true;
-                window.requestAnimationFrame(this.loop);
+        document.addEventListener('keydown', function (key) {
+            if (Pong.running === false) {
+                Pong.running = true;
+                window.requestAnimationFrame(Pong.loop);
                 return;
             }
             key.preventDefault();
 
-            if (key.key === 'w') this.playerLeft.move = DIRECTION.UP;
-            if (key.key === 'o') this.playerRight.move = DIRECTION.UP;
-            if (key.key === 's') this.playerLeft.move = DIRECTION.DOWN;
-            if (key.key === 'k') this.playerRight.move = DIRECTION.DOWN;
+            if (key.key === 'w') Pong.playerLeft.move = DIRECTION.UP;
+            if (key.key === 'o') Pong.playerRight.move = DIRECTION.UP;
+            if (key.key === 's') Pong.playerLeft.move = DIRECTION.DOWN;
+            if (key.key === 'k') Pong.playerRight.move = DIRECTION.DOWN;
         });
 
-        document.addEventListener('keyup', (key) => {
-            if (key.key === 'w' || key.key === 's') this.playerLeft.move = DIRECTION.IDLE;
-            if (key.key === 'o' || key.key === 'k') this.playerRight.move = DIRECTION.IDLE;
+        document.addEventListener('keyup', function (key) {
+            if (key.key === 'w' || key.key === 's') Pong.playerLeft.move = DIRECTION.IDLE;
+            if (key.key === 'o' || key.key === 'k') Pong.playerRight.move = DIRECTION.IDLE;
         });
     },
-
-	// Record Match Winner
-	// function recordMatchWinner(winner) {
-	// 	matchResults.push(winner);
-	// 	currentMatch++;
-	// 	startNextMatch();
-	// }
 
     _resetTurn: function (victor, loser) {
         this.ball = Ball.new.call(this);
         this.turn = loser;
         this.timer = (new Date()).getTime();
         victor.score++;
-
+    
         if (victor.score === this.rounds[this.round]) {
             if (!this.rounds[this.round + 1]) {
                 this.over = true;
                 let winnerName = victor === this.playerLeft ? this.playerLeft.name : this.playerRight.name;
-
-				this.endGameMenu(winnerName + ' Wins!');
-				// this.recordMatchWinner(winnerName);
-
-                // setTimeout(function () {
-                //     this.endGameMenu(winnerName + ' Wins!');
-                //     recordMatchWinner(winnerName);
-                // }, 10000);
+                setTimeout(function () {
+                    Pong.endGameMenu(winnerName + ' Wins!');
+                    recordMatchWinner(winnerName);
+                }, 10000);
             } else {
                 this.advanceToNextRound();
             }
@@ -331,3 +307,7 @@ export const Pong = {
         return ((new Date()).getTime() - this.timer >= 1000);
     },
 };
+
+var Pong = Object.assign({}, Game);
+
+export var Pong;

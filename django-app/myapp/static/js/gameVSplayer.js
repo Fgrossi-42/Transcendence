@@ -6,6 +6,6 @@ var playerRightName = "Player2";
 
 export function initializePlayer () {
 	Pong.finalize();
-	alert("May the Force be with you!");
+	alert("Be the Force with you!");
 	Pong.initialize(playerLeftName, playerRightName, rounds);
 }
