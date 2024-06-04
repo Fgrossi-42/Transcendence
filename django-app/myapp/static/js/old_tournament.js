@@ -394,8 +394,3 @@ export function initializeTournament() {
     startNextMatch();
 }
 
-
-// document.getElementById('startTournamentButton').addEventListener('click', function() {
-//     initializeTournament();
-// });
-

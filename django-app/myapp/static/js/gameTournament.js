@@ -67,4 +67,5 @@ export function initializeTournament() {
     currentMatch = 0;
     matchResults = [];
     startNextMatch();
+    return Pong;
 }
