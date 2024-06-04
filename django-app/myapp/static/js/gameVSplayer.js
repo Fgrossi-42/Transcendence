@@ -9,3 +9,4 @@ export function initializePlayer () {
 	Pong.initialize(playerLeftName, playerRightName, rounds);
 	return Pong;
 }
+

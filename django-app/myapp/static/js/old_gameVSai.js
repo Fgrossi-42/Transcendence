@@ -368,6 +368,7 @@ function endGame() {
         PongAI.endGameMenu('Game Over!');
     }
 }
+
 var PongAI = Object.assign({}, Game);
 
 export function initializeAI() {

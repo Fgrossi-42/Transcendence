@@ -1,18 +1,18 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">    
-    <style>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tac.css' %}">
+<style>
         canvas {
             border: 1px solid black;
             cursor: pointer;
-            width: 500px;
-            height: 500px;
+            width: 400px;
+            height: 400px;
         }
         .winner {
             text-align: center;
@@ -20,121 +20,21 @@
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col text-center">
-                <h1>Tic Tac Toe</h1>
-                <canvas id="boardCanvas" width="300" height="300"></canvas>
-                <div id="winner" class="winner"></div>
-                <button id="restartBtn" class="btn btn-primary mt-3">Restart</button>
-            </div>
-        </div>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const canvas = document.getElementById('boardCanvas');
-            const winnerElement = document.getElementById('winner');
-            const restartBtn = document.getElementById('restartBtn');
-            const ctx = canvas.getContext('2d');
+<div class="container" id="main">
+    <span id="turn">Tic Tac Toe</span>
 
-            let board = ['', '', '', '', '', '', '', '', ''];
-            let currentPlayer = 'X';
-            let gameOver = false;
+    <div class="box" style="border-left: 0; border-top: 0" id="box1"></div>
+    <div class="box" style="border-top: 0" id="box2"></div>
+    <div class="box" style="border-top: 0; border-right: 0" id="box3"></div>
+    <div class="box" style="border-left: 0" id="box4"></div>
+    <div class="box" id="box5"></div>
+    <div class="box" style="border-right: 0" id="box6"></div>
+    <div class="box" style="border-left: 0; border-bottom: 0" id="box7"></div>
+    <div class="box" style="border-bottom: 0" id="box8"></div>
+    <div class="box" style="border-right: 0; border-bottom: 0" id="box9"></div>
+  </div>
 
-            const winningCombinations = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-                [0, 4, 8], [2, 4, 6]             // Diagonals
-            ];
-
-            function drawBoard() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.strokeStyle = 'black';
-                ctx.lineWidth = 2;
-
-                // Draw vertical lines
-                for (let i = 1; i < 3; i++) {
-                    ctx.beginPath();
-                    ctx.moveTo(i * (canvas.width / 3), 0);
-                    ctx.lineTo(i * (canvas.width / 3), canvas.height);
-                    ctx.stroke();
-                }
-
-                // Draw horizontal lines
-                for (let i = 1; i < 3; i++) {
-                    ctx.beginPath();
-                    ctx.moveTo(0, i * (canvas.height / 3));
-                    ctx.lineTo(canvas.width, i * (canvas.height / 3));
-                    ctx.stroke();
-                }
-
-                drawXOs();
-            }
-
-            function drawXOs() {
-                ctx.font = 'bold 40px Arial';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-
-                for (let i = 0; i < 9; i++) {
-                    const row = Math.floor(i / 3);
-                    const col = i % 3;
-                    const x = col * (canvas.width / 3) + (canvas.width / 6);
-                    const y = row * (canvas.height / 3) + (canvas.height / 6);
-
-                    if (board[i] === 'X') {
-                        ctx.fillText('X', x, y);
-                    } else if (board[i] === 'O') {
-                        ctx.fillText('O', x, y);
-                    }
-                }
-            }
-
-            function makeMove(event) {
-                if (!gameOver) {
-                    const rect = canvas.getBoundingClientRect();
-                    const mouseX = event.clientX - rect.left;
-                    const mouseY = event.clientY - rect.top;
-                    const row = Math.floor(mouseY / (canvas.height / 3));
-                    const col = Math.floor(mouseX / (canvas.width / 3));
-                    const index = row * 3 + col;
-
-                    if (board[index] === '') {
-                        board[index] = currentPlayer;
-                        if (checkWinner()) {
-                            winnerElement.textContent = `Player ${currentPlayer} Wins!`;
-                            gameOver = true;
-                        } else if (board.every(cell => cell !== '')) {
-                            winnerElement.textContent = 'Draw!';
-                            gameOver = true;
-                        } else {
-                            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-                        }
-                        drawBoard();
-                    }
-                }
-            }
-
-            function checkWinner() {
-                return winningCombinations.some(combination => {
-                    const [a, b, c] = combination;
-                    return board[a] && board[a] === board[b] && board[a] === board[c];
-                });
-            }
-
-            restartBtn.addEventListener('click', () => {
-                board = ['', '', '', '', '', '', '', '', ''];
-                currentPlayer = 'X';
-                gameOver = false;
-                winnerElement.textContent = '';
-                drawBoard();
-            });
-
-            canvas.addEventListener('click', makeMove);
-
-            drawBoard();
-        });
-    </script>
+  <button class="btn btn-rounded" id="replay">Play Again</button>
 </body>
+<script type="module" src="{% static 'js/tac.js' %}" defer></script>
 </html>
