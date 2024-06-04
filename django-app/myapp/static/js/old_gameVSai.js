@@ -359,6 +359,7 @@ var Game = {
  
 var PongAI = Object.assign({}, Game);
 
-document.getElementById('startgameVSaiButton').addEventListener('click', function() {
+export function initializeAI () {
     PongAI.initialize();
-});
+
+}

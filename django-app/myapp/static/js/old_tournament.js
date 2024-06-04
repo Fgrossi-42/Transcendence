@@ -396,6 +396,6 @@ export function initializeTournament() {
 
 
 // document.getElementById('startTournamentButton').addEventListener('click', function() {
-//     initializeTournament();
+    initializeTournament();
 // });
 

@@ -1,6 +1,6 @@
-import { initializeAI } from './gameVSai.js';
+import { initializeAI } from './old_gameVSai.js';
 import { initializePlayer } from './gameVSplayer.js';
-import { initializeTournament } from './gameTournament.js';
+import { initializeTournament } from './old_tournament.js';
 
 const buttonTournament = document.getElementById("startTournamentButton");
 const buttonPlayer = document.getElementById("startgameVSplayerButton");
