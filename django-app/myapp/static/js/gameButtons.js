@@ -1,6 +1,7 @@
 import { initializeAI } from './old_gameVSai.js';
 import { initializePlayer } from './gameVSplayer.js';
 import { initializeTournament } from './old_tournament.js';
+import { initializeTac } from './tac.js';
 
 // Global variable to keep track of the current game instance
 let currentGame = null;
@@ -8,6 +9,7 @@ let currentGame = null;
 const buttonTournament = document.getElementById("startTournamentButton");
 const buttonPlayer = document.getElementById("startgameVSplayerButton");
 const buttonAI = document.getElementById("startgameVSaiButton");
+const buttonTac = document.getElementById("Tac");
 
 buttonTournament.addEventListener("click", function () {
     stopCurrentGame();
@@ -22,6 +24,10 @@ buttonPlayer.addEventListener("click", function () {
 buttonAI.addEventListener("click", function () {
     stopCurrentGame();
     initializeAI();
+});
+
+buttonTac.addEventListener("click", function () {
+    initializeTac();
 });
 
 // Function to stop the current game
