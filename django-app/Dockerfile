@@ -14,8 +14,4 @@ RUN python3 manage.py makemigrations
 
 EXPOSE 8000
 
-CMD ["sh -c", "./script.sh"]
-
-
-
-# RUN python3 manage.py migrate
+CMD ["sh", "-c", "./script.sh"]
