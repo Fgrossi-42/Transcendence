@@ -5,6 +5,18 @@ networks:
     driver: bridge
 
 services:
+  
+  db:
+    build: ./postgre/
+    restart: always
+    env_file:
+      - ./.env
+    networks:
+      - my-network
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
 
   django-app:
     build: ./django-app/
@@ -19,17 +31,6 @@ services:
     env_file:
       - ./.env
 
-  db:
-    build: ./postgre/
-    restart: always
-    env_file:
-      - ./.env
-    networks:
-      - my-network
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
 
 volumes:
   postgres_data:

@@ -7,6 +7,7 @@ class user(models.Model):
 	email = models.EmailField()
 	pongWins = models.IntegerField()
 	pongLoses = models.IntegerField()
+	alias = models.CharField(max_length=8)
 
 class game(models.Model):
 	playerRigth = models.CharField()

@@ -10,8 +10,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app/
 
-RUN python3 manage.py makemigrations
+# RUN python3 manage.py makemigrations
+
+ENTRYPOINT ["./scripts/entrypoint.sh"]
+
+CMD ["sh", "-c", "./scripts/script.sh"]
 
 EXPOSE 8000
-
-CMD ["sh", "-c", "./script.sh"]
