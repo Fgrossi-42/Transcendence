@@ -6,8 +6,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),  # Root URL pattern
     path('game/', views.game, name='game'),
-    path('chat/', views.chat, name='chat'),
+    path('gameAI/', views.gameAI, name='gameAI'),
+    path('tournament/', views.tournament, name='tournament'),
     path('start/', views.start, name='start'),
-    path('dashboard/', views.dashboard, name='dashboard'),
-    path('friends/', views.friends, name='friends'),
+    path('tac/', views.tac, name='tac'),
+    path('game3D/', views.game3D, name='game3D'),
 ]

@@ -34,17 +34,22 @@ def game(request: HttpRequest) -> HttpResponse:
         return render(request, 'game.html')
     return render(request, 'home.html')
 
-def chat(request: HttpRequest) -> HttpResponse:
+def gameAI(request: HttpRequest) -> HttpResponse:
     if request.headers.get('x-requested-with', None) == 'XMLHttpRequest':
-        return render(request, 'chat.html')
+        return render(request, 'gameAI.html')
     return render(request, 'home.html')
 
-def dashboard(request: HttpRequest) -> HttpResponse:
+def tournament(request: HttpRequest) -> HttpResponse:
     if request.headers.get('x-requested-with', None) == 'XMLHttpRequest':
-        return render(request, 'dashboard.html')
+        return render(request, 'tournament.html')
     return render(request, 'home.html')
 
-def friends(request: HttpRequest) -> HttpResponse:
+def tac(request: HttpRequest) -> HttpResponse:
     if request.headers.get('x-requested-with', None) == 'XMLHttpRequest':
-        return render(request, 'friends.html')
+        return render(request, 'tac.html')
+    return render(request, 'home.html')
+
+def game3D(request: HttpRequest) -> HttpResponse:
+    if request.headers.get('x-requested-with', None) == 'XMLHttpRequest':
+        return render(request, 'game3D.html')
     return render(request, 'home.html')

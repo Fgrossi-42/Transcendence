@@ -6,7 +6,8 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('start/', views.start, name='start'),
     path('game/', views.game, name='game'),
-    path('chat/', views.chat, name='chat'),
-    path('dashboard/', views.dashboard, name='dashboard'),
-    path('friends/', views.friends, name='friends'),
+    path('gameAI/', views.gameAI, name='gameAI'),
+    path('tournament/', views.tournament, name='tournament'),
+    path('tac/', views.tac, name='tac'),
+    path('game3D/', views.game3D, name='game3D'),
 ]

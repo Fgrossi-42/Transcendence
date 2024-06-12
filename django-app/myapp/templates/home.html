@@ -25,16 +25,19 @@
                 <a class="nav-link" href="" id="start-link">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="" id="game-link">game</a>
+                <a class="nav-link" href="" id="game-link">Game</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="" id="friends-link">Friends</a>
+                <a class="nav-link" href="" id="gameAI-link">GameAI</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="" id="chat-link">Chat</a>
+                <a class="nav-link" href="" id="tournament-link">Tournament</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="" id="dashboard-link">Dashboard</a>
+                <a class="nav-link" href="" id="game3D-link">Game3D</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="" id="tac-link">Tic Tac Toe</a>
               </li>
             </ul>
           </div>
@@ -90,10 +93,11 @@ function initializeCollapse() {
 function getImagePathForPage(page) {
     switch (page) {
         case 'start': return '{% static "images/image.png" %}';
+        case 'tac': return '{% static "images/Tac.png" %}';
         case 'game': return '{% static "images/pong.png" %}';
-        case 'chat': return '{% static "images/chat.png" %}';
-        case 'dashboard': return '{% static "images/dashboard.png" %}';
-        case 'friends': return '{% static "images/friends.png" %}';
+        case 'gameAI': return '{% static "images/pong.png" %}';
+        case 'tournament': return '{% static "images/pong.png" %}';
+        case 'game3D': return '{% static "images/3D.png" %}';
         default: return '{% static "images/image.png" %}';
     }
 }
@@ -114,20 +118,25 @@ $('#game-link').click(function(e) {
     changeNavbarImage('{% static "images/pong.png" %}');
     loadPage('game');
 });
-$('#chat-link').click(function(e) {
+$('#gameAI-link').click(function(e) {
     e.preventDefault();
-    changeNavbarImage('{% static "images/chat.png" %}');
-    loadPage('chat');
+    changeNavbarImage('{% static "images/pong.png" %}');
+    loadPage('gameAI');
 });
-$('#dashboard-link').click(function(e) {
+$('#tournament-link').click(function(e) {
     e.preventDefault();
-    changeNavbarImage('{% static "images/dashboard.png" %}');
-    loadPage('dashboard');
+    changeNavbarImage('{% static "images/pong.png" %}');
+    loadPage('tournament');
 });
-$('#friends-link').click(function(e) {
+$('#tac-link').click(function(e) {
     e.preventDefault();
-    changeNavbarImage('{% static "images/friends.png" %}');
-    loadPage('friends');
+    changeNavbarImage('{% static "images/Tac.png" %}');
+    loadPage('tac');
+});
+$('#game3D-link').click(function(e) {
+    e.preventDefault();
+    changeNavbarImage('{% static "images/3D.png" %}');
+    loadPage('game3D');
 });
 
 // Initial load based on the current URL

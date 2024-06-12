@@ -1,0 +1,11 @@
+{% load static %}
+  <head>
+    <script data-require="three.js@0.0.0-r61" data-semver="0.0.0-r61" src="//cdnjs.cloudflare.com/ajax/libs/three.js/r61/three.min.js"></script>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  </head>
+
+  <body>
+    <h3 id="scoreBoard"></h3>
+    <div id="container"></div>
+    <script src="{% static 'js/pong3D.js' %}"></script>
+</body>

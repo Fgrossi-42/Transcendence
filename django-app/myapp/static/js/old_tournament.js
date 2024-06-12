@@ -7,6 +7,8 @@ var DIRECTION = {
     RIGHT: 4
 };
 
+
+
 // Global Variables for Tournament Management
 var players = [];
 var tournamentBracket = [];
@@ -35,7 +37,7 @@ function createBracket(players) {
 function startNextMatch() {
     if (currentMatch < tournamentBracket.length) {
         let match = tournamentBracket[currentMatch];
-        Pong();
+        Pong.finalize();
         alert("Next match: " + match[0] + " vs " + match[1]);
         Pong.initialize(match[0], match[1]);
     } else {
@@ -65,12 +67,6 @@ function recordMatchWinner(winner) {
     currentMatch++;
     startNextMatch();
 }
-
-
-
-
-
-
 
 var rounds = [3];
 
@@ -375,8 +371,7 @@ var Game = {
 
 var Pong = Object.assign({}, Game);
 
-// Pong.finalize();
-
+// Initialize Tournament
 export function initializeTournament() {
     players = [];
     for (let i = 0; i < 8; i++) {
@@ -394,3 +389,4 @@ export function initializeTournament() {
     startNextMatch();
 }
 
+initializeTournament();

@@ -1,4 +1,3 @@
-
 // Global Variables
 var DIRECTION = {
     IDLE: 0,
@@ -8,15 +7,14 @@ var DIRECTION = {
     RIGHT: 4
 };
 
-
 // The ball object (The cube that bounces back and forth)
 var Ball = {
     new: function () {
         return {
             width: 25,
             height: 25,
-            x: (this.canvas.width / 2) - 9,
-            y: (this.canvas.height / 2) - 9,
+            x: (this.canvas.width / 2) - 12.5,
+            y: (this.canvas.height / 2) - 12.5,
             moveX: DIRECTION.IDLE,
             moveY: DIRECTION.IDLE,
             speed: 8
@@ -31,7 +29,7 @@ var Paddle = {
             width: 18,
             height: 180,
             x: side === 'left' ? 150 : this.canvas.width - 150,
-            y: (this.canvas.height / 2) - 35,
+            y: (this.canvas.height / 2) - 90,
             score: 0,
             move: DIRECTION.IDLE,
             speed: 8
@@ -41,37 +39,37 @@ var Paddle = {
 
 var Game = {
     initialize: function (playerLeftName, playerRightName, rounds) {
-
-		this.canvas = document.querySelector('canvas');
+        this.canvas = document.querySelector('canvas');
         this.context = this.canvas.getContext('2d');
-		
+
         this.canvas.width = 2000;
         this.canvas.height = 1100;
 
         this.canvas.style.width = (this.canvas.width / 2) + 'px';
         this.canvas.style.height = (this.canvas.height / 2) + 'px';
-		
+
         this.playerLeft = Paddle.new.call(this, 'left');
         this.playerRight = Paddle.new.call(this, 'right');
         this.ball = Ball.new.call(this);
-		
+
+        this.playerLeft.speed = 8;
         this.playerRight.speed = 8;
+
         this.running = this.over = false;
         this.turn = this.playerRight;
         this.timer = this.round = 0;
         this.color = '#212529';
-    
+
         this.playerLeft.name = playerLeftName;
         this.playerRight.name = playerRightName;
-		this.rounds = rounds
-    
+        this.rounds = rounds;
+
         Pong.menu();
         Pong.listen();
         setCurrentGame(this);
     },
 
     finalize: function() {
-        // Clean up resources and reset state
         this.running = false;
         this.over = false;
         this.turn = null;
@@ -95,10 +93,8 @@ var Game = {
             100
         );
 
-        Pong.context.fillText(text,
-            Pong.canvas.width / 2,
-            Pong.canvas.height / 2 + 15
-        );
+        Pong.context.fillStyle = '#ffffff';
+        Pong.context.fillText(text, Pong.canvas.width / 2, Pong.canvas.height / 2 + 15);
     },
 
     menu: function () {
@@ -115,11 +111,7 @@ var Game = {
         );
 
         this.context.fillStyle = '#ffffff';
-
-        this.context.fillText('Press any key to begin\n within 10 seconds',
-            this.canvas.width / 2,
-            this.canvas.height / 2 + 15
-        );
+        this.context.fillText('Press any key to begin\n within 10 seconds', this.canvas.width / 2, this.canvas.height / 2 + 15);
     },
 
     update: function () {
@@ -197,9 +189,10 @@ var Game = {
     },
 
     advanceToNextRound: function() {
-        this.color = this.color;
         this.playerLeft.score = this.playerRight.score = 0;
         this.round += 1;
+        this.ball = Ball.new.call(this); // Reset the ball for the new round
+        this.turn = this.playerRight; // Ensure the turn is reset properly
     },
 
     draw: function () {
@@ -309,4 +302,7 @@ var Game = {
 
 var Pong = Object.assign({}, Game);
 
-export var Pong;
+Pong.initialize('Player 1', 'Player 2', [5, 5, 5]);
+
+// Ensure Pong is exported correctly if this is part of a module
+export { Pong };

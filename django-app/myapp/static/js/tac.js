@@ -82,5 +82,4 @@ var turn = document.getElementById("turn"),
         turn.style.fontSize = "25px";
 
       }
-
     }

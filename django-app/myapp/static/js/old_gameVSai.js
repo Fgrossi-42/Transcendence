@@ -369,9 +369,11 @@ function endGame() {
     }
 }
 
-var PongAI = Object.assign({}, Game);
 
 export function initializeAI() {
     PongAI.initialize();
     return PongAI; // Return the game instance
 }
+
+var PongAI = Object.assign({}, Game);
+initializeAI();

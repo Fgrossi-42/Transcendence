@@ -43,17 +43,6 @@ console.clear();
     ball.$stopped = false;
   }
   
-  function processCpuPaddle() {
-    var ballPos = ball.position,
-        cpuPos = paddle2.position;
-    
-    if(cpuPos.x - 100 > ballPos.x) {
-      cpuPos.x -= Math.min(cpuPos.x - ballPos.x, 6);
-    }else if(cpuPos.x - 100 < ballPos.x) {
-      cpuPos.x += Math.min(ballPos.x - cpuPos.x, 6);
-    }
-  }
-  
   function processBallMovement() {
     if(!ball.$velocity) {
       startBallMovement();
@@ -96,13 +85,8 @@ console.clear();
   
   function updateBallPosition() {
     var ballPos = ball.position;
-    
-    //update the ball's position.
     ballPos.x += ball.$velocity.x;
     ballPos.z += ball.$velocity.z;
-    
-    // add an arc to the ball's flight. Comment this out for boring, flat pong.
-    //ballPos.y = -((ballPos.z - 1) * (ballPos.z - 1) / 5000) + 435;
   }
   
  function isSideCollision() {
@@ -167,9 +151,8 @@ console.clear();
   function render() {
     if(running) {
       requestAnimationFrame(render);
-      
+      console.log("Rendering frame");
       processBallMovement();
-      //processCpuPaddle();
       processPlayerMovement();
       processPlayer2Movement();
 
