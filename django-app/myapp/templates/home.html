@@ -2,12 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transcendence</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 </head>
 <body>
@@ -36,12 +32,20 @@
               <li class="nav-item">
                 <a class="nav-link" href="" id="game3D-link">Game3D</a>
               </li>
-            </li>
             <li class="nav-item">
               <a class="nav-link" href="" id="multiGame-link">Local Multiplayer</a>
             </li>
               <li class="nav-item">
                 <a class="nav-link" href="" id="tac-link">Tic Tac Toe</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'register' %}">Register</a>           
+                </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
               </li>
             </ul>
           </div>
@@ -99,10 +103,10 @@ function getImagePathForPage(page) {
         case 'start': return '{% static "images/image.png" %}';
         case 'tac': return '{% static "images/Tac.png" %}';
         case 'game': return '{% static "images/pong.png" %}';
-        case 'gameAI': return '{% static "images/pong.png" %}';
-        case 'tournament': return '{% static "images/pong.png" %}';
+        case 'gameAI': return '{% static "images/AI.png" %}';
+        case 'tournament': return '{% static "images/tournament.png" %}';
         case 'game3D': return '{% static "images/3D.png" %}';
-        case 'multiGame': return '{% static "images/3D.png" %}';
+        case 'multiGame': return '{% static "images/friends.png" %}';
         default: return '{% static "images/image.png" %}';
     }
 }
@@ -125,12 +129,12 @@ $('#game-link').click(function(e) {
 });
 $('#gameAI-link').click(function(e) {
     e.preventDefault();
-    changeNavbarImage('{% static "images/pong.png" %}');
+    changeNavbarImage('{% static "images/AI.png" %}');
     loadPage('gameAI');
 });
 $('#tournament-link').click(function(e) {
     e.preventDefault();
-    changeNavbarImage('{% static "images/pong.png" %}');
+    changeNavbarImage('{% static "images/tournament.png" %}');
     loadPage('tournament');
 });
 $('#tac-link').click(function(e) {
@@ -146,7 +150,7 @@ $('#game3D-link').click(function(e) {
 
 $('#multiGame-link').click(function(e) {
     e.preventDefault();
-    changeNavbarImage('{% static "images/3D.png" %}');
+    changeNavbarImage('{% static "images/friends.png" %}');
     loadPage('multiGame');
 });
 

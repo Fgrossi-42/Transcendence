@@ -184,14 +184,14 @@ var Game = {
         if (this.playerLeft.score === this.rounds[this.round]) {
             if (!this.rounds[this.round + 1]) {
                 this.over = true;
-                setTimeout(function () { Pong.endGameMenu('Left Player Wins!'); }, 1000);
+                setTimeout(function () { Pong.endGameMenu('Left Players Win!'); }, 1000);
             } else {
                 this.advanceToNextRound();
             }
         } else if (this.playerRight.score === this.rounds[this.round]) {
             if (!this.rounds[this.round + 1]) {
                 this.over = true;
-                setTimeout(function () { Pong.endGameMenu('Right Player Wins!'); }, 1000);
+                setTimeout(function () { Pong.endGameMenu('Right Players Win!'); }, 1000);
             } else {
                 this.advanceToNextRound();
             }

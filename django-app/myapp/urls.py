@@ -11,4 +11,8 @@ urlpatterns = [
     path('tac/', views.tac, name='tac'),
     path('game3D/', views.game3D, name='game3D'),
     path('multiGame/', views.multiGame, name='multiGame'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('register/', views.register_view, name='register'),
+
 ]
