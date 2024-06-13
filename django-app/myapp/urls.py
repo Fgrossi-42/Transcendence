@@ -10,4 +10,5 @@ urlpatterns = [
     path('tournament/', views.tournament, name='tournament'),
     path('tac/', views.tac, name='tac'),
     path('game3D/', views.game3D, name='game3D'),
+    path('multiGame/', views.multiGame, name='multiGame'),
 ]

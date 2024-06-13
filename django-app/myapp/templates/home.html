@@ -36,6 +36,10 @@
               <li class="nav-item">
                 <a class="nav-link" href="" id="game3D-link">Game3D</a>
               </li>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="" id="multiGame-link">Local Multiplayer</a>
+            </li>
               <li class="nav-item">
                 <a class="nav-link" href="" id="tac-link">Tic Tac Toe</a>
               </li>
@@ -98,6 +102,7 @@ function getImagePathForPage(page) {
         case 'gameAI': return '{% static "images/pong.png" %}';
         case 'tournament': return '{% static "images/pong.png" %}';
         case 'game3D': return '{% static "images/3D.png" %}';
+        case 'multiGame': return '{% static "images/3D.png" %}';
         default: return '{% static "images/image.png" %}';
     }
 }
@@ -139,6 +144,12 @@ $('#game3D-link').click(function(e) {
     loadPage('game3D');
 });
 
+$('#multiGame-link').click(function(e) {
+    e.preventDefault();
+    changeNavbarImage('{% static "images/3D.png" %}');
+    loadPage('multiGame');
+});
+
 // Initial load based on the current URL
 initialLoad();
 
@@ -150,6 +161,19 @@ window.onpopstate = function(event) {
     }
 };
 });
+
+const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+  // Add click event listener to each navbar link
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      // Close the navbar collapse menu programmatically
+      const navbarCollapse = document.getElementById('navbarsExample01');
+      if (navbarCollapse.classList.contains('show')) {
+        navbarCollapse.classList.remove('show');
+      }
+    });
+  });
 
     </script>
 

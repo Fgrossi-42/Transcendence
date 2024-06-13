@@ -171,7 +171,6 @@ console.clear();
     camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
     camera.position.set(500, 1000, 1600);  // Position higher and farther back
     camera.lookAt(new THREE.Vector3(-200, -500, 0));  // Look at the center
-
     scene = new THREE.Scene();
     scene.add(camera);
 

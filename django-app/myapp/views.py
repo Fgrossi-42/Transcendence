@@ -53,3 +53,8 @@ def game3D(request: HttpRequest) -> HttpResponse:
     if request.headers.get('x-requested-with', None) == 'XMLHttpRequest':
         return render(request, 'game3D.html')
     return render(request, 'home.html')
+
+def multiGame(request: HttpRequest) -> HttpResponse:
+    if request.headers.get('x-requested-with', None) == 'XMLHttpRequest':
+        return render(request, 'multiGame.html')
+    return render(request, 'home.html')
