@@ -26,19 +26,23 @@ def register_view(request):
     return render(request, 'register.html', context)
 
 def login_view(request):
-    context = {}
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
-        
         if user is not None:
             login(request, user)
-            return redirect('home')  # Redirect to the homepage after successful login
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'status': 'ok'})
+            else:
+                return redirect('/start')
         else:
-            context['error'] = 'Invalid username or password'
-    
-    return render(request, 'login.html', context)
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'status': 'fail'})
+            else:
+                return render(request, 'login.html', {'error': 'Invalid login'})
+    else:
+        return render(request, 'login.html')
 
 def logout_view(request):
     logout(request)
