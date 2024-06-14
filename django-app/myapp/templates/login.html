@@ -8,6 +8,11 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+
+            function clearLoginForm() {
+             $('#login-form')[0].reset();
+            }
+
             $('#loginForm').submit(function(event) {
                 event.preventDefault();
                 var formData = $(this).serialize();
@@ -25,8 +30,8 @@
                     success: function(response) {
                         if (response.status == 'ok') {
                             window.history.pushState("", "", "/start");
-                            // Load the dashboard or whatever you want to show after login
                             $('body').load('/');
+                            clearLoginForm();
                         } else {
                             // Show an error message
                         }

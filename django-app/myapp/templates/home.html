@@ -39,13 +39,10 @@
                 <a class="nav-link" href="" id="tac-link">Tic Tac Toe</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'register' %}">Register</a>           
+                <a class="nav-link" href="" id="register-link">Register</a>           
                 </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'login' %}">Login</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                <a class="nav-link" href="" id="login-link">Login</a>
               </li>
             </ul>
           </div>
@@ -63,17 +60,49 @@ function changeNavbarImage(imagePath) {
     $('#navbar-image').attr('src', imagePath);
 }
 
-function loadPage(page, addToHistory = true) {
+function loadPageContent(page, addToHistory = true) {
     $.ajax({
-        url: '/' + page + '/',  // Ensure the URL is absolute
+        url: '/' + page + '/',
         method: 'GET',
         success: function(data) {
             $('#content').html(data);
             initializeCollapse();
             executeScripts($('#content'));
             if (addToHistory) {
-                history.pushState({ page: page }, '', '/' + page + '/');  // Ensure the URL is absolute
+                history.pushState({ page: page }, '', '/' + page + '/');
             }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error loading page:', textStatus, errorThrown);
+        }
+    });
+}
+
+function loadPage(page, addToHistory = true) {
+    $.ajax({
+        url: '/' + page + '/',
+        method: 'GET',
+        success: function(data, textStatus, xhr) {
+            if (xhr.getResponseHeader('Content-Type').includes('application/json')) {
+                var jsonData = JSON.parse(data);
+                if (jsonData.status == 'ok') {
+                    loadPageContent(page, addToHistory);
+                }
+            } else {
+                $('#content').html(data);
+                initializeCollapse();
+                executeScripts($('#content'));
+                if (addToHistory) {
+                    history.pushState({ page: page }, '', '/' + page + '/');
+                }
+                // Reinitialize the game's canvas when navigating to the /game page
+                if (page === 'game') {
+                    Game.initialize();
+                }
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error loading page:', textStatus, errorThrown);
         }
     });
 }
@@ -117,44 +146,60 @@ function initialLoad() {
     loadPage(path, false);
 }
 
-$('#start-link').click(function(e) {
-    e.preventDefault();
+$('body').on('click', '#start-link', function(e) {
+  e.preventDefault();
     changeNavbarImage('{% static "images/image.png" %}');
     loadPage('start');
 });
-$('#game-link').click(function(e) {
-    e.preventDefault();
-    changeNavbarImage('{% static "images/pong.png" %}');
-    loadPage('game');
-});
-$('#gameAI-link').click(function(e) {
-    e.preventDefault();
+$('body').on('click', '#game-link', function(e) {
+            e.preventDefault();
+            changeNavbarImage('{% static "images/pong.png" %}');
+            loadPage('game');
+        });
+$('body').on('click', '#gameAI-link', function(e) {
+          e.preventDefault();
     changeNavbarImage('{% static "images/AI.png" %}');
     loadPage('gameAI');
 });
-$('#tournament-link').click(function(e) {
-    e.preventDefault();
+$('body').on('click', '#tournament-link', function(e) {
+  e.preventDefault();
     changeNavbarImage('{% static "images/tournament.png" %}');
     loadPage('tournament');
 });
-$('#tac-link').click(function(e) {
-    e.preventDefault();
+$('body').on('click', '#tac-link', function(e) {
+  e.preventDefault();
     changeNavbarImage('{% static "images/Tac.png" %}');
     loadPage('tac');
 });
-$('#game3D-link').click(function(e) {
-    e.preventDefault();
+$('body').on('click', '#game3D-link', function(e) {
+  e.preventDefault();
     changeNavbarImage('{% static "images/3D.png" %}');
     loadPage('game3D');
 });
 
-$('#multiGame-link').click(function(e) {
-    e.preventDefault();
+$('body').on('click', '#multiGame-link', function(e) {
+  e.preventDefault();
     changeNavbarImage('{% static "images/friends.png" %}');
     loadPage('multiGame');
 });
 
-// Initial load based on the current URL
+$('body').on('click', '#login-link', function(e) {
+  e.preventDefault();
+    changeNavbarImage('{% static "images/friends.png" %}');
+    loadPage('login');
+});
+
+$('body').on('click', '#register-link', function(e) {
+  e.preventDefault();
+    changeNavbarImage('{% static "images/friends.png" %}');
+    loadPage('register');
+});
+$('#navbar a').click(function() {
+    if (window.Game) {
+        Game.finalize();
+    }
+});
+
 initialLoad();
 
 // Handle browser back/forward button

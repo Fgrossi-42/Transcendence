@@ -70,8 +70,7 @@ var Game = {
     },
 
     finalize: function() {
-        this.running = false;
-        this.over = false;
+        this.running = this.over = false;
         this.turn = null;
         this.timer = this.round = 0;
         this.playerLeft = null;
@@ -80,8 +79,22 @@ var Game = {
         this.canvas = null;
         this.context = null;
         this.color = '#212529';
+        this.rounds = null;
+    
+        // Reset the canvas style
+        if (this.canvas) {
+            this.canvas.style.width = '';
+            this.canvas.style.height = '';
+        }
+    
+        // Remove event listeners
+        document.removeEventListener('keydown', this.keydownHandler);
+        document.removeEventListener('keyup', this.keyupHandler);
     },
-
+    restart: function(playerLeftName, playerRightName, rounds) {
+        this.finalize();
+        this.initialize(playerLeftName, playerRightName, rounds);
+    },
     endGameMenu: function (text) {
         Pong.context.font = '45px Courier New';
         Pong.context.fillStyle = this.color;
@@ -255,25 +268,30 @@ var Game = {
     },
 
     listen: function () {
-        document.addEventListener('keydown', function (key) {
+        this.keydownHandler = function (key) {
+            // existing keydown handler code...
             if (Pong.running === false) {
                 Pong.running = true;
                 window.requestAnimationFrame(Pong.loop);
                 return;
             }
             key.preventDefault();
-
+    
             if (key.key === 'w') Pong.playerLeft.move = DIRECTION.UP;
             if (key.key === 'o') Pong.playerRight.move = DIRECTION.UP;
             if (key.key === 's') Pong.playerLeft.move = DIRECTION.DOWN;
             if (key.key === 'k') Pong.playerRight.move = DIRECTION.DOWN;
-        });
-
-        document.addEventListener('keyup', function (key) {
+        };
+        document.addEventListener('keydown', this.keydownHandler);
+        
+        this.keyupHandler = function (key) {
+            // existing keyup handler code...
             if (key.key === 'w' || key.key === 's') Pong.playerLeft.move = DIRECTION.IDLE;
             if (key.key === 'o' || key.key === 'k') Pong.playerRight.move = DIRECTION.IDLE;
-        });
+        };
+        document.addEventListener('keyup', this.keyupHandler);
     },
+
 
     _resetTurn: function (victor, loser) {
         this.ball = Ball.new.call(this);
