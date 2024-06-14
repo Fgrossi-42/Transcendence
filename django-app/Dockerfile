@@ -10,10 +10,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /
 
-# RUN python3 manage.py makemigrations
-
 ENTRYPOINT ["./scripts/entrypoint.sh"]
 
-CMD ["sh", "-c", "./scripts/script.sh"]
+CMD ["python3", "manage.py", "runserver", "--noreload", "0.0.0.0:8000"]
 
 EXPOSE 8000
