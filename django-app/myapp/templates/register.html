@@ -25,10 +25,10 @@
                   },
                   success: function(response) {
                    if (response.status == 'ok') {
-                       window.history.pushState("", "", "/start");
-                        $('body').load('/');
+                      $('#register-message').text('Successfully registered. You can now log in.');
+
                     } else {
-                   // Show an error message
+                      $('#register-message').text('Username already exists or password didnt match.');
                         }
                     },
                       error: function(xhr, status, error) {
@@ -82,9 +82,7 @@
                     </div>
   
                   </form>
-                  {% if error %}
-                  <p style="color: red;">{{ error }}</p>
-                    {% endif %} 
+                  <div id="register-message"></div>
                 </div>
                 <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
   

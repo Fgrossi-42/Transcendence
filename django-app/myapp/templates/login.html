@@ -8,11 +8,11 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-
+    
             function clearLoginForm() {
-             $('#login-form')[0].reset();
+                $('#loginForm')[0].reset();
             }
-
+    
             $('#loginForm').submit(function(event) {
                 event.preventDefault();
                 var formData = $(this).serialize();
@@ -29,11 +29,10 @@
                     },
                     success: function(response) {
                         if (response.status == 'ok') {
-                            window.history.pushState("", "", "/start");
-                            $('body').load('/');
                             clearLoginForm();
+                            $('#login-message').text('You are currently logged in.');
                         } else {
-                            // Show an error message
+                            $('#login-message').text('*LOUD INCORRECT BUZZER*');
                         }
                     },
                     error: function(xhr, status, error) {
@@ -74,7 +73,7 @@
                                         <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg">Log In</button>
                                     </div>
                                 </form>
-                                <p id="error-message" style="color: red;"></p>
+                                <div id="login-message"></div>
                             </div>
                             <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
                                 <img src="{% static 'images/image.png' %}" class="img-fluid" alt="Sample image">

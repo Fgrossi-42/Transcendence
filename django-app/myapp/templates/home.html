@@ -3,7 +3,8 @@
 <html lang="en">
 <head>
     <title>Transcendence</title>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 </head>
 <body>
@@ -66,7 +67,6 @@ function loadPageContent(page, addToHistory = true) {
         method: 'GET',
         success: function(data) {
             $('#content').html(data);
-            initializeCollapse();
             executeScripts($('#content'));
             if (addToHistory) {
                 history.pushState({ page: page }, '', '/' + page + '/');
@@ -90,14 +90,9 @@ function loadPage(page, addToHistory = true) {
                 }
             } else {
                 $('#content').html(data);
-                initializeCollapse();
                 executeScripts($('#content'));
                 if (addToHistory) {
                     history.pushState({ page: page }, '', '/' + page + '/');
-                }
-                // Reinitialize the game's canvas when navigating to the /game page
-                if (page === 'game') {
-                    Game.initialize();
                 }
             }
         },
@@ -111,20 +106,6 @@ function executeScripts(container) {
     container.find('script').each(function() {
         $.globalEval(this.text || this.textContent || this.innerHTML || '');
     });
-}
-
-function initializeCollapse() {
-    var navbarToggler = document.querySelector('.navbar-toggler');
-    var navbarCollapse = document.querySelector(navbarToggler.dataset.bsTarget);
-    if (navbarToggler && navbarCollapse) {
-        navbarToggler.addEventListener('click', function() {
-            if (navbarCollapse.classList.contains('show')) {
-                $(navbarCollapse).collapse('hide');
-            } else {
-                $(navbarCollapse).collapse('show');
-            }
-        });
-    }
 }
 
 function getImagePathForPage(page) {
@@ -213,19 +194,17 @@ window.onpopstate = function(event) {
 
 const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
 
-  // Add click event listener to each navbar link
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      // Close the navbar collapse menu programmatically
-      const navbarCollapse = document.getElementById('navbarsExample01');
-      if (navbarCollapse.classList.contains('show')) {
-        navbarCollapse.classList.remove('show');
-      }
-    });
+// Add click event listener to each navbar link
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    // Close the navbar collapse menu programmatically
+    const navbarCollapse = document.getElementById('navbarsExample01');
+    if (navbarCollapse.classList.contains('show')) {
+      new bootstrap.Collapse(navbarCollapse).hide();
+    }
   });
-
+});
     </script>
 
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>
