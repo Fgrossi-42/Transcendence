@@ -8,7 +8,6 @@ const DIRECTION = {
     RIGHT: 4
 };
 
-// The ball object (The cube that bounces back and forth)
 const Ball = {
     new: function () {
         return {
@@ -23,7 +22,6 @@ const Ball = {
     }
 };
 
-// The paddle object (The two lines that move up and down)
 const Paddle = {
     new: function (side) {
         return {
@@ -51,9 +49,9 @@ const Game = {
         this.playerLeft = Paddle.new.call(this, 'left');
         this.playerRight = Paddle.new.call(this, 'right');
         if (this.ball) {
-            this.ball = null; // Destroy the old ball
+            this.ball = null; 
         }
-        this.ball = Ball.new.call(this); // Create a new ball
+        this.ball = Ball.new.call(this); 
 
         this.running = this.over = false;
         this.turn = this.playerRight;
@@ -69,7 +67,7 @@ const Game = {
     },
 
     finalize: function() {
-        this.running = false; // Stop the game loop
+        this.running = false; 
         this.turn = null;
         this.timer = this.round = 0;
         this.playerLeft = this.playerRight = this.ball = this.canvas = this.context = null;
@@ -183,38 +181,25 @@ const Game = {
     advanceToNextRound: function() {
         this.playerLeft.score = this.playerRight.score = 0;
         this.round += 1;
-        this.ball = Ball.new.call(this); // Reset the ball for the new round
-        this.turn = this.playerRight; // Ensure the turn is reset properly
-    },
+        this.ball = Ball.new.call(this); 
+        this.turn = this.playerRight; 
+        },
 
     draw: function () {
-        // Clear the Canvas
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Draw the background
         this.context.fillStyle = this.color;
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Draw the paddles and ball
         this.context.fillStyle = '#ffffff';
         this.drawPaddle(this.playerLeft);
         this.drawPaddle(this.playerRight);
         this.drawBall();
-
-        // Draw the net (Line in the middle)
         this.drawNet();
-
-        // Draw the scores
         this.context.font = '100px Courier New';
         this.context.textAlign = 'center';
         this.context.fillText(this.playerLeft.score.toString(), (this.canvas.width / 2) - 300, 200);
         this.context.fillText(this.playerRight.score.toString(), (this.canvas.width / 2) + 300, 200);
-
-        // Draw the round number
         this.context.font = '30px Courier New';
         this.context.fillText('Round ' + (this.round + 1), (this.canvas.width / 2), 35);
-
-        // Draw the current round score
         this.context.font = '40px Courier';
         this.context.fillText(this.rounds[this.round] ? this.rounds[this.round] : this.rounds[this.round - 1], (this.canvas.width / 2), 100);
     },
@@ -270,7 +255,6 @@ const Game = {
 
     _resetTurn: function (victor, loser) {
         this.turn = loser;
-        this.ball = Ball.new.call(this); // Create a new ball
         this.timer = (new Date()).getTime();
         victor.score++;
 
@@ -296,19 +280,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const restartButton = document.getElementById('restartButton');
     if (restartButton) {
         restartButton.addEventListener('click', () => {
-            // Stop the game animation
-            cancelAnimationFrame(this.loop);
+                        cancelAnimationFrame(this.loop);
 
-            // Remove event listeners
             document.removeEventListener('keydown', this.keydownHandler);
             document.removeEventListener('keyup', this.keyupHandler);
 
-            // Reset game state
             Pong.initialize('Player 1', 'Player 2', [5, 5, 5]);
         });
     }
 });
 window.Game = Game;
 
-// Ensure Pong is exported correctly if this is part of a module
 export { Pong };

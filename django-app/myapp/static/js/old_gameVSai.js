@@ -8,7 +8,6 @@ var DIRECTION = {
 
 var rounds = [5];
 
-// The ball object (The cube that bounces back and forth)
 var Ball = {
     new: function () {
         return {
@@ -23,7 +22,6 @@ var Ball = {
     }
 };
 
-// The ai object (The two lines that move up and down)
 var Ai = {
     new: function (side) {
         return {
@@ -64,7 +62,6 @@ var GameAI = {
     },
 
     finalize: function() {
-        // Clean up resources and reset state
         this.running = false;
         this.over = true;
         this.turn = null;
@@ -82,71 +79,32 @@ var GameAI = {
     },
 
     endGameMenu: function (text) {
-        // Change the canvas font size and color
         PongAI.context.font = '45px Courier New';
         PongAI.context.fillStyle = this.color;
-
-        // Draw the rectangle behind the 'Press any key to begin' text.
-        PongAI.context.fillRect(
-            PongAI.canvas.width / 2 - 350,
-            PongAI.canvas.height / 2 - 48,
-            700,
-            100
-        );
-
-        // Change the canvas color;
+        PongAI.context.fillRect(PongAI.canvas.width / 2 - 350,PongAI.canvas.height / 2 - 48,700,100);
         PongAI.context.fillStyle = '#ffffff';
-
-        // Draw the end game menu text ('Game Over' and 'Winner')
-        PongAI.context.fillText(text,
-            PongAI.canvas.width / 2,
-            PongAI.canvas.height / 2 + 15
-        );
-
-        PongAI.finalize(); // Finalize the game state
+        PongAI.context.fillText(text,PongAI.canvas.width / 2,PongAI.canvas.height / 2 + 15);
     },
 
     menu: function () {
-        // Draw all the PongAI objects in their current state
         PongAI.draw();
-
-        // Change the canvas font size and color
         this.context.font = '50px Courier New';
         this.context.fillStyle = this.color;
-
-        // Draw the rectangle behind the 'Press any key to begin' text.
-        this.context.fillRect(
-            this.canvas.width / 2 - 350,
-            this.canvas.height / 2 - 48,
-            700,
-            100
-        );
-
-        // Change the canvas color;
+        this.context.fillRect(this.canvas.width / 2 - 350,this.canvas.height / 2 - 48,700,100);
         this.context.fillStyle = '#ffffff';
-
-        // Draw the 'press any key to begin' text
-        this.context.fillText('Press any key to begin',
-            this.canvas.width / 2,
-            this.canvas.height / 2 + 15
-        );
+        this.context.fillText('Press any key to begin',this.canvas.width / 2,this.canvas.height / 2 + 15);
     },
 
-    // Update all objects (move the player, ai, ball, increment the score, etc.)
     update: function () {
         if (!this.over) {
-            // If the ball collides with the bound limits - correct the x and y coords.
             if (this.ball.x <= 0) PongAI._resetTurn.call(this, this.ai, this.player);
             if (this.ball.x >= this.canvas.width - this.ball.width) PongAI._resetTurn.call(this, this.player, this.ai);
             if (this.ball.y <= 0) this.ball.moveY = DIRECTION.DOWN;
             if (this.ball.y >= this.canvas.height - this.ball.height) this.ball.moveY = DIRECTION.UP;
 
-            // Move player if they player.move value was updated by a keyboard event
             if (this.player.move === DIRECTION.UP) this.player.y -= this.player.speed;
             else if (this.player.move === DIRECTION.DOWN) this.player.y += this.player.speed;
 
-            // On new serve (start of each turn) move the ball to the correct side
-            // and randomize the direction to add some challenge.
             if (PongAI._turnDelayIsOver.call(this) && this.turn) {
                 this.ball.moveX = this.turn === this.player ? DIRECTION.LEFT : DIRECTION.RIGHT;
                 this.ball.moveY = [DIRECTION.UP, DIRECTION.DOWN][Math.round(Math.random())];
@@ -154,17 +112,14 @@ var GameAI = {
                 this.turn = null;
             }
 
-            // If the player collides with the bound limits, update the x and y coords.
             if (this.player.y <= 0) this.player.y = 0;
             else if (this.player.y >= (this.canvas.height - this.player.height)) this.player.y = (this.canvas.height - this.player.height);
 
-            // Move ball in intended direction based on moveY and moveX values
             if (this.ball.moveY === DIRECTION.UP) this.ball.y -= (this.ball.speed / 1.5);
             else if (this.ball.moveY === DIRECTION.DOWN) this.ball.y += (this.ball.speed / 1.5);
             if (this.ball.moveX === DIRECTION.LEFT) this.ball.x -= this.ball.speed;
             else if (this.ball.moveX === DIRECTION.RIGHT) this.ball.x += this.ball.speed;
 
-            // Handle ai (AI) UP and DOWN movement
             if (this.ai.y > this.ball.y - (this.ai.height / 2)) {
                 if (this.ball.moveX === DIRECTION.RIGHT) this.ai.y -= this.ai.speed / 1.5;
                 else this.ai.y -= this.ai.speed / 4;
@@ -174,11 +129,9 @@ var GameAI = {
                 else this.ai.y += this.ai.speed / 4;
             }
 
-            // Handle ai (AI) wall collision
             if (this.ai.y >= this.canvas.height - this.ai.height) this.ai.y = this.canvas.height - this.ai.height;
             else if (this.ai.y <= 0) this.ai.y = 0;
 
-            // Handle Player-Ball collisions
             if (this.ball.x - this.ball.width <= this.player.x && this.ball.x >= this.player.x - this.player.width) {
                 if (this.ball.y <= this.player.y + this.player.height && this.ball.y + this.ball.height >= this.player.y) {
                     this.ball.x = (this.player.x + this.ball.width);
@@ -186,7 +139,6 @@ var GameAI = {
                 }
             }
 
-            // Handle ai-ball collision
             if (this.ball.x - this.ball.width <= this.ai.x && this.ball.x >= this.ai.x - this.ai.width) {
                 if (this.ball.y <= this.ai.y + this.ai.height && this.ball.y + this.ball.height >= this.ai.y) {
                     this.ball.x = (this.ai.x - this.ball.width);
@@ -195,78 +147,29 @@ var GameAI = {
             }
         }
 
-        // Handle the end of round transition
-        // Check to see if the player won the round.
         if (this.player.score === rounds[this.round]) {
-            // Check to see if there are any more rounds/levels left and display the victory screen if
-            // there are not.
             if (!rounds[this.round + 1]) {
                 this.over = true;
                 setTimeout(function () { PongAI.endGameMenu('Winner!'); }, 1000);
             } else {
-                // If there is another round, reset all the values and increment the round number.
                 this.player.score = this.ai.score = 0;
                 this.round += 1;
             }
         }
-        // Check to see if the ai/AI has won the round.
         else if (this.ai.score === rounds[this.round]) {
             this.over = true;
             setTimeout(function () { PongAI.endGameMenu('Game Over!'); }, 1000);
         }
     },
 
-    // Draw the objects to the canvas element
-    draw: function () {
-        // Clear the Canvas
-        this.context.clearRect(
-            0,
-            0,
-            this.canvas.width,
-            this.canvas.height
-        );
-
-        // Set the fill style to black
+    draw: function () {        
+        this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
         this.context.fillStyle = this.color;
-
-        // Draw the background
-        this.context.fillRect(
-            0,
-            0,
-            this.canvas.width,
-            this.canvas.height
-        );
-
-        // Set the fill style to white (For the paddles and the ball)
+        this.context.fillRect(0,0,this.canvas.width,this.canvas.height);
         this.context.fillStyle = '#ffffff';
-
-        // Draw the Player
-        this.context.fillRect(
-            this.player.x,
-            this.player.y,
-            this.player.width,
-            this.player.height
-        );
-
-        // Draw the Ai
-        this.context.fillRect(
-            this.ai.x,
-            this.ai.y,
-            this.ai.width,
-            this.ai.height
-        );
-
-        // Draw the Ball
-        if (PongAI._turnDelayIsOver.call(this)) {
-            this.context.fillRect(
-                this.ball.x,
-                this.ball.y,
-                this.ball.width,
-                this.ball.height
-            );
-        }
-
-        // Draw the net (Line in the middle)
+        this.context.fillRect(this.player.x,this.player.y,this.player.width,this.player.height);
+        this.context.fillRect(this.ai.x,this.ai.y,this.ai.width,this.ai.height);
+        if (PongAI._turnDelayIsOver.call(this)) {this.context.fillRect(    this.ball.x,    this.ball.y,    this.ball.width,    this.ball.height);}
         this.context.beginPath();
         this.context.setLineDash([7, 15]);
         this.context.moveTo((this.canvas.width / 2), this.canvas.height - 140);
@@ -274,87 +177,47 @@ var GameAI = {
         this.context.lineWidth = 10;
         this.context.strokeStyle = '#ffffff';
         this.context.stroke();
-
-        // Set the default canvas font and align it to the center
         this.context.font = '100px Courier New';
         this.context.textAlign = 'center';
-
-        // Draw the players score (left)
-        this.context.fillText(
-            this.player.score.toString(),
-            (this.canvas.width / 2) - 300,
-            200
-        );
-
-        // Draw the paddles score (right)
-        this.context.fillText(
-            this.ai.score.toString(),
-            (this.canvas.width / 2) + 300,
-            200
-        );
-
-        // Change the font size for the center score text
+        this.context.fillText(this.player.score.toString(),(this.canvas.width / 2) - 300,200);
+        this.context.fillText(this.ai.score.toString(),(this.canvas.width / 2) + 300,200);
         this.context.font = '30px Courier New';
-
-        // Draw the winning score (center)
-        this.context.fillText(
-            'Round ' + (PongAI.round + 1),
-            (this.canvas.width / 2),
-            35
-        );
-
-        // Change the font size for the center score value
+        this.context.fillText('Round ' + (PongAI.round + 1),(this.canvas.width / 2),35);
         this.context.font = '40px Courier';
-
-        // Draw the current round number
-        this.context.fillText(
-            rounds[PongAI.round] ? rounds[PongAI.round] : rounds[PongAI.round - 1],
-            (this.canvas.width / 2),
-            100
-        );
+        this.context.fillText(rounds[PongAI.round] ? rounds[PongAI.round] : rounds[PongAI.round - 1],(this.canvas.width / 2),100);
     },
 
-    // Listen to key events
     listen: function () {
         document.addEventListener('keydown', function (key) {
-            // Handle the 'Press any key to begin' function and start the game.
             if (PongAI.running === false) {
                 PongAI.running = true;
                 window.requestAnimationFrame(PongAI.loop);
             }
 
-            // Handle up arrow and w key events
             if (key.keyCode === 38 || key.keyCode === 87) PongAI.player.move = DIRECTION.UP;
 
-            // Handle down arrow and s key events
             if (key.keyCode === 40 || key.keyCode === 83) PongAI.player.move = DIRECTION.DOWN;
         });
 
-        // Stop the player from moving when there are no keys being pressed.
         document.addEventListener('keyup', function (key) { PongAI.player.move = DIRECTION.IDLE; });
     },
 
-    // Reset the ball location, the player turns and set a delay before the next round begins.
     _resetTurn: function(victor, loser) {
         this.ball = Ball.new.call(this);
         this.turn = loser;
         this.timer = (new Date()).getTime();
-
         victor.score++;
     },
 
-    // Wait for a delay to have passed after each turn.
     _turnDelayIsOver: function() {
         return ((new Date()).getTime() - this.timer >= 1000);
     },
 
-    // This function is called continuously to update the canvas as needed.
     loop: function () {
-        if (PongAI.over) return; // Stop the loop if the game is not running
         if (!PongAI.over) {
             PongAI.update();
             PongAI.draw();
-            requestAnimationFrame(PongAI.loop);
+            requestAnimationFrame(PongAI.loop.bind(this));
         }
     }
 };
@@ -363,7 +226,7 @@ var PongAI = Object.assign({}, GameAI);
 
 export function initializeAI() {
     PongAI.initialize();
-    return PongAI; // Return the game instance
+    return PongAI; 
 }
 
 
@@ -371,10 +234,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const restartButton = document.getElementById('restartButtonAI');
     if (restartButton) {
         restartButton.addEventListener('click', () => {
-            // Stop the game animation
             cancelAnimationFrame(this.loop);
 
-            // Remove event listeners
             document.removeEventListener('keydown', this.keydownHandler);
             document.removeEventListener('keyup', this.keyupHandler);
         });

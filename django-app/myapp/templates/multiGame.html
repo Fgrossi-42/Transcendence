@@ -1,3 +1,4 @@
+
 {% load static %}
 
 <head>
@@ -8,7 +9,10 @@
     <div class="position-relative text-center bg-dark mx-auto text-white pt-5" style="width: 1200px; height: 650px; border-radius: 200px 200px 200px 200px;">
         <canvas></canvas>
     </div>
-
+    
+    <div class="text-center mt-3">
+        <button id="restartButtonMulti" onclick="GameMulti.restartMulti('Player 1', 'Player 2', [5, 5, 5])" style="background:#212529;color:white;" type="button" class="btn btn-primary btn-lg">Play</button>
+        <h2>Press again to speed up</h2>
     <footer class="footer mt-auto mx-auto p-2 bg-light">
         <div class="container-fluid">
             <span class="text-muted text-center">made by Fgrossi, Gfezzuog, Marimatt, and Cbuszzkzizkziznkziznkynzyiznkykziznykyknziznzkzisnsksnisiy</span>

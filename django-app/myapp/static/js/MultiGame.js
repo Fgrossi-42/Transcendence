@@ -37,7 +37,7 @@ var Paddle = {
     }
 };
 
-var Game = {
+var GameMulti = {
     initialize: function (playerLeftName, playerRightName, rounds) {
         this.canvas = document.querySelector('canvas');
         this.context = this.canvas.getContext('2d');
@@ -70,7 +70,6 @@ var Game = {
 
         Pong.menu();
         Pong.listen();
-        setCurrentGame(this);
     },
 
     finalize: function() {
@@ -86,6 +85,11 @@ var Game = {
         this.canvas = null;
         this.context = null;
         this.color = '#212529';
+    },
+
+    restartMulti: function(playerLeftName, playerRightName, rounds) {
+        this.finalize();
+        Pong.initialize('Player 1', 'Player 2', [5, 5, 5]);
     },
 
     endGameMenu: function (text) {
@@ -306,7 +310,6 @@ var Game = {
                 let winnerName = victor === this.playerLeft || victor === this.playerLeft2 ? this.playerLeft.name : this.playerRight.name;
                 setTimeout(function () {
                     Pong.endGameMenu(winnerName + ' Wins!');
-                    recordMatchWinner(winnerName);
                 }, 10000);
             } else {
                 this.advanceToNextRound();
@@ -319,17 +322,18 @@ var Game = {
     }
 };
 
-var Pong = Object.assign({}, Game);
+var Pong = Object.assign({}, GameMulti);
 
-// Utility function to set the current game
-function setCurrentGame(game) {
-    window.currentGame = game;
-}
+document.addEventListener('DOMContentLoaded', (event) => {
+    const restartButton = document.getElementById('restartButtonMulti');
+    if (restartButton) {
+        restartButton.addEventListener('click', () => {
 
-// Utility function to record match winner
-function recordMatchWinner(winnerName) {
-    console.log(`${winnerName} wins the match!`);
-}
+            document.removeEventListener('keydown', this.keydownHandler);
+            document.removeEventListener('keyup', this.keyupHandler);
 
-// Initialize the game
-Pong.initialize('Player 1', 'Player 2', [5, 5, 5]);
+            Pong.initialize('Player 1', 'Player 2', [5, 5, 5]);
+        });
+    }
+});
+window.GameMulti = GameMulti;
