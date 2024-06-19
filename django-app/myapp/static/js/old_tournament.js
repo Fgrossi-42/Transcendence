@@ -1,4 +1,4 @@
-// Global Variables
+
 var DIRECTION = {
     IDLE: 0,
     UP: 1,
@@ -28,23 +28,30 @@ function shuffle(array) {
 function createBracket(players) {
     let bracket = [];
     for (let i = 0; i < players.length; i += 2) {
-        bracket.push([players[i], players[i + 1]]);
+        bracket.push([players[i + 1], players[i]]);
     }
     return bracket;
 }
 
-// Start Next Match
+function updateUI(message, type) {
+    if (type === 'champion') {
+        document.getElementById('champion').innerText = message;
+    } else if (type === 'current_game') {
+        document.getElementById('current-game').innerText = message;
+    }
+}
+
 function startNextMatch() {
     if (currentMatch < tournamentBracket.length) {
         let match = tournamentBracket[currentMatch];
         Pong.finalize();
-        alert("Next match: " + match[0] + " vs " + match[1]);
+        updateUI("Current game: " + match[0] + " vs " + match[1], 'current_game');
         Pong.initialize(match[0], match[1]);
     } else {
         if (tournamentBracket.length > 1) {
             advanceTournament();
         } else {
-            alert("Champion: " + tournamentBracket[0][0]);
+            updateUI("Champion: " + tournamentBracket[0][0], 'champion');
         }
     }
 }
@@ -100,7 +107,7 @@ var Paddle = {
     }
 };
 
-var Game = {
+var GameTour = {
     initialize: function (playerLeftName, playerRightName) {
         this.canvas = document.querySelector('canvas');
         this.context = this.canvas.getContext('2d');
@@ -129,17 +136,26 @@ var Game = {
     },
     
     finalize: function() {
-        // Clean up resources and reset state
-        this.running = false;
-        this.over = false;
+        this.running = false; // Stop the game loop
+        this.over = true;
         this.turn = null;
         this.timer = this.round = 0;
-        this.playerLeft = null;
-        this.playerRight = null;
-        this.ball = null;
-        this.canvas = null;
-        this.context = null;
+        this.playerLeft = this.playerRight = this.ball = this.canvas = this.context = null;
         this.color = '#212529';
+        this.rounds = null;
+    
+        if (this.canvas) {
+            this.canvas.style.width = '';
+            this.canvas.style.height = '';
+        }
+    
+        document.removeEventListener('keydown', this.keydownHandler);
+        document.removeEventListener('keyup', this.keyupHandler);
+    },
+
+    restartTournament: function() {
+        this.finalize();
+        initializeTournament();
     },
 
     endGameMenu: function (text) {
@@ -257,9 +273,7 @@ var Game = {
     advanceToNextRound: function() {
         this.color = this.color;
         this.playerLeft.score = this.playerRight.score = 0;
-        this.playerLeft.speed += 1;
-        this.playerRight.speed += 1;
-        this.ball.speed += 1;
+        this.ball = Ball.new.call(this); // Reset the ball for the new round
         this.round += 1;
     },
 
@@ -316,10 +330,12 @@ var Game = {
     },
 
     loop: function () {
-        Pong.update();
-        Pong.draw();
-
-        if (!Pong.over) requestAnimationFrame(Pong.loop);
+        if (Pong.over) return; // Stop the loop if the game is not running
+        if (!Pong.over) {
+            Pong.update();
+            Pong.draw();
+            requestAnimationFrame(Pong.loop);
+        }
     },
 
     listen: function () {
@@ -327,7 +343,6 @@ var Game = {
             if (Pong.running === false) {
                 Pong.running = true;
                 window.requestAnimationFrame(Pong.loop);
-                return;
             }
             key.preventDefault();
 
@@ -369,7 +384,7 @@ var Game = {
     },
 };
 
-var Pong = Object.assign({}, Game);
+var Pong = Object.assign({}, GameTour);
 
 // Initialize Tournament
 export function initializeTournament() {
@@ -389,4 +404,17 @@ export function initializeTournament() {
     startNextMatch();
 }
 
-initializeTournament();
+document.addEventListener('DOMContentLoaded', (event) => {
+    const restartButton = document.getElementById('restartButtonTournament');
+    if (restartButton) {
+        restartButton.addEventListener('click', () => {
+            // Stop the game animation
+            cancelAnimationFrame(this.loop);
+
+            // Remove event listeners
+            document.removeEventListener('keydown', this.keydownHandler);
+            document.removeEventListener('keyup', this.keyupHandler);
+        });
+    }
+});
+window.GameTour = GameTour;

@@ -1,4 +1,5 @@
-// Global Variables
+
+
 const DIRECTION = {
     IDLE: 0,
     UP: 1,
@@ -49,7 +50,10 @@ const Game = {
 
         this.playerLeft = Paddle.new.call(this, 'left');
         this.playerRight = Paddle.new.call(this, 'right');
-        this.ball = Ball.new.call(this);
+        if (this.ball) {
+            this.ball = null; // Destroy the old ball
+        }
+        this.ball = Ball.new.call(this); // Create a new ball
 
         this.running = this.over = false;
         this.turn = this.playerRight;
@@ -65,18 +69,18 @@ const Game = {
     },
 
     finalize: function() {
-        this.running = this.over = false;
+        this.running = false; // Stop the game loop
         this.turn = null;
         this.timer = this.round = 0;
         this.playerLeft = this.playerRight = this.ball = this.canvas = this.context = null;
         this.color = '#212529';
         this.rounds = null;
-
+    
         if (this.canvas) {
             this.canvas.style.width = '';
             this.canvas.style.height = '';
         }
-
+    
         document.removeEventListener('keydown', this.keydownHandler);
         document.removeEventListener('keyup', this.keyupHandler);
     },
@@ -137,12 +141,12 @@ const Game = {
         else if (paddle.y >= this.canvas.height - paddle.height) paddle.y = this.canvas.height - paddle.height;
     },
 
-    moveBall: function() {
-        if (this.ball.moveY === DIRECTION.UP) this.ball.y -= (this.ball.speed / 1.5);
-        else if (this.ball.moveY === DIRECTION.DOWN) this.ball.y += (this.ball.speed / 1.5);
-        if (this.ball.moveX === DIRECTION.LEFT) this.ball.x -= this.ball.speed;
-        else if (this.ball.moveX === DIRECTION.RIGHT) this.ball.x += this.ball.speed;
-    },
+        moveBall: function() {
+            if (this.ball.moveY === DIRECTION.UP) this.ball.y -= (this.ball.speed / 1.5);
+            else if (this.ball.moveY === DIRECTION.DOWN) this.ball.y += (this.ball.speed / 1.5);
+            if (this.ball.moveX === DIRECTION.LEFT) this.ball.x -= this.ball.speed;
+            else if (this.ball.moveX === DIRECTION.RIGHT) this.ball.x += this.ball.speed;
+        },
 
     handleBallCollisions: function() {
         this.handlePaddleBallCollision(this.playerLeft, DIRECTION.RIGHT);
@@ -234,10 +238,11 @@ const Game = {
     },
 
     loop: function () {
-        this.update();
-        this.draw();
-
-        if (!this.over) requestAnimationFrame(this.loop.bind(this));
+        if (this.running) {
+            this.update();
+            this.draw();
+            requestAnimationFrame(this.loop.bind(this));
+        }
     },
 
     listen: function () {
@@ -245,7 +250,6 @@ const Game = {
             if (!this.running) {
                 this.running = true;
                 requestAnimationFrame(this.loop.bind(this));
-                return;
             }
             key.preventDefault();
 
@@ -265,8 +269,8 @@ const Game = {
     },
 
     _resetTurn: function (victor, loser) {
-        this.ball = Ball.new.call(this);
         this.turn = loser;
+        this.ball = Ball.new.call(this); // Create a new ball
         this.timer = (new Date()).getTime();
         victor.score++;
 
@@ -288,14 +292,19 @@ const Game = {
 
 const Pong = Object.assign({}, Game);
 
-Pong.initialize('Player 1', 'Player 2', [5, 5, 5]);
-
 document.addEventListener('DOMContentLoaded', (event) => {
     const restartButton = document.getElementById('restartButton');
     if (restartButton) {
         restartButton.addEventListener('click', () => {
-            console.log('Button clicked'); // Check if the event listener is triggered
-            Pong.restart('Player 1', 'Player 2', [5, 5, 5]);
+            // Stop the game animation
+            cancelAnimationFrame(this.loop);
+
+            // Remove event listeners
+            document.removeEventListener('keydown', this.keydownHandler);
+            document.removeEventListener('keyup', this.keyupHandler);
+
+            // Reset game state
+            Pong.initialize('Player 1', 'Player 2', [5, 5, 5]);
         });
     }
 });

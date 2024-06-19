@@ -38,7 +38,7 @@ var Ai = {
     }
 };
 
-var Game = {
+var GameAI = {
     initialize: function () {
         this.canvas = document.querySelector('canvas');
         this.context = this.canvas.getContext('2d');
@@ -61,13 +61,12 @@ var Game = {
 
         PongAI.menu();
         PongAI.listen();
-        setCurrentGame(this);
     },
 
     finalize: function() {
         // Clean up resources and reset state
         this.running = false;
-        this.over = false;
+        this.over = true;
         this.turn = null;
         this.timer = this.round = 0;
         this.playerLeft = null;
@@ -75,6 +74,11 @@ var Game = {
         this.canvas = null;
         this.context = null;
         this.color = '#212529';
+    },
+
+    restartAI: function() {
+        this.finalize();
+        initializeAI();
     },
 
     endGameMenu: function (text) {
@@ -345,35 +349,35 @@ var Game = {
     },
 
     // This function is called continuously to update the canvas as needed.
-    loop: function() {
-        PongAI.update();
-        PongAI.draw();
-
-        // If the game is not over, run the loop again
-        if (!PongAI.over) requestAnimationFrame(PongAI.loop);
+    loop: function () {
+        if (PongAI.over) return; // Stop the loop if the game is not running
+        if (!PongAI.over) {
+            PongAI.update();
+            PongAI.draw();
+            requestAnimationFrame(PongAI.loop);
+        }
     }
 };
 
-var PongAI = Game;
-
-// Set current game
-function setCurrentGame(game) {
-    window.currentGame = game;
-}
-
-// Function to end the game
-function endGame() {
-    if (window.currentGame) {
-        window.currentGame.over = true;
-        PongAI.endGameMenu('Game Over!');
-    }
-}
-
+var PongAI = Object.assign({}, GameAI);
 
 export function initializeAI() {
     PongAI.initialize();
     return PongAI; // Return the game instance
 }
 
-var PongAI = Object.assign({}, Game);
-initializeAI();
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const restartButton = document.getElementById('restartButtonAI');
+    if (restartButton) {
+        restartButton.addEventListener('click', () => {
+            // Stop the game animation
+            cancelAnimationFrame(this.loop);
+
+            // Remove event listeners
+            document.removeEventListener('keydown', this.keydownHandler);
+            document.removeEventListener('keyup', this.keyupHandler);
+        });
+    }
+});
+window.GameAI = GameAI;
