@@ -8,20 +8,33 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from .models import GameHistory  # Import your GameHistory model
 
-# Example data structure for game history
-game_history = []
 
+@login_required
 def fetch_game_history(request):
-    return JsonResponse({'game_history': game_history})
+    user = request.user
+    games = GameHistory.objects.filter(user=user).values('winner', 'details', 'created_at')
+    game_list = list(games)
+    return JsonResponse({'game_history': game_list})
 
 @csrf_exempt
+@login_required
 def record_tic_tac_toe_game(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         game_result = data.get('result')
-        # Here you can add more details about the game if needed
-        game_history.append({'winner': game_result, 'details': 'Some details about the game'})
-        return JsonResponse({'game': {'winner': game_result, 'details': 'Some details about the game'}})
+        
+        # Retrieve the currently logged-in user
+        user = request.user
+        
+        # Save the game result with user information
+        game_history = GameHistory.objects.create(
+            user=user,
+            winner=game_result,
+            details='Details about the game'  # You can customize this as needed
+        )
+        
+        return JsonResponse({'game': {'winner': game_result, 'details': 'Game result recorded successfully'}})
+    
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 

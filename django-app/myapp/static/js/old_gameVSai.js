@@ -11,13 +11,13 @@ var rounds = [5];
 var Ball = {
     new: function () {
         return {
-            width: 25,
-            height: 25,
-            x: (this.canvas.width / 2) - 9,
-            y: (this.canvas.height / 2) - 9,
+            width: this.canvas.width * 0.0125,
+            height: this.canvas.width * 0.0125,
+            x: (this.canvas.width / 2) - (this.canvas.width * 0.0125 / 2),
+            y: (this.canvas.height / 2) - (this.canvas.width * 0.0125 / 2),
             moveX: DIRECTION.IDLE,
             moveY: DIRECTION.IDLE,
-            speed: 8
+            speed: this.canvas.width * 0.004
         };
     }
 };
@@ -25,13 +25,13 @@ var Ball = {
 var Ai = {
     new: function (side) {
         return {
-            width: 18,
-            height: 180,
-            x: side === 'left' ? 150 : this.canvas.width - 150,
-            y: (this.canvas.height / 2) - 35,
+            width: this.canvas.width * 0.009,
+            height: this.canvas.height * 0.15,
+            x: side === 'left' ? this.canvas.width * 0.075 : this.canvas.width - this.canvas.width * 0.075,
+            y: (this.canvas.height / 2) - (this.canvas.height * 0.15 / 2),
             score: 0,
             move: DIRECTION.IDLE,
-            speed: 8
+            speed: this.canvas.height * 0.007
         };
     }
 };
@@ -41,11 +41,7 @@ var GameAI = {
         this.canvas = document.querySelector('canvas');
         this.context = this.canvas.getContext('2d');
 
-        this.canvas.width = 2000;
-        this.canvas.height = 1100;
-
-        this.canvas.style.width = (this.canvas.width / 2) + 'px';
-        this.canvas.style.height = (this.canvas.height / 2) + 'px';
+        this.updateCanvasSize();
 
         this.player = Ai.new.call(this, 'left');
         this.ai = Ai.new.call(this, 'right');
@@ -57,8 +53,36 @@ var GameAI = {
         this.timer = this.round = 0;
         this.color = '#212529';
 
+        window.addEventListener('resize', this.updateCanvasSize.bind(this));
+
         PongAI.menu();
         PongAI.listen();
+    },
+
+    updateCanvasSize: function () {
+        const div = document.querySelector('.responsive-div');
+        this.canvas.width = div.clientWidth * 2;
+        this.canvas.height = div.clientHeight * 2;
+
+        if (this.player && this.ai && this.ball) {
+            this.player.width = this.canvas.width * 0.009;
+            this.player.height = this.canvas.height * 0.15;
+            this.player.x = this.canvas.width * 0.075;
+            this.player.y = (this.canvas.height / 2) - (this.player.height / 2);
+            this.player.speed = this.canvas.height * 0.007;
+
+            this.ai.width = this.canvas.width * 0.009;
+            this.ai.height = this.canvas.height * 0.15;
+            this.ai.x = this.canvas.width - this.canvas.width * 0.075;
+            this.ai.y = (this.canvas.height / 2) - (this.ai.height / 2);
+            this.ai.speed = this.canvas.height * 0.007;
+
+            this.ball.width = this.canvas.width * 0.0125;
+            this.ball.height = this.canvas.width * 0.0125;
+            this.ball.x = (this.canvas.width / 2) - (this.ball.width / 2);
+            this.ball.y = (this.canvas.height / 2) - (this.ball.height / 2);
+            this.ball.speed = this.canvas.width * 0.004;
+        }
     },
 
     finalize: function() {
@@ -81,18 +105,18 @@ var GameAI = {
     endGameMenu: function (text) {
         PongAI.context.font = '45px Courier New';
         PongAI.context.fillStyle = this.color;
-        PongAI.context.fillRect(PongAI.canvas.width / 2 - 350,PongAI.canvas.height / 2 - 48,700,100);
+        PongAI.context.fillRect(PongAI.canvas.width / 2 - 350, PongAI.canvas.height / 2 - 48, 700, 100);
         PongAI.context.fillStyle = '#ffffff';
-        PongAI.context.fillText(text,PongAI.canvas.width / 2,PongAI.canvas.height / 2 + 15);
+        PongAI.context.fillText(text, PongAI.canvas.width / 2, PongAI.canvas.height / 2 + 15);
     },
 
     menu: function () {
         PongAI.draw();
         this.context.font = '50px Courier New';
         this.context.fillStyle = this.color;
-        this.context.fillRect(this.canvas.width / 2 - 350,this.canvas.height / 2 - 48,700,100);
+        this.context.fillRect(this.canvas.width / 2 - 350, this.canvas.height / 2 - 48, 700, 100);
         this.context.fillStyle = '#ffffff';
-        this.context.fillText('Press any key to begin',this.canvas.width / 2,this.canvas.height / 2 + 15);
+        this.context.fillText('Press any key to begin', this.canvas.width / 2, this.canvas.height / 2 + 15);
     },
 
     update: function () {
@@ -162,14 +186,34 @@ var GameAI = {
         }
     },
 
-    draw: function () {        
-        this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
+    draw: function () {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.fillStyle = this.color;
-        this.context.fillRect(0,0,this.canvas.width,this.canvas.height);
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.fillStyle = '#ffffff';
-        this.context.fillRect(this.player.x,this.player.y,this.player.width,this.player.height);
-        this.context.fillRect(this.ai.x,this.ai.y,this.ai.width,this.ai.height);
-        if (PongAI._turnDelayIsOver.call(this)) {this.context.fillRect(    this.ball.x,    this.ball.y,    this.ball.width,    this.ball.height);}
+        this.drawPaddle(this.player);
+        this.drawPaddle(this.ai);
+        this.drawBall();
+        this.drawNet();
+        this.context.font = '80px Courier New';
+        this.context.textAlign = 'center';
+        this.context.fillText(this.player.score.toString(), (this.canvas.width / 2) - 300, 100);
+        this.context.fillText(this.ai.score.toString(), (this.canvas.width / 2) + 300, 100);
+    },
+
+    drawPaddle: function (paddle) {
+        this.context.beginPath();
+        this.context.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
+        this.context.closePath();
+    },
+
+    drawBall: function () {
+        this.context.beginPath();
+        this.context.fillRect(this.ball.x, this.ball.y, this.ball.width, this.ball.height);
+        this.context.closePath();
+    },
+
+    drawNet: function () {
         this.context.beginPath();
         this.context.setLineDash([7, 15]);
         this.context.moveTo((this.canvas.width / 2), this.canvas.height - 140);
@@ -177,14 +221,7 @@ var GameAI = {
         this.context.lineWidth = 10;
         this.context.strokeStyle = '#ffffff';
         this.context.stroke();
-        this.context.font = '100px Courier New';
-        this.context.textAlign = 'center';
-        this.context.fillText(this.player.score.toString(),(this.canvas.width / 2) - 300,200);
-        this.context.fillText(this.ai.score.toString(),(this.canvas.width / 2) + 300,200);
-        this.context.font = '30px Courier New';
-        this.context.fillText('Round ' + (PongAI.round + 1),(this.canvas.width / 2),35);
-        this.context.font = '40px Courier';
-        this.context.fillText(rounds[PongAI.round] ? rounds[PongAI.round] : rounds[PongAI.round - 1],(this.canvas.width / 2),100);
+        this.context.closePath();
     },
 
     listen: function () {

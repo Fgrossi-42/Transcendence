@@ -11,13 +11,13 @@ const DIRECTION = {
 const Ball = {
     new: function () {
         return {
-            width: 25,
-            height: 25,
-            x: (this.canvas.width / 2) - 12.5,
-            y: (this.canvas.height / 2) - 12.5,
+            width: this.canvas.width * 0.0125,
+            height: this.canvas.width * 0.0125,
+            x: (this.canvas.width / 2) - (this.canvas.width * 0.0125 / 2),
+            y: (this.canvas.height / 2) - (this.canvas.width * 0.0125 / 2),
             moveX: DIRECTION.IDLE,
             moveY: DIRECTION.IDLE,
-            speed: 8
+            speed: this.canvas.width * 0.004
         };
     }
 };
@@ -25,13 +25,13 @@ const Ball = {
 const Paddle = {
     new: function (side) {
         return {
-            width: 18,
-            height: 180,
-            x: side === 'left' ? 150 : this.canvas.width - 150,
-            y: (this.canvas.height / 2) - 90,
+            width: this.canvas.width * 0.009,
+            height: this.canvas.height * 0.15,
+            x: side === 'left' ? this.canvas.width * 0.075 : this.canvas.width - this.canvas.width * 0.075,
+            y: (this.canvas.height / 2) - (this.canvas.height * 0.15 / 2),
             score: 0,
             move: DIRECTION.IDLE,
-            speed: 8
+            speed: this.canvas.height * 0.007
         };
     }
 };
@@ -41,17 +41,11 @@ const Game = {
         this.canvas = document.querySelector('canvas');
         this.context = this.canvas.getContext('2d');
 
-        this.canvas.width = 2000;
-        this.canvas.height = 1100;
-        this.canvas.style.width = (this.canvas.width / 2) + 'px';
-        this.canvas.style.height = (this.canvas.height / 2) + 'px';
+        this.updateCanvasSize();
 
         this.playerLeft = Paddle.new.call(this, 'left');
         this.playerRight = Paddle.new.call(this, 'right');
-        if (this.ball) {
-            this.ball = null; 
-        }
-        this.ball = Ball.new.call(this); 
+        this.ball = Ball.new.call(this);
 
         this.running = this.over = false;
         this.turn = this.playerRight;
@@ -62,8 +56,16 @@ const Game = {
         this.playerRight.name = playerRightName;
         this.rounds = rounds;
 
+        window.addEventListener('resize', this.updateCanvasSize.bind(this));
+
         this.menu();
         this.listen();
+    },
+
+    updateCanvasSize: function () {
+        const div = document.querySelector('.responsive-div');
+        this.canvas.width = div.clientWidth * 2;
+        this.canvas.height = div.clientHeight * 2;
     },
 
     finalize: function() {
@@ -196,8 +198,8 @@ const Game = {
         this.drawNet();
         this.context.font = '100px Courier New';
         this.context.textAlign = 'center';
-        this.context.fillText(this.playerLeft.score.toString(), (this.canvas.width / 2) - 300, 200);
-        this.context.fillText(this.playerRight.score.toString(), (this.canvas.width / 2) + 300, 200);
+        this.context.fillText(this.playerLeft.score.toString(), (this.canvas.width / 2) - this.canvas.width * 0.15, 200);
+        this.context.fillText(this.playerRight.score.toString(), (this.canvas.width / 2) + this.canvas.width * 0.15, 200);
         this.context.font = '30px Courier New';
         this.context.fillText('Round ' + (this.round + 1), (this.canvas.width / 2), 35);
         this.context.font = '40px Courier';

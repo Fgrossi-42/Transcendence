@@ -1,9 +1,14 @@
+// script.js
+
 var turn = document.getElementById("turn");
 var boxes = document.querySelectorAll("#main div");
 var X_or_O = 0;
 var gameEnded = false;  // Flag to track if the game has ended
 
+console.log("Script loaded. Initializing...");
+
 function selectWinnerBoxes(b1, b2, b3) {
+    console.log("Winner selected:", b1.innerHTML);
     b1.classList.add("win");
     b2.classList.add("win");
     b3.classList.add("win");
@@ -64,6 +69,7 @@ function getWinner() {
 }
 
 function sendGameResultToBackend(result) {
+    console.log("Sending game result to backend:", result);
     fetch('/record_tic_tac_toe_game/', {
         method: 'POST',
         headers: {
@@ -88,7 +94,6 @@ function sendGameResultToBackend(result) {
     .catch(error => {
         console.error('Error recording game result:', error);
     });
-    console.log('Sending data:', JSON.stringify({ result: result }));
 }
 
 function updateGameHistory(game) {
@@ -142,6 +147,7 @@ for (var i = 0; i < boxes.length; i++) {
 document.getElementById('replay').addEventListener('click', replay);
 
 function replay() {
+    console.log("Replay clicked");
     for (var i = 0; i < boxes.length; i++) {
         boxes[i].classList.remove("win");
         boxes[i].innerHTML = "";
@@ -153,39 +159,40 @@ function replay() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  fetchGameHistory();  // Fetch game history when the page loads
+    console.log("DOM content loaded. Fetching game history...");
+    fetchGameHistory(); 
 });
-
+  
 function fetchGameHistory() {
-  fetch('/fetch_game_history/', {  // Replace with your Django URL to fetch game history
-      method: 'GET',
-      headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': getCookie('csrftoken'),
-      }
-  })
-  .then(response => {
-      if (!response.ok) {
-          throw new Error('Network response was not ok');
-      }
-      return response.json();
-  })
-  .then(data => {
-      console.log('Game history fetched:', data);
-      displayGameHistory(data.game_history);  // Update UI with fetched game history
-  })
-  .catch(error => {
-      console.error('Error fetching game history:', error);
-  });
+    console.log("Fetching game history...");
+    fetch('/fetch_game_history/', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Game history fetched:', data);
+        displayGameHistory(data.game_history);  // Update UI with fetched game history
+    })
+    .catch(error => {
+        console.error('Error fetching game history:', error);
+    });
 }
-
+  
 function displayGameHistory(gameHistory) {
-  var gameHistoryElement = document.getElementById('game-history');
-  gameHistoryElement.innerHTML = '';  // Clear existing content
-
-  gameHistory.forEach(game => {
-      var gameElement = document.createElement('li');
-      gameElement.textContent = `Winner: ${game.winner}, Details: ${game.details}`;
-      gameHistoryElement.appendChild(gameElement);
-  });
+    var gameHistoryElement = document.getElementById('game-history');
+    gameHistoryElement.innerHTML = '';  // Clear existing content
+  
+    gameHistory.forEach(game => {
+        var gameElement = document.createElement('li');
+        gameElement.textContent = `Winner: ${game.winner}, Details: ${game.details}`;
+        gameHistoryElement.appendChild(gameElement);
+    });
 }

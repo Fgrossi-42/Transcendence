@@ -5,7 +5,7 @@ echo "Waiting for the database to be ready..."
 python3 manage.py wait_for_db
 
 echo "Making migrations..."
-python3 manage.py makemigrations
+python3 manage.py makemigrations myapp
 
 # Run the migrations
 echo "Running migrations..."
