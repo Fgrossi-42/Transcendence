@@ -13,7 +13,6 @@ function selectWinnerBoxes(b1, b2, b3) {
     gameEnded = true;  // Set gameEnded flag to true
 }
 
-
 function getWinner() {
     var box1 = document.getElementById("box1"),
         box2 = document.getElementById("box2"),
@@ -151,4 +150,42 @@ function replay() {
     }
     gameEnded = false;  // Reset gameEnded flag
     X_or_O = 0;  // Reset move counter
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  fetchGameHistory();  // Fetch game history when the page loads
+});
+
+function fetchGameHistory() {
+  fetch('/fetch_game_history/', {  // Replace with your Django URL to fetch game history
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken'),
+      }
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.json();
+  })
+  .then(data => {
+      console.log('Game history fetched:', data);
+      displayGameHistory(data.game_history);  // Update UI with fetched game history
+  })
+  .catch(error => {
+      console.error('Error fetching game history:', error);
+  });
+}
+
+function displayGameHistory(gameHistory) {
+  var gameHistoryElement = document.getElementById('game-history');
+  gameHistoryElement.innerHTML = '';  // Clear existing content
+
+  gameHistory.forEach(game => {
+      var gameElement = document.createElement('li');
+      gameElement.textContent = `Winner: ${game.winner}, Details: ${game.details}`;
+      gameHistoryElement.appendChild(gameElement);
+  });
 }

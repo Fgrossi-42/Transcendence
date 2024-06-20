@@ -8,39 +8,21 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from .models import GameHistory  # Import your GameHistory model
 
+# Example data structure for game history
+game_history = []
 
-@csrf_exempt  # Temporarily disable CSRF protection (handle CSRF properly in production)
-@login_required  # Ensures only logged-in users can access this view
+def fetch_game_history(request):
+    return JsonResponse({'game_history': game_history})
+
+@csrf_exempt
 def record_tic_tac_toe_game(request):
     if request.method == 'POST':
-        try:
-            data = json.loads(request.body.decode('utf-8'))
-            result = data.get('result')
-
-            if result not in ['X', 'O']:
-                return JsonResponse({'error': 'Invalid game result.'}, status=400)
-
-            # Example: Create a GameHistory instance to record the game result
-            # Replace GameHistory with your actual model if needed
-            # game_history = GameHistory.objects.create(user=request.user, winner=result)
-
-            # Construct JSON response with game result details
-            return JsonResponse({
-                'success': True,
-                'game': {
-                    'winner': result,  # 'X' or 'O'
-                    'details': 'Additional game details here'  # Replace with actual game details
-                }
-            })
-
-        except json.JSONDecodeError as e:
-            return JsonResponse({'error': 'Invalid JSON data.'}, status=400)
-
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
-
-    else:
-        return JsonResponse({'error': 'Method not allowed.'}, status=405)
+        data = json.loads(request.body)
+        game_result = data.get('result')
+        # Here you can add more details about the game if needed
+        game_history.append({'winner': game_result, 'details': 'Some details about the game'})
+        return JsonResponse({'game': {'winner': game_result, 'details': 'Some details about the game'}})
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
 def register_view(request):
