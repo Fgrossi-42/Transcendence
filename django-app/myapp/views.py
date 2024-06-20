@@ -1,9 +1,47 @@
 # views.py
+import json
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login , logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
+from .models import GameHistory  # Import your GameHistory model
+
+
+@csrf_exempt  # Temporarily disable CSRF protection (handle CSRF properly in production)
+@login_required  # Ensures only logged-in users can access this view
+def record_tic_tac_toe_game(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            result = data.get('result')
+
+            if result not in ['X', 'O']:
+                return JsonResponse({'error': 'Invalid game result.'}, status=400)
+
+            # Example: Create a GameHistory instance to record the game result
+            # Replace GameHistory with your actual model if needed
+            # game_history = GameHistory.objects.create(user=request.user, winner=result)
+
+            # Construct JSON response with game result details
+            return JsonResponse({
+                'success': True,
+                'game': {
+                    'winner': result,  # 'X' or 'O'
+                    'details': 'Additional game details here'  # Replace with actual game details
+                }
+            })
+
+        except json.JSONDecodeError as e:
+            return JsonResponse({'error': 'Invalid JSON data.'}, status=400)
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    else:
+        return JsonResponse({'error': 'Method not allowed.'}, status=405)
+
 
 def register_view(request):
     context = {}

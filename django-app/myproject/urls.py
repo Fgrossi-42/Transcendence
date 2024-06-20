@@ -17,6 +17,7 @@ urlpatterns = [
     path('multiGame/', views.multiGame, name='multiGame'),
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
+        path('record_tic_tac_toe_game/', views.record_tic_tac_toe_game, name='record_tic_tac_toe_game'),
 
 ]
 
