@@ -1,115 +1,57 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html>
 <head>
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <title>Login</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            
-        $('#speed-text').hide();
-        $('#game-title').html('');
-        $('#language-toggle-button').hide();
-
-            if(currentLanguage == 'en')
-            {
-                document.getElementById('login').innerHTML = 'Login';
-                document.getElementById('username').placeholder = 'Username';
-                document.getElementById('password').placeholder = 'Password';
-                document.getElementById('loginButton').innerHTML = 'Log In';
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <title>Login</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#loginForm').submit(function(event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+          type: 'POST',
+          url: $(this).attr('action'),
+          data: formData,
+          dataType: 'json',
+          // Include the CSRF token in the request header
+          beforeSend: function(xhr, settings) {
+            if (!this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken", $('input[name=csrfmiddlewaretoken]').val());
             }
-            else if(currentLanguage == 'it')
-            {
-                document.getElementById('login').innerHTML = 'Accedi';
-                document.getElementById('username').placeholder = 'Nome utente';
-                document.getElementById('password').placeholder = 'Password';
-                document.getElementById('loginButton').innerHTML = 'Accedi';
+          },
+          success: function(response) {
+            if (response.status == 'ok') {
+              window.location.href = '/start';  // Redirect to start page
+            } else {
+              $('#login-message').text('Invalid login');
             }
-            else
-            {
-                document.getElementById('login').innerHTML = 'Iniciar sesión';
-                document.getElementById('username').placeholder = 'Nombre de usuario';
-                document.getElementById('password').placeholder = 'Contraseña';
-                document.getElementById('loginButton').innerHTML = 'Iniciar sesión';
-            }
-
-            function clearLoginForm() {
-                $('#loginForm')[0].reset();
-            }
-    
-            $('#loginForm').submit(function(event) {
-                event.preventDefault();
-                var formData = $(this).serialize();
-                $.ajax({
-                    type: 'POST',
-                    url: $(this).attr('action'),
-                    data: formData,
-                    dataType: 'json',
-                    // Include the CSRF token in the request header
-                    beforeSend: function(xhr, settings) {
-                        if (!this.crossDomain) {
-                            xhr.setRequestHeader("X-CSRFToken", $('input[name=csrfmiddlewaretoken]').val());
-                        }
-                    },
-                    success: function(response) {
-                        if (response.status == 'ok') {
-                            clearLoginForm();
-                            $('#login-message').text('You are currently logged in.');
-                        } else {
-                            $('#login-message').text('*LOUD INCORRECT BUZZER*');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', error);
-                    }
-                });
-            });
+          },
+          error: function(xhr, status, error) {
+            console.error('Error:', error);
+          }
         });
-    </script>
+      });
+    });
+  </script>
 </head>
 <body>
-<section class="vh-100" style="background-color: #eee;">
-    <div class="container h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-lg-12 col-xl-11">
-                <div class="card text-black" style="border-radius: 25px;">
-                    <div class="card-body p-md-5">
-                        <div class="row justify-content-center">
-                            <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4" id="login">Log In</p>
-                                <form id="loginForm" action="{% url 'login' %}" method="post">
-                                    {% csrf_token %}
-                                    <div class="d-flex flex-row align-items-center mb-4">
-                                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                            <input type="text" class="form-control" id="username" required/>
-                                            <label class="form-label" for="username" id="username">Username</label>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex flex-row align-items-center mb-4">
-                                        <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                            <input type="password" class="form-control" id="password" required/>
-                                            <label class="form-label" for="password" id="password">Password</label>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                        <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg" id="loginButton">Log In</button>
-                                    </div>
-                                </form>
-                                <div id="login-message"></div>
-                            </div>
-                            <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                                <img src="{% static 'images/image.png' %}" class="img-fluid" alt="Sample image">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+  <div class="container">
+    <h1>Login</h1>
+    <form id="loginForm" action="{% url 'login' %}" method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" class="form-control" id="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <div id="login-message"></div>
+  </div>
 </body>
 </html>
