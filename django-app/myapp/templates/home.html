@@ -7,203 +7,193 @@
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 </head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <body>
-    <nav class="navbar navbar-dark bg-dark" aria-label="First navbar example">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#" style="font-weight: 1000; font-size: xx-large;">Transcendence</a>
-            <img id="navbar-image" src="{% static 'images/image.png' %}" alt="" style="width: 10%; height: 10%; border-radius: 100px 100px 100px 100px;" class="mx-auto">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+          <a class="navbar-brand" id="navbar-brand-text" href="#" style="font-weight: 1000; font-size: xx-large;">Transcendence</a>
+          <img id="navbar-image" src="{% static 'images/image.png' %}" alt="" style="width: 10%; height: 10%; border-radius: 100px 100px 100px 100px;" class="mx-auto">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
           </button>
-    
-          <div class="collapse navbar-collapse" id="navbarsExample01">
-            <ul class="navbar-nav me-auto mb-2">
-              <li class="nav-item">
-                <a class="nav-link" href="" id="start-link">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="" id="game-link">Game</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="" id="gameAI-link">GameAI</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="" id="tournament-link">Tournament</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="" id="game3D-link">Game3D</a>
-              </li>
-            <li class="nav-item">
-              <a class="nav-link" href="" id="multiGame-link">Local Multiplayer</a>
-            </li>
-              <li class="nav-item">
-                <a class="nav-link" href="" id="tac-link">Tic Tac Toe</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="" id="register-link">Register</a>           
-                </li>
-              <li class="nav-item">
-                <a class="nav-link" href="" id="login-link">Login</a>
-              </li>
-            </ul>
+          <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                      <a class="nav-link nav-link-page" data-page="start" id="home-link-text" href="#">Home</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link nav-link-page" data-page="game" id="game-link-text" href="#">Game</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link nav-link-page" data-page="gameAI" id="gameAI-link-text" href="#">GameAI</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link nav-link-page" data-page="tournament" id="tournament-link-text" href="#">Tournament</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link nav-link-page" data-page="game3D" id="game3D-link-text" href="#">Game3D</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link nav-link-page" data-page="multiGame" id="multiGame-link-text" href="#">Local Multiplayer</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link nav-link-page" data-page="login" id="login-link-text" href="#">Login</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link nav-link-page" data-page="register" id="register-link-text" href="#">Register</a>           
+                  </li>
+              </ul>
           </div>
-        </div>
-      </nav>
-
-      <div id="content">
-        <!-- Content will be loaded here -->
       </div>
+  </nav>
+  <h1 id="game-title" class="game-title">Game</h1>
+      <div id="content">
+        <div class="position-relative text-center bg-light mx-auto" style="width: 80%; height: 100%; border-radius: 21px 21px 21px 21px;">
+            <div class="col-12 p-5 mx-auto">
+              <h1 class="display-3 fw-normal p-5">A normal game of Pong</h1>
+              <p class="lead fw-normal col-7 mx-auto pb-5">by the proud minds of Fgrossi, Gfezzuog, Marimatt and Cbuszinznzkziznkznkyynzkyiznkrzynkykyzkznyiznyizkyiny</p>
+                    </div>
+          </div>
+          <div class="container-fluid">
+            <div class="bg-dark mx-auto text-center text-white overflow-hidden">
+              <div class="py-5">
+                <h2 class="display-5 pb-3">What we offer</h2>
+                <p class="lead">no assolutamente nulla.</p>
+              </div>
+                <img src="{% static 'images/image.png' %}" alt="" width="100%" style="width: 100%; height: 300px; border-radius: 100px 100px 100px 100px;">
+            </div>
+          </div>
+      </div>
+      <div class="text-center mt-3">
+        <h2 id="speed-text">Press again to speed up</h2>
+      </div>
+    <footer class="footer mt-auto mx-auto p-2 bg-light">
+        <div class="text-center">
+            <button id="language-toggle-button" class="btn btn-primary mt-3">Change Language</button>
+            <div class="container-fluid">
+                <span class="text-muted">made by Fgrossi, Gfezzuog, Marimatt, and Cbuszzkzisnsksnisiy</span>
+            </div>
+        </div>
+    </footer>
 
+    <script src="{% static 'js/language.js' %}"></script>
     <script>
         $(document).ready(function() {
-
-function changeNavbarImage(imagePath) {
-    $('#navbar-image').attr('src', imagePath);
-}
-
-function loadPageContent(page, addToHistory = true) {
-    $.ajax({
-        url: '/' + page + '/',
-        method: 'GET',
-        success: function(data) {
-            $('#content').html(data);
-            executeScripts($('#content'));
-            if (addToHistory) {
-                history.pushState({ page: page }, '', '/' + page + '/');
+            function changeNavbarImage(imagePath) {
+                $('#navbar-image').attr('src', imagePath);
             }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Error loading page:', textStatus, errorThrown);
-        }
-    });
-}
 
-function loadPage(page, addToHistory = true) {
-    $.ajax({
-        url: '/' + page + '/',
-        method: 'GET',
-        success: function(data, textStatus, xhr) {
-            if (xhr.getResponseHeader('Content-Type').includes('application/json')) {
-                var jsonData = JSON.parse(data);
-                if (jsonData.status == 'ok') {
-                    loadPageContent(page, addToHistory);
-                }
-            } else {
-                $('#content').html(data);
-                executeScripts($('#content'));
-                if (addToHistory) {
-                    history.pushState({ page: page }, '', '/' + page + '/');
+            function loadPageContent(page, addToHistory = true) {
+                $.ajax({
+                    url: '/' + page + '/',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#content').html(data);
+                        executeScripts($('#content'));
+                        if (addToHistory) {
+                            history.pushState({ page: page }, '', '/' + page + '/');
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('Error loading page:', textStatus, errorThrown);
+                    }
+                });
+            }
+
+            function loadPage(page, addToHistory = true) {
+                $.ajax({
+                    url: '/' + page + '/',
+                    method: 'GET',
+                    success: function(data, textStatus, xhr) {
+                        if (xhr.getResponseHeader('Content-Type').includes('application/json')) {
+                            var jsonData = JSON.parse(data);
+                            if (jsonData.status == 'ok') {
+                                loadPageContent(page, addToHistory);
+                            }
+                        } else {
+                            $('#content').html(data);
+                            executeScripts($('#content'));
+                            if (addToHistory) {
+                                history.pushState({ page: page }, '', '/' + page + '/');
+                            }
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('Error loading page:', textStatus, errorThrown);
+                    }
+                });
+            }
+
+            function executeScripts(container) {
+                container.find('script').each(function() {
+                    $.globalEval(this.text || this.textContent || this.innerHTML || '');
+                });
+            }
+
+            function getImagePathForPage(page) {
+                switch (page) {
+                    case 'start': return '{% static "images/image.png" %}';
+                    case 'game': return '{% static "images/pong.png" %}';
+                    case 'gameAI': return '{% static "images/AI.png" %}';
+                    case 'tournament': return '{% static "images/tournament.png" %}';
+                    case 'game3D': return '{% static "images/3D.png" %}';
+                    case 'multiGame': return '{% static "images/friends.png" %}';
+                    default: return '{% static "images/image.png" %}';
                 }
             }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Error loading page:', textStatus, errorThrown);
-        }
-    });
-}
 
-function executeScripts(container) {
-    container.find('script').each(function() {
-        $.globalEval(this.text || this.textContent || this.innerHTML || '');
-    });
-}
+            function initialLoad() {
+                var path = window.location.pathname.split('/')[1] || 'start';
+                changeNavbarImage(getImagePathForPage(path));
+                loadPage(path, false);
+            }
 
-function getImagePathForPage(page) {
-    switch (page) {
-        case 'start': return '{% static "images/image.png" %}';
-        case 'tac': return '{% static "images/Tac.png" %}';
-        case 'game': return '{% static "images/pong.png" %}';
-        case 'gameAI': return '{% static "images/AI.png" %}';
-        case 'tournament': return '{% static "images/tournament.png" %}';
-        case 'game3D': return '{% static "images/3D.png" %}';
-        case 'multiGame': return '{% static "images/friends.png" %}';
-        default: return '{% static "images/image.png" %}';
-    }
-}
+            $('body').on('click', '.nav-link-page', function(e) {
+                e.preventDefault();
+                const page = $(this).data('page');
+                changeNavbarImage(getImagePathForPage(page));
+                loadPage(page);
+                $('#game-title').text($(this).text()); // Add this line to switch the h1 text
+                if (page === 'login' || page === 'register') {
+                    $('#speed-text').hide(); // Set the content of the element with id 'speed-text' to empty
+                    $('#game-title').html(''); // Set the content of the element with id 'game-title' to empty
+                    $('#language-toggle-button').hide(); // Hide the element with id 'language-toggle-button
+                }
+                else
+                {
+                    $('#language-toggle-button').show(); // Show the element with id 'language-toggle-button
+                    $('#speed-text').show(); // Show the element with id 'speed-text'
+                }
+            });
 
-function initialLoad() {
-    var path = window.location.pathname.split('/')[1] || 'start';
-    changeNavbarImage(getImagePathForPage(path));
-    loadPage(path, false);
-}
+            initialLoad();
 
-$('body').on('click', '#start-link', function(e) {
-  e.preventDefault();
-    changeNavbarImage('{% static "images/image.png" %}');
-    loadPage('start');
-});
-$('body').on('click', '#game-link', function(e) {
-            e.preventDefault();
-            changeNavbarImage('{% static "images/pong.png" %}');
-            loadPage('game');
+            // Handle browser back/forward button
+            window.onpopstate = function(event) {
+                if (event.state && event.state.page) {
+                    changeNavbarImage(getImagePathForPage(event.state.page));
+                    loadPage(event.state.page, false);
+                }
+            };
+
+            $('#language-toggle-button').click(function() {
+                changeLanguage();
+            });
+
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+            // Add click event listener to each navbar link
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    // Close the navbar collapse menu programmatically
+                    const navbarCollapse = document.getElementById('navbarNav');
+                    if (navbarCollapse.classList.contains('show')) {
+                        new bootstrap.Collapse(navbarCollapse).hide();
+                    }
+                });
+            });
         });
-$('body').on('click', '#gameAI-link', function(e) {
-          e.preventDefault();
-    changeNavbarImage('{% static "images/AI.png" %}');
-    loadPage('gameAI');
-});
-$('body').on('click', '#tournament-link', function(e) {
-  e.preventDefault();
-    changeNavbarImage('{% static "images/tournament.png" %}');
-    loadPage('tournament');
-});
-$('body').on('click', '#tac-link', function(e) {
-  e.preventDefault();
-    changeNavbarImage('{% static "images/Tac.png" %}');
-    loadPage('tac');
-});
-$('body').on('click', '#game3D-link', function(e) {
-  e.preventDefault();
-    changeNavbarImage('{% static "images/3D.png" %}');
-    loadPage('game3D');
-});
-
-$('body').on('click', '#multiGame-link', function(e) {
-  e.preventDefault();
-    changeNavbarImage('{% static "images/friends.png" %}');
-    loadPage('multiGame');
-});
-
-$('body').on('click', '#login-link', function(e) {
-  e.preventDefault();
-    changeNavbarImage('{% static "images/friends.png" %}');
-    loadPage('login');
-});
-
-$('body').on('click', '#register-link', function(e) {
-  e.preventDefault();
-    changeNavbarImage('{% static "images/friends.png" %}');
-    loadPage('register');
-});
-$('#navbar a').click(function() {
-    if (window.Game) {
-        Game.finalize();
-    }
-});
-
-initialLoad();
-
-// Handle browser back/forward button
-window.onpopstate = function(event) {
-    if (event.state && event.state.page) {
-        changeNavbarImage(getImagePathForPage(event.state.page));
-        loadPage(event.state.page, false);
-    }
-};
-});
-
-const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
-
-// Add click event listener to each navbar link
-navLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    // Close the navbar collapse menu programmatically
-    const navbarCollapse = document.getElementById('navbarsExample01');
-    if (navbarCollapse.classList.contains('show')) {
-      new bootstrap.Collapse(navbarCollapse).hide();
-    }
-  });
-});
     </script>
 
 </body>

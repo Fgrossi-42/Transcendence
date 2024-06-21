@@ -103,20 +103,31 @@ var GameAI = {
     },
 
     endGameMenu: function (text) {
-        PongAI.context.font = '45px Courier New';
+        const rectWidth = this.canvas.width * 0.35; // 35% of canvas width
+        const rectHeight = this.canvas.height * 0.1; // 10% of canvas height
+        const rectX = (this.canvas.width / 2) - (rectWidth / 2); // Centered horizontally
+        const rectY = (this.canvas.height / 2) - (rectHeight / 2); // Centered vertically
+    
+        PongAI.context.font = `${Math.floor(this.canvas.height * 0.04)}px Courier New`; // 4% of canvas height
         PongAI.context.fillStyle = this.color;
-        PongAI.context.fillRect(PongAI.canvas.width / 2 - 350, PongAI.canvas.height / 2 - 48, 700, 100);
+        PongAI.context.fillRect(rectX, rectY, rectWidth, rectHeight);
         PongAI.context.fillStyle = '#ffffff';
-        PongAI.context.fillText(text, PongAI.canvas.width / 2, PongAI.canvas.height / 2 + 15);
+        PongAI.context.fillText(text, this.canvas.width / 2, this.canvas.height / 2 + rectHeight * 0.15);
     },
 
     menu: function () {
         PongAI.draw();
-        this.context.font = '50px Courier New';
+    
+        const rectWidth = this.canvas.width * 0.35; // 35% of canvas width
+        const rectHeight = this.canvas.height * 0.1; // 10% of canvas height
+        const rectX = (this.canvas.width / 2) - (rectWidth / 2); // Centered horizontally
+        const rectY = (this.canvas.height / 2) - (rectHeight / 2); // Centered vertically
+    
+        this.context.font = `${Math.floor(this.canvas.height * 0.05)}px Courier New`; // 5% of canvas height
         this.context.fillStyle = this.color;
-        this.context.fillRect(this.canvas.width / 2 - 350, this.canvas.height / 2 - 48, 700, 100);
+        this.context.fillRect(rectX, rectY, rectWidth, rectHeight);
         this.context.fillStyle = '#ffffff';
-        this.context.fillText('Press any key to begin', this.canvas.width / 2, this.canvas.height / 2 + 15);
+        this.context.fillText('Press any key to begin', this.canvas.width / 2, this.canvas.height / 2 + rectHeight * 0.15);
     },
 
     update: function () {
@@ -195,33 +206,37 @@ var GameAI = {
         this.drawPaddle(this.ai);
         this.drawBall();
         this.drawNet();
-        this.context.font = '80px Courier New';
+        this.context.font = `${Math.floor(this.canvas.height * 0.1)}px Courier New`; // 10% of canvas height
         this.context.textAlign = 'center';
-        this.context.fillText(this.player.score.toString(), (this.canvas.width / 2) - 300, 100);
-        this.context.fillText(this.ai.score.toString(), (this.canvas.width / 2) + 300, 100);
+        this.context.fillText(this.player.score.toString(), (this.canvas.width / 2) - this.canvas.width * 0.15, this.canvas.height * 0.18); // 18% of canvas height
+        this.context.fillText(this.ai.score.toString(), (this.canvas.width / 2) + this.canvas.width * 0.15, this.canvas.height * 0.18);
+    
+        // Draw round number
+        this.context.font = `${Math.floor(this.canvas.height * 0.03)}px Courier New`; // 3% of canvas height
+        this.context.fillText('Round ' + (this.round + 1), (this.canvas.width / 2), this.canvas.height * 0.035); // 3.5% of canvas height
     },
 
-    drawPaddle: function (paddle) {
-        this.context.beginPath();
-        this.context.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
-        this.context.closePath();
+    drawPaddle: function(paddle) {
+        const paddleWidth = this.canvas.width * 0.009; // 0.9% of canvas width
+        const paddleHeight = this.canvas.height * 0.164; // 16.4% of canvas height
+        this.context.fillRect(paddle.x, paddle.y, paddleWidth, paddleHeight);
     },
+    
 
-    drawBall: function () {
-        this.context.beginPath();
-        this.context.fillRect(this.ball.x, this.ball.y, this.ball.width, this.ball.height);
-        this.context.closePath();
+    drawBall: function() {
+        const ballWidth = this.canvas.width * 0.0125; // 1.25% of canvas width
+        const ballHeight = this.canvas.height * 0.0227; // 2.27% of canvas height
+        this.context.fillRect(this.ball.x, this.ball.y, ballWidth, ballHeight);
     },
-
-    drawNet: function () {
+    
+    drawNet: function() {
         this.context.beginPath();
-        this.context.setLineDash([7, 15]);
-        this.context.moveTo((this.canvas.width / 2), this.canvas.height - 140);
-        this.context.lineTo((this.canvas.width / 2), 140);
-        this.context.lineWidth = 10;
+        this.context.setLineDash([this.canvas.height * 0.007, this.canvas.height * 0.015]); // Set line dash to percentage of canvas height
+        this.context.moveTo(this.canvas.width / 2, this.canvas.height * 0.127); // 12.7% of canvas height
+        this.context.lineTo(this.canvas.width / 2, this.canvas.height * 0.873); // 87.3% of canvas height
+        this.context.lineWidth = this.canvas.width * 0.005; // 0.5% of canvas width
         this.context.strokeStyle = '#ffffff';
         this.context.stroke();
-        this.context.closePath();
     },
 
     listen: function () {

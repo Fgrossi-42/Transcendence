@@ -5,20 +5,19 @@
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
 </head>
 <body class="d-flex flex-column h-100">
-    <h1>Game</h1>
     <div class="position-relative text-center bg-dark mx-auto text-white pt-5 responsive-div">
         <canvas></canvas>
     </div>
-    
-    
     <div class="text-center mt-3">
-        <button id="restartButton" onclick="Game.restart('Player 1', 'Player 2', [5, 5, 5])" style="background:#212529;color:white;" type="button" class="btn btn-primary btn-lg">Play</button>
-        <footer class="footer mt-auto mx-auto p-2 bg-light">
-        <div class="container-fluid">
-            <span class="text-muted text-center">made by Fgrossi, Gfezzuog, Marimatt, and Cbuszzkzizkziznkziznkynzyiznkykziznykyknziznzkzisnsksnisiy</span>
-        </div>
-    </footer>
-
+        <button id="restartButton" onclick="Game.restart('Player 1', 'Player 2', [5])" style="background:#212529;color:white;" type="button" class="btn btn-primary btn-lg play-button">Play</button>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}" defer></script>
     <script type="module" src="{% static 'js/gameLogic.js' %}" defer></script>
+    <script>
+        $('#speed-text').hide();
+        if (currentLanguage == 'en') {
+        document.getElementById('restartButton').innerHTML = 'Play';
+      } else {
+        document.getElementById('restartButton').innerHTML = 'Jugar';
+      }
+    </script>
 </body>

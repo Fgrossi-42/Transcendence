@@ -1,24 +1,13 @@
-console.clear();
-
 window.onload = function() {
   // Your existing code here...
   (function (window, document, THREE) {
-    // "constants"... 
-    var WIDTH = 700,
-    HEIGHT = 500,
-    VIEW_ANGLE = 45,
-    ASPECT = WIDTH / HEIGHT,
-    NEAR = 0.1,
-    FAR = 10000,
-    FIELD_WIDTH = 1300,
+    var FIELD_WIDTH = 1300,
     FIELD_LENGTH = 2000,
     BALL_RADIUS = 20,
     PADDLE_WIDTH = 200,
     PADDLE_HEIGHT = 30,
-    WINNING_SCORE = 5, // Define the winning score
-    //get the scoreboard element.
+    WINNING_SCORE = 5,
     scoreBoard = document.getElementById('scoreBoard'),
-    // Declare members.
     container, renderer, camera, mainLight,
     scene, ball, paddle1, paddle2, field, running,
     score = {
@@ -29,7 +18,7 @@ window.onload = function() {
     moveRight = false,
     movePaddle2Left = false,
     movePaddle2Right = false;
-    
+
     function startBallMovement() {
       var direction = Math.random() > 0.5 ? -1 : 1;
       ball.$velocity = {
@@ -38,74 +27,67 @@ window.onload = function() {
       };
       ball.$stopped = false;
     }
-    
+
     function processBallMovement() {
       if (!ball.$velocity) {
         startBallMovement();
       }
-      
       if (ball.$stopped) {
         return;
       }
-      
       updateBallPosition();
-      
       if (isSideCollision()) {
         ball.$velocity.x *= -1;
       }
-      
       if (isPaddle1Collision()) {
         hitBallBack(paddle1);
       }
-      
       if (isPaddle2Collision()) {
         hitBallBack(paddle2);
       }
-      
       if (isPastPaddle1()) {
         scoreBy('player2');
       }
-      
       if (isPastPaddle2()) {
         scoreBy('player1');
       }
     }
-    
+
     function isPastPaddle1() {
       return ball.position.z > paddle1.position.z + 100;
     }
-    
+
     function isPastPaddle2() {
       return ball.position.z < paddle2.position.z - 100;
     }
-    
+
     function updateBallPosition() {
       var ballPos = ball.position;
       ballPos.x += ball.$velocity.x;
       ballPos.z += ball.$velocity.z;
     }
-    
+
     function isSideCollision() {
       var ballX = ball.position.x,
       halfFieldWidth = FIELD_WIDTH / 2;
       return ballX - BALL_RADIUS < -halfFieldWidth || ballX + BALL_RADIUS > halfFieldWidth;
     }
-    
+
     function hitBallBack(paddle) {
       ball.$velocity.x = (ball.position.x - paddle.position.x) / 5;
       ball.$velocity.z *= -1;
     }
-    
+
     function isPaddle2Collision() {
       return ball.position.z - BALL_RADIUS <= paddle2.position.z &&
       isBallAlignedWithPaddle(paddle2);
     }
-    
+
     function isPaddle1Collision() {
       return ball.position.z + BALL_RADIUS >= paddle1.position.z &&
       isBallAlignedWithPaddle(paddle1);
     }
-    
+
     function isBallAlignedWithPaddle(paddle) {
       var halfPaddleWidth = PADDLE_WIDTH / 2,
       paddleX = paddle.position.x,
@@ -113,21 +95,21 @@ window.onload = function() {
       return ballX > paddleX - halfPaddleWidth &&
       ballX < paddleX + halfPaddleWidth;
     }
-    
+
     function scoreBy(playerName) {
       addPoint(playerName);
       updateScoreBoard();
       checkForWinner();
-      if (!running) return; // Stop further actions if the game is over
+      if (!running) return;
       stopBall();
       setTimeout(reset, 2000);
     }
-    
+
     function updateScoreBoard() {
       scoreBoard.innerHTML = 'Player 1: ' + score.player1 + ' Player 2: ' +
       score.player2;
     }
-    
+
     function checkForWinner() {
       if (score.player1 >= WINNING_SCORE) {
         declareWinner('Player 1');
@@ -135,47 +117,52 @@ window.onload = function() {
         declareWinner('Player 2');
       }
     }
-    
+
     function declareWinner(winner) {
       stopRender();
       alert(winner + ' wins!');
     }
-    
+
     function stopBall() {
       ball.$stopped = true;
     }
-    
+
     function addPoint(playerName) {
       score[playerName]++;
     }
-    
+
     function startRender() {
       running = true;
       render();
     }
-    
+
     function stopRender() {
       running = false;
     }
-    
+
     function render() {
       if (running) {
         requestAnimationFrame(render);
         processBallMovement();
         processPlayerMovement();
         processPlayer2Movement();
-        
         renderer.render(scene, camera);
       }
     }
-    
+
     function reset() {
       ball.position.set(0, 0, 0);
       ball.$velocity = null;
     }
-    
+
     function init() {
       container = document.getElementById('container');
+      var WIDTH = container.clientWidth;
+      var HEIGHT = container.clientHeight;
+      var ASPECT = WIDTH / HEIGHT;
+      var VIEW_ANGLE = 45;
+      var NEAR = 0.1;
+      var FAR = 10000;
       
       renderer = new THREE.WebGLRenderer();
       renderer.setSize(WIDTH, HEIGHT);
@@ -183,8 +170,8 @@ window.onload = function() {
       container.appendChild(renderer.domElement);
       
       camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
-      camera.position.set(500, 1000, 1600);  // Position higher and farther back
-      camera.lookAt(new THREE.Vector3(-200, -500, 0));  // Look at the center
+      camera.position.set(500, 1000, 1600);
+      camera.lookAt(new THREE.Vector3(-200, -500, 0));
       scene = new THREE.Scene();
       scene.add(camera);
       
@@ -212,8 +199,18 @@ window.onload = function() {
       
       window.addEventListener('keydown', onKeyDown);
       window.addEventListener('keyup', onKeyUp);
+      window.addEventListener('resize', onWindowResize);
     }
-    
+
+    function onWindowResize() {
+      var WIDTH = container.clientWidth;
+      var HEIGHT = container.clientHeight;
+      var ASPECT = WIDTH / HEIGHT;
+      camera.aspect = ASPECT;
+      camera.updateProjectionMatrix();
+      renderer.setSize(WIDTH, HEIGHT);
+    }
+
     function addPaddle() {
       var paddleGeometry = new THREE.BoxGeometry(PADDLE_WIDTH, PADDLE_HEIGHT, 10),
       paddleMaterial = new THREE.MeshLambertMaterial({ color: 0xCCCCCC }),
@@ -221,7 +218,7 @@ window.onload = function() {
       scene.add(paddle);
       return paddle;
     }
-    
+
     function onKeyDown(event) {
       if (event.code === 'KeyA') {
         moveLeft = true;
@@ -233,7 +230,7 @@ window.onload = function() {
         movePaddle2Right = true;
       }
     }
-    
+
     function onKeyUp(event) {
       if (event.code === 'KeyA') {
         moveLeft = false;
@@ -245,7 +242,7 @@ window.onload = function() {
         movePaddle2Right = false;
       }
     }
-    
+
     function processPlayerMovement() {
       if (moveLeft) {
         paddle1.position.x = Math.max(paddle1.position.x - 10, -FIELD_WIDTH / 2 + PADDLE_WIDTH / 2);
@@ -254,7 +251,7 @@ window.onload = function() {
         paddle1.position.x = Math.min(paddle1.position.x + 10, FIELD_WIDTH / 2 - PADDLE_WIDTH / 2);
       }
     }
-    
+
     function processPlayer2Movement() {
       if (movePaddle2Left) {
         paddle2.position.x = Math.max(paddle2.position.x - 10, -FIELD_WIDTH / 2 + PADDLE_WIDTH / 2);
@@ -263,9 +260,8 @@ window.onload = function() {
         paddle2.position.x = Math.min(paddle2.position.x + 10, FIELD_WIDTH / 2 - PADDLE_WIDTH / 2);
       }
     }
-    
+
     document.getElementById('restartButton').addEventListener('click', function() {
-      // Reset the game state
       score = {
         player1: 0,
         player2: 0
@@ -276,7 +272,7 @@ window.onload = function() {
       updateScoreBoard();
       startRender();
     });
-    
+
     window.addEventListener('keydown', function startGame(event) {
       init();
       document.getElementById('startMessage').style.display = 'none';

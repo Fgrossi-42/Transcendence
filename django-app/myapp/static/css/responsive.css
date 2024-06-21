@@ -1,6 +1,6 @@
 .responsive-div {
-    width: 80vw; /* Adjust this value as needed */
-    height: 50vw; /* 60% of 100vw = 60vw */
+    width: 70vw; /* Adjust this value as needed */
+    height: 40vw; /* 60% of 100vw = 60vw */
     padding-top: 100vw; /* 60/100 = 0.6 -> 60% of 80vw = 48vw */
     position: relative;
     padding: -50%;

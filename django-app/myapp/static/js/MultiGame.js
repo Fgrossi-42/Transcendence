@@ -11,13 +11,13 @@ var DIRECTION = {
 var Ball = {
     new: function () {
         return {
-            width: 25,
-            height: 25,
-            x: (this.canvas.width / 2) - 12.5,
-            y: (this.canvas.height / 2) - 12.5,
+            width: this.canvas.width * 0.0125,
+            height: this.canvas.width * 0.0125,
+            x: (this.canvas.width / 2) - (this.canvas.width * 0.0125 / 2),
+            y: (this.canvas.height / 2) - (this.canvas.width * 0.0125 / 2),
             moveX: DIRECTION.IDLE,
             moveY: DIRECTION.IDLE,
-            speed: 12
+            speed: this.canvas.width * 0.004
         };
     }
 };
@@ -26,13 +26,13 @@ var Ball = {
 var Paddle = {
     new: function (side, position) {
         return {
-            width: 18,
-            height: 180,
-            x: side === 'left' ? 150 + (position * 50) : this.canvas.width - 150 - (position * 50),
-            y: (this.canvas.height / 2) - 90,
+            width: this.canvas.width * 0.009,
+            height: this.canvas.height * 0.15,
+            x: side === 'left' ? this.canvas.width * 0.075 + (position * this.canvas.width * 0.03) : this.canvas.width - this.canvas.width * 0.075 - (position * this.canvas.width * 0.03),
+            y: (this.canvas.height / 2) - (this.canvas.height * 0.15 / 2),
             score: 0,
             move: DIRECTION.IDLE,
-            speed: 8
+            speed: this.canvas.height * 0.007
         };
     }
 };
@@ -42,11 +42,8 @@ var GameMulti = {
         this.canvas = document.querySelector('canvas');
         this.context = this.canvas.getContext('2d');
 
-        this.canvas.width = 2000;
-        this.canvas.height = 1100;
+        this.updateCanvasSize();
 
-        this.canvas.style.width = (this.canvas.width / 2) + 'px';
-        this.canvas.style.height = (this.canvas.height / 2) + 'px';
 
         this.playerLeft = Paddle.new.call(this, 'left', 0);
         this.playerLeft2 = Paddle.new.call(this, 'left', 1);  // Additional left paddle
@@ -68,8 +65,16 @@ var GameMulti = {
         this.playerRight.name = playerRightName;
         this.rounds = rounds;
 
+        window.addEventListener('resize', this.updateCanvasSize.bind(this));
+
         Pong.menu();
         Pong.listen();
+    },
+
+    updateCanvasSize: function () {
+        const div = document.querySelector('.responsive-div');
+        this.canvas.width = div.clientWidth * 2;
+        this.canvas.height = div.clientHeight * 2;
     },
 
     finalize: function() {
@@ -93,35 +98,31 @@ var GameMulti = {
     },
 
     endGameMenu: function (text) {
-        Pong.context.font = '45px Courier New';
+        const rectWidth = this.canvas.width * 0.35; // 35% of canvas width
+        const rectHeight = this.canvas.height * 0.1; // 10% of canvas height
+        const rectX = (this.canvas.width / 2) - (rectWidth / 2); // Centered horizontally
+        const rectY = (this.canvas.height / 2) - (rectHeight / 2); // Centered vertically
+    
+        Pong.context.font = `${Math.floor(this.canvas.height * 0.04)}px Courier New`; // 4% of canvas height
         Pong.context.fillStyle = this.color;
-
-        Pong.context.fillRect(
-            Pong.canvas.width / 2 - 350,
-            Pong.canvas.height / 2 - 48,
-            700,
-            100
-        );
-
+        Pong.context.fillRect(rectX, rectY, rectWidth, rectHeight);
         Pong.context.fillStyle = '#ffffff';
-        Pong.context.fillText(text, Pong.canvas.width / 2, Pong.canvas.height / 2 + 15);
+        Pong.context.fillText(text, this.canvas.width / 2, this.canvas.height / 2 + rectHeight * 0.15);
     },
 
     menu: function () {
         Pong.draw();
 
-        this.context.font = '50px Courier New';
+        const rectWidth = this.canvas.width * 0.35; // 35% of canvas width
+        const rectHeight = this.canvas.height * 0.1; // 10% of canvas height
+        const rectX = (this.canvas.width / 2) - (rectWidth / 2); // Centered horizontally
+        const rectY = (this.canvas.height / 2) - (rectHeight / 2); // Centered vertically
+    
+        this.context.font = `${Math.floor(this.canvas.height * 0.05)}px Courier New`; // 5% of canvas height
         this.context.fillStyle = this.color;
-
-        this.context.fillRect(
-            this.canvas.width / 2 - 350,
-            this.canvas.height / 2 - 48,
-            700,
-            100
-        );
-
+        this.context.fillRect(rectX, rectY, rectWidth, rectHeight);
         this.context.fillStyle = '#ffffff';
-        this.context.fillText('Press any key to begin\n within 10 seconds', this.canvas.width / 2, this.canvas.height / 2 + 15);
+        this.context.fillText('Press any key to begin', this.canvas.width / 2, this.canvas.height / 2 + rectHeight * 0.15);
     },
 
     update: function () {
@@ -210,52 +211,52 @@ var GameMulti = {
     },
 
     draw: function () {
-        // Clear the Canvas
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Draw the background
         this.context.fillStyle = this.color;
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Draw the paddles and ball
         this.context.fillStyle = '#ffffff';
         this.drawPaddle(this.playerLeft);
         this.drawPaddle(this.playerLeft2);  // Draw additional left paddle
         this.drawPaddle(this.playerRight);
         this.drawPaddle(this.playerRight2); // Draw additional right paddle
         this.drawBall();
-
-        // Draw the net (Line in the middle)
         this.drawNet();
-
-        // Draw the scores
-        this.context.font = '100px Courier New';
+        this.context.font = `${Math.floor(this.canvas.height * 0.1)}px Courier New`; // 10% of canvas height
         this.context.textAlign = 'center';
-        this.context.fillText(this.playerLeft.score.toString(), (this.canvas.width / 2) - 300, 200);
-        this.context.fillText(this.playerRight.score.toString(), (this.canvas.width / 2) + 300, 200);
-
-        // Draw the round number
-        this.context.font = '30px Courier New';
-        this.context.fillText('Round ' + (Pong.round + 1), (this.canvas.width / 2), 35);
-
-        // Draw the current round score
-        this.context.font = '40px Courier';
-        this.context.fillText(this.rounds[Pong.round] ? this.rounds[Pong.round] : this.rounds[Pong.round - 1], (this.canvas.width / 2), 100);
+        this.context.fillText(this.playerLeft.score.toString(), (this.canvas.width / 2) - this.canvas.width * 0.15, this.canvas.height * 0.18); // 18% of canvas height
+        this.context.fillText(this.playerRight.score.toString(), (this.canvas.width / 2) + this.canvas.width * 0.15, this.canvas.height * 0.18);
+    
+        // Draw round number
+        this.context.font = `${Math.floor(this.canvas.height * 0.03)}px Courier New`; // 3% of canvas height
+        this.context.fillText('Round ' + (this.round + 1), (this.canvas.width / 2), this.canvas.height * 0.035); // 3.5% of canvas height
+    
+        // Draw current round score
+        this.context.font = `${Math.floor(this.canvas.height * 0.04)}px Courier`; // 4% of canvas height
+        this.context.fillText(this.rounds[this.round] ? this.rounds[this.round] : this.rounds[this.round - 1], (this.canvas.width / 2), this.canvas.height * 0.1); // 10% of canvas height
     },
+    
 
     drawPaddle: function(paddle) {
-        this.context.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
+        const paddleWidth = this.canvas.width * 0.009; // 0.9% of canvas width
+        const paddleHeight = this.canvas.height * 0.164; // 16.4% of canvas height
+        this.context.fillRect(paddle.x, paddle.y, paddleWidth, paddleHeight);
     },
+    
 
     drawBall: function() {
-        this.context.fillRect(this.ball.x, this.ball.y, this.ball.width, this.ball.height);
+        const ballWidth = this.canvas.width * 0.0125; // 1.25% of canvas width
+        const ballHeight = this.canvas.height * 0.0227; // 2.27% of canvas height
+        this.context.fillRect(this.ball.x, this.ball.y, ballWidth, ballHeight);
     },
-
+    
     drawNet: function() {
-        for (let i = 20; i < this.canvas.height; i += 30) {
-            this.context.fillStyle = '#ffffff';
-            this.context.fillRect((this.canvas.width / 2) - 1, i, 2, 20);
-        }
+        this.context.beginPath();
+        this.context.setLineDash([this.canvas.height * 0.007, this.canvas.height * 0.015]); // Set line dash to percentage of canvas height
+        this.context.moveTo(this.canvas.width / 2, this.canvas.height * 0.127); // 12.7% of canvas height
+        this.context.lineTo(this.canvas.width / 2, this.canvas.height * 0.873); // 87.3% of canvas height
+        this.context.lineWidth = this.canvas.width * 0.005; // 0.5% of canvas width
+        this.context.strokeStyle = '#ffffff';
+        this.context.stroke();
     },
 
     listen: function () {
@@ -268,26 +269,26 @@ var GameMulti = {
             key.preventDefault();
 
             // Left player paddles
-            if (key.key === 'w') Pong.playerLeft.move = DIRECTION.UP;
-            if (key.key === 'q') Pong.playerLeft2.move = DIRECTION.UP;
-            if (key.key === 's') Pong.playerLeft.move = DIRECTION.DOWN;
-            if (key.key === 'a') Pong.playerLeft2.move = DIRECTION.DOWN;
+            if (key.key === 'q') Pong.playerLeft.move = DIRECTION.UP;
+            if (key.key === 'w') Pong.playerLeft2.move = DIRECTION.UP;
+            if (key.key === 'a') Pong.playerLeft.move = DIRECTION.DOWN;
+            if (key.key === 's') Pong.playerLeft2.move = DIRECTION.DOWN;
 
             // Right player paddles
-            if (key.key === 'i') Pong.playerRight.move = DIRECTION.UP;
-            if (key.key === 'o') Pong.playerRight2.move = DIRECTION.UP;
-            if (key.key === 'k') Pong.playerRight.move = DIRECTION.DOWN;
-            if (key.key === 'l') Pong.playerRight2.move = DIRECTION.DOWN;
+            if (key.key === 'o') Pong.playerRight.move = DIRECTION.UP;
+            if (key.key === 'i') Pong.playerRight2.move = DIRECTION.UP;
+            if (key.key === 'l') Pong.playerRight.move = DIRECTION.DOWN;
+            if (key.key === 'k') Pong.playerRight2.move = DIRECTION.DOWN;
         });
 
         document.addEventListener('keyup', function (key) {
             // Left player paddles
-            if (key.key === 'w' || key.key === 's') Pong.playerLeft.move = DIRECTION.IDLE;
-            if (key.key === 'q' || key.key === 'a') Pong.playerLeft2.move = DIRECTION.IDLE;
+            if (key.key === 'q' || key.key === 'a') Pong.playerLeft.move = DIRECTION.IDLE;
+            if (key.key === 'w' || key.key === 's') Pong.playerLeft2.move = DIRECTION.IDLE;
 
             // Right player paddles
-            if (key.key === 'i' || key.key === 'k') Pong.playerRight.move = DIRECTION.IDLE;
-            if (key.key === 'o' || key.key === 'l') Pong.playerRight2.move = DIRECTION.IDLE;
+            if (key.key === 'o' || key.key === 'l') Pong.playerRight.move = DIRECTION.IDLE;
+            if (key.key === 'i' || key.key === 'k') Pong.playerRight2.move = DIRECTION.IDLE;
         });
     },
 
@@ -332,7 +333,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             document.removeEventListener('keydown', this.keydownHandler);
             document.removeEventListener('keyup', this.keyupHandler);
 
-            Pong.initialize('Player 1', 'Player 2', [5, 5, 5]);
+            Pong.initialize('Player 1', 'Player 2', [5]);
         });
     }
 });

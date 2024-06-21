@@ -1,4 +1,53 @@
+// gameLogic.js
 
+// Define your translations and current language
+const translations = {
+    en: {
+        gameTitle: "Game",
+        playButton: "Play"
+        // Add more translations as needed
+    },
+    es: {
+        gameTitle: "Juego",
+        playButton: "Jugar"
+        // Add more translations as needed
+    }
+};
+
+let currentLanguage = 'en'; // Default language
+
+// Function to update UI elements with current language
+function updateUI() {
+    document.getElementById('game-title').innerText = translations[currentLanguage].gameTitle;
+    document.getElementById('restartButton').innerText = translations[currentLanguage].playButton;
+    // Add more elements as needed
+}
+
+// Function to change language
+function changeLanguage() {
+    currentLanguage = currentLanguage === 'en' ? 'es' : 'en'; // Toggle between 'en' and 'es'
+    // Save currentLanguage to localStorage or cookies if needed
+    localStorage.setItem('currentLanguage', currentLanguage);
+    updateUI(); // Update UI with new language
+}
+
+// Initialize language based on saved preference (if any)
+function initializeLanguage() {
+    const savedLanguage = localStorage.getItem('currentLanguage');
+    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'es')) {
+        currentLanguage = savedLanguage;
+    }
+    updateUI(); // Initial UI update
+}
+
+// DOMContentLoaded event listener to initialize language and setup dynamic content
+document.addEventListener('DOMContentLoaded', function() {
+    initializeLanguage(); // Initialize language on page load
+    // Add any other initialization logic you need
+});
+
+// Export functions if needed for testing or modularity
+export { changeLanguage };
 
 const DIRECTION = {
     IDLE: 0,
@@ -91,20 +140,32 @@ const Game = {
     },
 
     endGameMenu: function (text) {
-        this.context.font = '45px Courier New';
+        const rectWidth = this.canvas.width * 0.35; // 35% of canvas width
+        const rectHeight = this.canvas.height * 0.1; // 10% of canvas height
+        const rectX = (this.canvas.width / 2) - (rectWidth / 2); // Centered horizontally
+        const rectY = (this.canvas.height / 2) - (rectHeight / 2); // Centered vertically
+    
+        this.context.font = `${Math.floor(this.canvas.height * 0.04)}px Courier New`; // 4% of canvas height
         this.context.fillStyle = this.color;
-        this.context.fillRect(this.canvas.width / 2 - 350, this.canvas.height / 2 - 48, 700, 100);
+        this.context.fillRect(rectX, rectY, rectWidth, rectHeight);
         this.context.fillStyle = '#ffffff';
-        this.context.fillText(text, this.canvas.width / 2, this.canvas.height / 2 + 15);
+        this.context.fillText(text, this.canvas.width / 2, this.canvas.height / 2 + rectHeight * 0.15);
     },
+    
 
     menu: function () {
         this.draw();
-        this.context.font = '50px Courier New';
+    
+        const rectWidth = this.canvas.width * 0.35; // 35% of canvas width
+        const rectHeight = this.canvas.height * 0.1; // 10% of canvas height
+        const rectX = (this.canvas.width / 2) - (rectWidth / 2); // Centered horizontally
+        const rectY = (this.canvas.height / 2) - (rectHeight / 2); // Centered vertically
+    
+        this.context.font = `${Math.floor(this.canvas.height * 0.05)}px Courier New`; // 5% of canvas height
         this.context.fillStyle = this.color;
-        this.context.fillRect(this.canvas.width / 2 - 350, this.canvas.height / 2 - 48, 700, 100);
+        this.context.fillRect(rectX, rectY, rectWidth, rectHeight);
         this.context.fillStyle = '#ffffff';
-        this.context.fillText('Press any key to begin\n within 10 seconds', this.canvas.width / 2, this.canvas.height / 2 + 15);
+        this.context.fillText('Press any key to begin', this.canvas.width / 2, this.canvas.height / 2 + rectHeight * 0.15);
     },
 
     update: function () {
@@ -166,14 +227,14 @@ const Game = {
         if (this.playerLeft.score === this.rounds[this.round]) {
             if (!this.rounds[this.round + 1]) {
                 this.over = true;
-                setTimeout(() => this.endGameMenu('Left Player Wins!'), 1000);
+                setTimeout(function () { Pong.endGameMenu('Left Player Win!'); }, 1000);
             } else {
                 this.advanceToNextRound();
             }
         } else if (this.playerRight.score === this.rounds[this.round]) {
             if (!this.rounds[this.round + 1]) {
                 this.over = true;
-                setTimeout(() => this.endGameMenu('Right Player Wins!'), 1000);
+                setTimeout(function () { Pong.endGameMenu('Right Player Win!'); }, 1000);
             } else {
                 this.advanceToNextRound();
             }
@@ -187,42 +248,52 @@ const Game = {
         this.turn = this.playerRight; 
         },
 
-    draw: function () {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.context.fillStyle = this.color;
-        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        this.context.fillStyle = '#ffffff';
-        this.drawPaddle(this.playerLeft);
-        this.drawPaddle(this.playerRight);
-        this.drawBall();
-        this.drawNet();
-        this.context.font = '100px Courier New';
-        this.context.textAlign = 'center';
-        this.context.fillText(this.playerLeft.score.toString(), (this.canvas.width / 2) - this.canvas.width * 0.15, 200);
-        this.context.fillText(this.playerRight.score.toString(), (this.canvas.width / 2) + this.canvas.width * 0.15, 200);
-        this.context.font = '30px Courier New';
-        this.context.fillText('Round ' + (this.round + 1), (this.canvas.width / 2), 35);
-        this.context.font = '40px Courier';
-        this.context.fillText(this.rounds[this.round] ? this.rounds[this.round] : this.rounds[this.round - 1], (this.canvas.width / 2), 100);
-    },
+        draw: function () {
+            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.context.fillStyle = this.color;
+            this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            this.context.fillStyle = '#ffffff';
+            this.drawPaddle(this.playerLeft);
+            this.drawPaddle(this.playerRight);
+            this.drawBall();
+            this.drawNet();
+            this.context.font = `${Math.floor(this.canvas.height * 0.1)}px Courier New`; // 10% of canvas height
+            this.context.textAlign = 'center';
+            this.context.fillText(this.playerLeft.score.toString(), (this.canvas.width / 2) - this.canvas.width * 0.15, this.canvas.height * 0.18); // 18% of canvas height
+            this.context.fillText(this.playerRight.score.toString(), (this.canvas.width / 2) + this.canvas.width * 0.15, this.canvas.height * 0.18);
+        
+            // Draw round number
+            this.context.font = `${Math.floor(this.canvas.height * 0.03)}px Courier New`; // 3% of canvas height
+            this.context.fillText('Round ' + (this.round + 1), (this.canvas.width / 2), this.canvas.height * 0.035); // 3.5% of canvas height
+        
+            // Draw current round score
+            this.context.font = `${Math.floor(this.canvas.height * 0.04)}px Courier`; // 4% of canvas height
+            this.context.fillText(this.rounds[this.round] ? this.rounds[this.round] : this.rounds[this.round - 1], (this.canvas.width / 2), this.canvas.height * 0.1); // 10% of canvas height
+        },
+        
 
-    drawPaddle: function(paddle) {
-        this.context.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
-    },
+        drawPaddle: function(paddle) {
+            const paddleWidth = this.canvas.width * 0.009; // 0.9% of canvas width
+            const paddleHeight = this.canvas.height * 0.164; // 16.4% of canvas height
+            this.context.fillRect(paddle.x, paddle.y, paddleWidth, paddleHeight);
+        },
+        
 
-    drawBall: function() {
-        this.context.fillRect(this.ball.x, this.ball.y, this.ball.width, this.ball.height);
-    },
-
-    drawNet: function() {
-        this.context.beginPath();
-        this.context.setLineDash([7, 15]);
-        this.context.moveTo((this.canvas.width / 2), 140);
-        this.context.lineTo((this.canvas.width / 2), this.canvas.height - 140);
-        this.context.lineWidth = 10;
-        this.context.strokeStyle = '#ffffff';
-        this.context.stroke();
-    },
+        drawBall: function() {
+            const ballWidth = this.canvas.width * 0.0125; // 1.25% of canvas width
+            const ballHeight = this.canvas.height * 0.0227; // 2.27% of canvas height
+            this.context.fillRect(this.ball.x, this.ball.y, ballWidth, ballHeight);
+        },
+        
+        drawNet: function() {
+            this.context.beginPath();
+            this.context.setLineDash([this.canvas.height * 0.007, this.canvas.height * 0.015]); // Set line dash to percentage of canvas height
+            this.context.moveTo(this.canvas.width / 2, this.canvas.height * 0.127); // 12.7% of canvas height
+            this.context.lineTo(this.canvas.width / 2, this.canvas.height * 0.873); // 87.3% of canvas height
+            this.context.lineWidth = this.canvas.width * 0.005; // 0.5% of canvas width
+            this.context.strokeStyle = '#ffffff';
+            this.context.stroke();
+        },
 
     loop: function () {
         if (this.running) {
@@ -243,12 +314,12 @@ const Game = {
             if (key.key === 'w') this.playerLeft.move = DIRECTION.UP;
             if (key.key === 'o') this.playerRight.move = DIRECTION.UP;
             if (key.key === 's') this.playerLeft.move = DIRECTION.DOWN;
-            if (key.key === 'k') this.playerRight.move = DIRECTION.DOWN;
+            if (key.key === 'l') this.playerRight.move = DIRECTION.DOWN;
         }.bind(this);
 
         this.keyupHandler = function (key) {
             if (key.key === 'w' || key.key === 's') this.playerLeft.move = DIRECTION.IDLE;
-            if (key.key === 'o' || key.key === 'k') this.playerRight.move = DIRECTION.IDLE;
+            if (key.key === 'o' || key.key === 'l') this.playerRight.move = DIRECTION.IDLE;
         }.bind(this);
 
         document.addEventListener('keydown', this.keydownHandler);
@@ -257,6 +328,7 @@ const Game = {
 
     _resetTurn: function (victor, loser) {
         this.turn = loser;
+        this.ball = Ball.new.call(this);
         this.timer = (new Date()).getTime();
         victor.score++;
 
@@ -287,7 +359,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             document.removeEventListener('keydown', this.keydownHandler);
             document.removeEventListener('keyup', this.keyupHandler);
 
-            Pong.initialize('Player 1', 'Player 2', [5, 5, 5]);
+            Pong.initialize('Player 1', 'Player 2', [5]);
         });
     }
 });
