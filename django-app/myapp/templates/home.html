@@ -6,6 +6,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'images/favicon.ico' %}" rel="shortcut icon" type="image/png"/>
 </head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -48,29 +49,18 @@
       </div>
   </nav>
   <h1 id="game-title" class="game-title">Game</h1>
-      <div id="content">
-        <div class="position-relative text-center bg-light mx-auto" style="width: 80%; height: 100%; border-radius: 21px 21px 21px 21px;">
-            <div class="col-12 p-5 mx-auto">
-              <h1 class="display-3 fw-normal p-5">A normal game of Pong</h1>
-              <p class="lead fw-normal col-7 mx-auto pb-5">by the proud minds of Fgrossi, Gfezzuog, Marimatt and Cbuszinznzkziznkznkyynzkyiznkrzynkykyzkznyiznyizkyiny</p>
-                    </div>
-          </div>
-          <div class="container-fluid">
-            <div class="bg-dark mx-auto text-center text-white overflow-hidden">
-              <div class="py-5">
-                <h2 class="display-5 pb-3">What we offer</h2>
-                <p class="lead">no assolutamente nulla.</p>
-              </div>
-                <img src="{% static 'images/image.png' %}" alt="" width="100%" style="width: 100%; height: 300px; border-radius: 100px 100px 100px 100px;">
-            </div>
-          </div>
-      </div>
+      <div id="content"></div>
       <div class="text-center mt-3">
         <h2 id="speed-text">Press again to speed up</h2>
       </div>
     <footer class="footer mt-auto mx-auto p-2 bg-light">
         <div class="text-center">
-            <button id="language-toggle-button" class="btn btn-primary mt-3">Change Language</button>
+            <div class="btn-group mt-3" role="group" aria-label="Language Toggle" id="language-toggle-button">
+                <button type="button" class="btn btn-primary" id="italian-btn">Italiano</button>
+                <button type="button" class="btn btn-primary" id="english-btn">English</button>
+                <button type="button" class="btn btn-primary" id="spanish-btn">Espanol</button>
+            </div>
+
             <div class="container-fluid">
                 <span class="text-muted">made by Fgrossi, Gfezzuog, Marimatt, and Cbuszzkzisnsksnisiy</span>
             </div>
@@ -177,9 +167,10 @@
                 }
             };
 
-            $('#language-toggle-button').click(function() {
-                changeLanguage();
-            });
+            $('#italian-btn').click(function() { changeLanguage('it'); });
+            $('#english-btn').click(function() { changeLanguage('en'); });
+            $('#spanish-btn').click(function() { changeLanguage('es'); });
+
 
             const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
 

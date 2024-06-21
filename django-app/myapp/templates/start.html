@@ -29,18 +29,22 @@
     <script>
       $('#speed-text').hide();
       $('#game-title').html('');
-      //$('#language-toggle-button').hide();
       
       if (currentLanguage == 'en') {
         document.getElementById('title').innerHTML = 'A normal game of Pong';
         document.getElementById('game-description').innerHTML = 'by the proud minds of Fgrossi, Gfezzuog, Marimatt and Cbuszinznzkziznkznkyynzkyiznkrzynkykyzkznyiznyizkyiny';
         document.getElementById('offer-title').innerHTML = 'What we offer';
-        document.getElementById('offer-description').innerHTML = 'no assolutamente nulla.';
+        document.getElementById('offer-description').innerHTML = 'absolutely nothing.';
+      } else if (currentLanguage == 'it') {
+        document.getElementById('title').innerHTML = 'Un gioco normale di Pong';
+        document.getElementById('game-description').innerHTML = 'dalle menti orgogliose di Fgrossi, Gfezzuog, Marimatt e Cbuszinznzkziznkznkyynzkyiznkrzynkykyzkznyiznyizkyiny';
+        document.getElementById('offer-title').innerHTML = 'Cosa offriamo';
+        document.getElementById('offer-description').innerHTML = 'assolutamente niente.';
       } else {
         document.getElementById('title').innerHTML = 'Un juego normal de Pong';
         document.getElementById('game-description').innerHTML = 'por las mentes orgullosas de Fgrossi, Gfezzuog, Marimatt y Cbuszinznzkziznkznkyynzkyiznkrzynkykyzkznyiznyizkyiny';
         document.getElementById('offer-title').innerHTML = 'Lo que ofrecemos';
-        document.getElementById('offer-description').innerHTML = 'nada absolutamente.';
+        document.getElementById('offer-description').innerHTML = 'absolutamente nada.';
       }
     </script>
   </body>

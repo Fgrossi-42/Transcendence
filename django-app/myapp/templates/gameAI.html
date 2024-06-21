@@ -16,9 +16,11 @@
     <script type="module" src="{% static 'js/old_gameVSai.js' %}" defer></script>
     <script>
         if (currentLanguage == 'en') {
-        document.getElementById('restartButtonAI').innerHTML = 'Play';
-      } else {
-        document.getElementById('restartButtonAI').innerHTML = 'Jugar';
-      }
+            document.getElementById('restartButtonAI').innerHTML = 'Play';
+        } else if (currentLanguage == 'it') {
+            document.getElementById('restartButtonAI').innerHTML = 'Gioca';
+        } else {
+            document.getElementById('restartButtonAI').innerHTML = 'Jugar';
+        }
     </script>
 </body>

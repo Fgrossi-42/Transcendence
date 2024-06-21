@@ -18,9 +18,11 @@
     <script type="module" src="{% static 'js/MultiGame.js' %}" defer></script>
     <script>
         if (currentLanguage == 'en') {
-        document.getElementById('restartButtonMulti').innerHTML = 'Play';
-      } else {
-        document.getElementById('restartButtonMulti').innerHTML = 'Jugar';
-      }
+            document.getElementById('restartButtonMulti').innerHTML = 'Play';
+        } else if (currentLanguage == 'it') {
+            document.getElementById('restartButtonMulti').innerHTML = 'Gioca';
+        } else {
+            document.getElementById('restartButtonMulti').innerHTML = 'Jugar';
+        }
     </script>
 </body>

@@ -336,12 +336,12 @@ var GameTour = {
             if (key.key === 'w') Pong.playerLeft.move = DIRECTION.UP;
             if (key.key === 'o') Pong.playerRight.move = DIRECTION.UP;
             if (key.key === 's') Pong.playerLeft.move = DIRECTION.DOWN;
-            if (key.key === 'k') Pong.playerRight.move = DIRECTION.DOWN;
+            if (key.key === 'l') Pong.playerRight.move = DIRECTION.DOWN;
         });
 
         document.addEventListener('keyup', function (key) {
             if (key.key === 'w' || key.key === 's') Pong.playerLeft.move = DIRECTION.IDLE;
-            if (key.key === 'o' || key.key === 'k') Pong.playerRight.move = DIRECTION.IDLE;
+            if (key.key === 'o' || key.key === 'l') Pong.playerRight.move = DIRECTION.IDLE;
         });
     },
 

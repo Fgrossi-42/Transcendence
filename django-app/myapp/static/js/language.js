@@ -15,7 +15,6 @@ const translations = {
         ticTacToe: "Tic Tac Toe",
         register: "Register",
         login: "Login",
-        changeLanguage: "Change Language"
     },
     es: {
         speedText: "Presiona de nuevo para acelerar",
@@ -31,7 +30,6 @@ const translations = {
         ticTacToe: "Tres en Raya",
         register: "Registrar",
         login: "Iniciar Sesión",
-        changeLanguage: "Cambiar Idioma"
     }, 
     it: {
         speedText: "Premi di nuovo per accelerare",
@@ -47,7 +45,6 @@ const translations = {
         ticTacToe: "Tris",
         register: "Registrare",
         login: "Accesso",
-        changeLanguage: "Cambia Lingua"
     }
 };
 
@@ -64,7 +61,6 @@ function updateUI() {
         { id: 'multiGame-link-text', key: 'localMultiplayer' },
         { id: 'register-link-text', key: 'register' },
         { id: 'login-link-text', key: 'login' },
-        { id: 'language-toggle-button', key: 'changeLanguage' },
         { id: 'speed-text', key: 'speedText' },
         { id: 'game-title', key: 'gameTitle' },
         // Add more elements as needed
@@ -80,17 +76,22 @@ function updateUI() {
     });
 }
 
-function changeLanguage() {
-    currentLanguage = currentLanguage === 'en' ? 'es' : 'en';
-    localStorage.setItem('currentLanguage', currentLanguage);
-    console.log('Changed language to:', currentLanguage);
-    updateUI();
+function changeLanguage(newLanguage) {
+    if (['en', 'es', 'it'].includes(newLanguage)) {
+        currentLanguage = newLanguage;
+        localStorage.setItem('currentLanguage', currentLanguage);
+        console.log('Changed language to:', currentLanguage);
+        updateUI();
+    }
 }
 
 function initializeLanguage() {
     const savedLanguage = localStorage.getItem('currentLanguage');
-    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'es')) {
+    if (savedLanguage && ['en', 'es', 'it'].includes(savedLanguage)) {
         currentLanguage = savedLanguage;
+    } else {
+        // Default to English if no saved language is valid
+        currentLanguage = 'en';
     }
     updateUI();
 }

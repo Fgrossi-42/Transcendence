@@ -17,9 +17,11 @@
   <script src="/public/js/pong3D.js"></script>
   <script>
     if (currentLanguage == 'en') {
-    document.getElementById('restartButton').innerHTML = 'Play';
-  } else {
-    document.getElementById('restartButton').innerHTML = 'Jugar';
-  }
-</script>
+      document.getElementById('restartButton').innerHTML = 'Play';
+    } else if (currentLanguage == 'it') {
+      document.getElementById('restartButton').innerHTML = 'Gioca';
+    } else {
+      document.getElementById('restartButton').innerHTML = 'Jugar';
+    }
+    </script>
 </body>

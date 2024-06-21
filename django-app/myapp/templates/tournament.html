@@ -18,9 +18,11 @@
     <script type="module" src="{% static 'js/old_tournament.js' %}" defer></script>
     <script>
         if (currentLanguage == 'en') {
-        document.getElementById('restartButtonTournament').innerHTML = 'Play';
-      } else {
-        document.getElementById('restartButtonTournament').innerHTML = 'Jugar';
-      }
+            document.getElementById('restartButtonTournament').innerHTML = 'Play';
+        } else if (currentLanguage == 'it') {
+            document.getElementById('restartButtonTournament').innerHTML = 'Gioca';
+        } else {
+            document.getElementById('restartButtonTournament').innerHTML = 'Jugar';
+        }
     </script>
 </body>
