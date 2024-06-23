@@ -4,14 +4,20 @@
   <div class="text-center">  
     <h3><span id="player1">Player 1:</span> <span id="player1Score">0</span><span id="player2"> Player 2:</span> <span id="player2Score">0</span></h3>
   </div>
-    <div id="container" class="position-relative bg-dark mx-auto text-white pt-5 responsive-div">
-      <canvas style="margin: 0 auto;"></canvas>
-    </div>
+  <div id="container" class="position-relative bg-dark mx-auto text-white pt-5 responsive-div">
+    <canvas style="margin: 0 auto;"></canvas>
   </div>
+  <div class="controls-left-directional">
+    <button id="left-left" class="control-button">◄</button>
+    <button id="left-right" class="control-button">►</button>
   </div>
-</div>
+  <div class="controls-right-directional">
+    <button id="right-up" class="control-button">◄</button>
+    <button id="right-down" class="control-button">►</button>
+  </div>
   <div class="text-center mt-3">
-  <button id="restartButton" style="background:#212529;color:white;" type="button" class="btn btn-primary btn-lg">Play</button>
+    <button id="restartButton" style="background:#212529;color:white;" type="button" class="btn btn-primary btn-lg">Play</button>
+  </div>
   <script src="/public/js/pong3D.js"></script>
   <script>
     if (currentLanguage == 'en') {

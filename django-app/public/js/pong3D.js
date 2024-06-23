@@ -261,6 +261,61 @@
     }
   }
 
+  function movePlayer1(direction) {
+    if (direction === 'up') {
+        moveLeft = true;
+    } else if (direction === 'down') {
+        moveRight = true;
+    }
+}
+
+// Function to handle player 2 movement
+function movePlayer2(direction) {
+    if (direction === 'up') {
+        movePaddle2Left = true;
+    } else if (direction === 'down') {
+        movePaddle2Right = true;
+    }
+}
+
+// Function to stop player 1 movement
+function stopMovePlayer1() {
+    moveLeft = false;
+    moveRight = false;
+}
+
+// Function to stop player 2 movement
+function stopMovePlayer2() {
+    movePaddle2Left = false;
+    movePaddle2Right = false;
+}
+document.getElementById('left-left').addEventListener('touchstart', function() {
+  movePlayer1('up');
+});
+document.getElementById('left-right').addEventListener('touchstart', function() {
+  movePlayer1('down');
+});
+document.getElementById('right-up').addEventListener('touchstart', function() {
+  movePlayer2('up');
+});
+document.getElementById('right-down').addEventListener('touchstart', function() {
+  movePlayer2('down');
+});
+
+// Stop movement when buttons are released
+document.getElementById('left-left').addEventListener('touchend', function() {
+  stopMovePlayer1();
+});
+document.getElementById('left-right').addEventListener('touchend', function() {
+  stopMovePlayer1();
+});
+document.getElementById('right-up').addEventListener('touchend', function() {
+  stopMovePlayer2();
+});
+document.getElementById('right-down').addEventListener('touchend', function() {
+  stopMovePlayer2();
+});
+
   function processPlayerMovement() {
     if (moveLeft) {
       paddle1.position.x = Math.max(paddle1.position.x - 10, -FIELD_WIDTH / 2 + PADDLE_WIDTH / 2);

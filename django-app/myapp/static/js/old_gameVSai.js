@@ -253,7 +253,29 @@ var GameAI = {
         });
 
         document.addEventListener('keyup', function (key) { PongAI.player.move = DIRECTION.IDLE; });
-    },
+    // Adding touch controls for mobile devices
+    const leftUpButton = document.getElementById('left-up');
+    const leftDownButton = document.getElementById('left-down');
+
+    const startGameIfNotRunning = () => {
+        if (!PongAI.running) {
+            PongAI.running = true;
+            requestAnimationFrame(PongAI.loop.bind(PongAI));
+        }
+    };
+
+    leftUpButton.addEventListener('touchstart', () => {
+        startGameIfNotRunning();
+        PongAI.player.move = DIRECTION.UP;
+    });
+    leftUpButton.addEventListener('touchend', () => PongAI.player.move = DIRECTION.IDLE);
+
+    leftDownButton.addEventListener('touchstart', () => {
+        startGameIfNotRunning();
+        PongAI.player.move = DIRECTION.DOWN;
+    });
+    leftDownButton.addEventListener('touchend', () => PongAI.player.move = DIRECTION.IDLE);
+},
 
     _resetTurn: function(victor, loser) {
         this.ball = Ball.new.call(this);

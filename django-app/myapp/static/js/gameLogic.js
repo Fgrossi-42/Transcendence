@@ -1,4 +1,3 @@
-
 const DIRECTION = {
     IDLE: 0,
     UP: 1,
@@ -259,21 +258,59 @@ const Game = {
                 requestAnimationFrame(this.loop.bind(this));
             }
             key.preventDefault();
-
+    
             if (key.key === 'w') this.playerLeft.move = DIRECTION.UP;
             if (key.key === 'o') this.playerRight.move = DIRECTION.UP;
             if (key.key === 's') this.playerLeft.move = DIRECTION.DOWN;
             if (key.key === 'l') this.playerRight.move = DIRECTION.DOWN;
         }.bind(this);
-
+    
         this.keyupHandler = function (key) {
             if (key.key === 'w' || key.key === 's') this.playerLeft.move = DIRECTION.IDLE;
             if (key.key === 'o' || key.key === 'l') this.playerRight.move = DIRECTION.IDLE;
         }.bind(this);
-
+    
         document.addEventListener('keydown', this.keydownHandler);
         document.addEventListener('keyup', this.keyupHandler);
+    
+        // Adding touch controls for mobile devices
+        const leftUpButton = document.getElementById('left-up');
+        const leftDownButton = document.getElementById('left-down');
+        const rightUpButton = document.getElementById('right-up');
+        const rightDownButton = document.getElementById('right-down');
+    
+        const startGameIfNotRunning = () => {
+            if (!this.running) {
+                this.running = true;
+                requestAnimationFrame(this.loop.bind(this));
+            }
+        };
+    
+        leftUpButton.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            this.playerLeft.move = DIRECTION.UP;
+        });
+        leftUpButton.addEventListener('touchend', () => this.playerLeft.move = DIRECTION.IDLE);
+    
+        leftDownButton.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            this.playerLeft.move = DIRECTION.DOWN;
+        });
+        leftDownButton.addEventListener('touchend', () => this.playerLeft.move = DIRECTION.IDLE);
+    
+        rightUpButton.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            this.playerRight.move = DIRECTION.UP;
+        });
+        rightUpButton.addEventListener('touchend', () => this.playerRight.move = DIRECTION.IDLE);
+    
+        rightDownButton.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            this.playerRight.move = DIRECTION.DOWN;
+        });
+        rightDownButton.addEventListener('touchend', () => this.playerRight.move = DIRECTION.IDLE);
     },
+    
 
     _resetTurn: function (victor, loser) {
         this.turn = loser;

@@ -339,6 +339,42 @@ var GameTour = {
             if (key.key === 'w' || key.key === 's') Pong.playerLeft.move = DIRECTION.IDLE;
             if (key.key === 'o' || key.key === 'l') Pong.playerRight.move = DIRECTION.IDLE;
         });
+
+        const leftUpButton = document.getElementById('left-up');
+        const leftDownButton = document.getElementById('left-down');
+        const rightUpButton = document.getElementById('right-up');
+        const rightDownButton = document.getElementById('right-down');
+    
+        const startGameIfNotRunning = () => {
+            if (!Pong.running) {
+                Pong.running = true;
+                requestAnimationFrame(Pong.loop.bind(Pong));
+            }
+        };
+    
+        leftUpButton.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            Pong.playerLeft.move = DIRECTION.UP;
+        });
+        leftUpButton.addEventListener('touchend', () => Pong.playerLeft.move = DIRECTION.IDLE);
+    
+        leftDownButton.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            Pong.playerLeft.move = DIRECTION.DOWN;
+        });
+        leftDownButton.addEventListener('touchend', () => Pong.playerLeft.move = DIRECTION.IDLE);
+    
+        rightUpButton.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            Pong.playerRight.move = DIRECTION.UP;
+        });
+        rightUpButton.addEventListener('touchend', () => Pong.playerRight.move = DIRECTION.IDLE);
+    
+        rightDownButton.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            Pong.playerRight.move = DIRECTION.DOWN;
+        });
+        rightDownButton.addEventListener('touchend', () => Pong.playerRight.move = DIRECTION.IDLE);
     },
 
     _resetTurn: function (victor, loser) {

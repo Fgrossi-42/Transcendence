@@ -284,6 +284,69 @@ var GameMulti = {
             if (key.key === 'o' || key.key === 'l') Pong.playerRight.move = DIRECTION.IDLE;
             if (key.key === 'i' || key.key === 'k') Pong.playerRight2.move = DIRECTION.IDLE;
         });
+        const leftUpButton = document.getElementById('left-up');
+        const leftDownButton = document.getElementById('left-down');
+        const rightUpButton = document.getElementById('right-up');
+        const rightDownButton = document.getElementById('right-down');
+        const leftUpButton2 = document.getElementById('left-up2');
+        const leftDownButton2 = document.getElementById('left-down2');
+        const rightUpButton2 = document.getElementById('right-up2');
+        const rightDownButton2 = document.getElementById('right-down2');
+    
+        const startGameIfNotRunning = () => {
+            if (!Pong.running) {
+                Pong.running = true;
+                requestAnimationFrame(Pong.loop.bind(Pong));
+            }
+        };
+    
+        leftUpButton.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            Pong.playerLeft.move = DIRECTION.UP;
+        });
+        leftUpButton.addEventListener('touchend', () => Pong.playerLeft.move = DIRECTION.IDLE);
+    
+        leftDownButton.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            Pong.playerLeft.move = DIRECTION.DOWN;
+        });
+        leftDownButton.addEventListener('touchend', () => Pong.playerLeft.move = DIRECTION.IDLE);
+    
+        rightUpButton.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            Pong.playerRight.move = DIRECTION.UP;
+        });
+        rightUpButton.addEventListener('touchend', () => Pong.playerRight.move = DIRECTION.IDLE);
+    
+        rightDownButton.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            Pong.playerRight.move = DIRECTION.DOWN;
+        });
+        rightDownButton.addEventListener('touchend', () => Pong.playerRight.move = DIRECTION.IDLE);
+        
+        leftUpButton2.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            Pong.playerLeft2.move = DIRECTION.UP;
+        });
+        leftUpButton2.addEventListener('touchend', () => Pong.playerLeft2.move = DIRECTION.IDLE);
+
+        leftDownButton2.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            Pong.playerLeft2.move = DIRECTION.DOWN;
+        });
+        leftDownButton2.addEventListener('touchend', () => Pong.playerLeft2.move = DIRECTION.IDLE);
+
+        rightUpButton2.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            Pong.playerRight2.move = DIRECTION.UP;
+        });
+        rightUpButton2.addEventListener('touchend', () => Pong.playerRight2.move = DIRECTION.IDLE);
+
+        rightDownButton2.addEventListener('touchstart', () => {
+            startGameIfNotRunning();
+            Pong.playerRight2.move = DIRECTION.DOWN;
+        });
+        rightDownButton2.addEventListener('touchend', () => Pong.playerRight2.move = DIRECTION.IDLE);
     },
 
     loop: function () {
