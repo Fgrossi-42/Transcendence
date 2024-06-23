@@ -47,7 +47,7 @@ var GameAI = {
         this.ai = Ai.new.call(this, 'right');
         this.ball = Ball.new.call(this);
 
-        this.ai.speed = 5;
+        this.ai.speed = this.canvas.height * 0.005;
         this.running = this.over = false;
         this.turn = this.ai;
         this.timer = this.round = 0;
@@ -58,30 +58,32 @@ var GameAI = {
         PongAI.menu();
         PongAI.listen();
     },
-
+    
     updateCanvasSize: function () {
         const div = document.querySelector('.responsive-div');
-        this.canvas.width = div.clientWidth * 2;
-        this.canvas.height = div.clientHeight * 2;
+        if (div.clientWidth && div.clientHeight) {
+            this.canvas.width = div.clientWidth * 2;
+            this.canvas.height = div.clientHeight * 2;
 
-        if (this.player && this.ai && this.ball) {
-            this.player.width = this.canvas.width * 0.009;
-            this.player.height = this.canvas.height * 0.15;
-            this.player.x = this.canvas.width * 0.075;
-            this.player.y = (this.canvas.height / 2) - (this.player.height / 2);
-            this.player.speed = this.canvas.height * 0.007;
+            if (this.player && this.ai && this.ball) {
+                this.player.width = this.canvas.width * 0.009;
+                this.player.height = this.canvas.height * 0.15;
+                this.player.x = this.canvas.width * 0.075;
+                this.player.y = (this.canvas.height / 2) - (this.player.height / 2);
+                this.player.speed = this.canvas.height * 0.007;
 
-            this.ai.width = this.canvas.width * 0.009;
-            this.ai.height = this.canvas.height * 0.15;
-            this.ai.x = this.canvas.width - this.canvas.width * 0.075;
-            this.ai.y = (this.canvas.height / 2) - (this.ai.height / 2);
-            this.ai.speed = this.canvas.height * 0.007;
+                this.ai.width = this.canvas.width * 0.009;
+                this.ai.height = this.canvas.height * 0.15;
+                this.ai.x = this.canvas.width - this.canvas.width * 0.075;
+                this.ai.y = (this.canvas.height / 2) - (this.ai.height / 2);
+                this.ai.speed = this.canvas.height * 0.007;
 
-            this.ball.width = this.canvas.width * 0.0125;
-            this.ball.height = this.canvas.width * 0.0125;
-            this.ball.x = (this.canvas.width / 2) - (this.ball.width / 2);
-            this.ball.y = (this.canvas.height / 2) - (this.ball.height / 2);
-            this.ball.speed = this.canvas.width * 0.004;
+                this.ball.width = this.canvas.width * 0.0125;
+                this.ball.height = this.canvas.width * 0.0125;
+                this.ball.x = (this.canvas.width / 2) - (this.ball.width / 2);
+                this.ball.y = (this.canvas.height / 2) - (this.ball.height / 2);
+                this.ball.speed = this.canvas.width * 0.004;
+            }
         }
     },
 

@@ -12,30 +12,35 @@
       $('#game-title').html('');
       $('#language-toggle-button').hide();
 
-      function changeLanguage(language) {
-        if (language == 'en') {
+        if (currentLanguage == 'en') {
           document.getElementById('sign').innerHTML = 'Sign up';
           document.getElementById('username').placeholder = 'Username';
+          document.getElementById('username-label').innerHTML = 'Username';
           document.getElementById('password').placeholder = 'Password';
+          document.getElementById('password-label').innerHTML = 'Password';
           document.getElementById('confirm_password').placeholder = 'Confirm Password';
+          document.getElementById('confirm-password-label').innerHTML = 'Confirm Password';
           document.getElementById('registerButton').innerHTML = 'Register';
-        } else if (language == 'it') {
-          document.getElementById('sign').innerHTML = 'Registrati';
+        } else if (currentLanguage == 'it') {
+          document.getElementById('sign').innerHTML = 'Registrazione';
           document.getElementById('username').placeholder = 'Nome utente';
+          document.getElementById('username-label').innerHTML = 'Nome utente';
           document.getElementById('password').placeholder = 'Password';
+          document.getElementById('password-label').innerHTML = 'Password';
           document.getElementById('confirm_password').placeholder = 'Conferma Password';
+          document.getElementById('confirm-password-label').innerHTML = 'Conferma Password';
           document.getElementById('registerButton').innerHTML = 'Registrati';
         } else {
           document.getElementById('sign').innerHTML = 'Registrarse';
           document.getElementById('username').placeholder = 'Nombre de usuario';
+          document.getElementById('username-label').innerHTML = 'Nombre de usuario';
           document.getElementById('password').placeholder = 'Contraseña';
+          document.getElementById('password-label').innerHTML = 'Contraseña';
           document.getElementById('confirm_password').placeholder = 'Confirmar contraseña';
+          document.getElementById('confirm-password-label').innerHTML = 'Confirmar contraseña';
           document.getElementById('registerButton').innerHTML = 'Registrarse';
         }
-      }
 
-      // Call the changeLanguage function with the default language
-      changeLanguage('en');
 
       $('#registerForm').submit(function(event) {
         event.preventDefault();
@@ -83,21 +88,21 @@
                     <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                     <div data-mdb-input-init class="form-outline flex-fill mb-0">
                       <input type="text" class="form-control" id="username" name="username" required/>
-                      <label class="form-label" for="username">Username</label>
-                    </div>
-                  </div>
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="username" id="username-label">Username</label>
+                      </div>
+                      </div>
+                      <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                      <div data-mdb-input-init class="form-outline flex-fill mb-0">
                       <input type="password" class="form-control" id="password" name="password" required/>
-                      <label class="form-label" for="password">Password</label>
-                    </div>
-                  </div>
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="password" id="password-label">Password</label>
+                      </div>
+                      </div>
+                      <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                      <div data-mdb-input-init class="form-outline flex-fill mb-0">
                       <input type="password" class="form-control" id="confirm_password" name="confirm_password" required/>
-                      <label class="form-label" for="confirm_password">Repeat your password</label>
+                      <label class="form-label" for="confirm_password" id="confirm-password-label">Repeat your password</label>
                     </div>
                   </div>
                   <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">

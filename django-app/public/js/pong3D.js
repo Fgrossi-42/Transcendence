@@ -1,4 +1,4 @@
-window.onload = function() {
+
   // Your existing code here...
   (function (window, document, THREE) {
     var FIELD_WIDTH = 1300,
@@ -151,8 +151,27 @@ window.onload = function() {
     }
 
     function reset() {
-      ball.position.set(0, 0, 0);
-      ball.$velocity = null;
+      if (ball) {
+        ball.position.set(0, 0, 0);
+        ball.$velocity = null;
+      }
+      if (score) {
+        score.player1 = 0;
+        score.player2 = 0;
+        updateScoreBoard();
+      }
+      stopRender();
+      running = false;
+      moveLeft = false;
+      moveRight = false;
+      movePaddle2Left = false;
+      movePaddle2Right = false;
+      if (paddle1) {
+        paddle1.position.x = 0;
+      }
+      if (paddle2) {
+        paddle2.position.x = 0;
+      }
     }
 
     function init() {
@@ -260,23 +279,10 @@ window.onload = function() {
         paddle2.position.x = Math.min(paddle2.position.x + 10, FIELD_WIDTH / 2 - PADDLE_WIDTH / 2);
       }
     }
+    document.getElementById('restartButton').addEventListener('click', restartGame);
 
-    document.getElementById('restartButton').addEventListener('click', function() {
-      score = {
-        player1: 0,
-        player2: 0
-      };
-      ball.position.set(0, 0, 0);
-      ball.$velocity = null;
-      stopRender();
-      updateScoreBoard();
-      startRender();
-    });
-
-    window.addEventListener('keydown', function startGame(event) {
+    function restartGame() {
+      reset();
       init();
-      document.getElementById('startMessage').style.display = 'none';
-      window.removeEventListener('keydown', startGame);
-    });
+    }
   })(window, window.document, window.THREE);
-};

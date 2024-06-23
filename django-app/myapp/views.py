@@ -71,7 +71,7 @@ def login_view(request):
         logger.debug(f"Attempting to login user: {username}")
         
         user = authenticate(request, username=username, password=password)
-        
+    
         if user is not None:
             login(request, user)
             logger.debug(f"User {username} logged in successfully")

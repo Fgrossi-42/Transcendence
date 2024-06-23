@@ -73,8 +73,10 @@ var GameMulti = {
 
     updateCanvasSize: function () {
         const div = document.querySelector('.responsive-div');
-        this.canvas.width = div.clientWidth * 2;
-        this.canvas.height = div.clientHeight * 2;
+        if (div.clientWidth && div.clientHeight) {
+            this.canvas.width = div.clientWidth * 2;
+            this.canvas.height = div.clientHeight * 2;
+        }
     },
 
     finalize: function() {
@@ -94,7 +96,7 @@ var GameMulti = {
 
     restartMulti: function(playerLeftName, playerRightName, rounds) {
         this.finalize();
-        Pong.initialize('Player 1', 'Player 2', [5, 5, 5]);
+        Pong.initialize('Player 1', 'Player 2', [5]);
     },
 
     endGameMenu: function (text) {

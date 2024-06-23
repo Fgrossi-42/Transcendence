@@ -34,10 +34,14 @@ function createBracket(players) {
 }
 
 function updateUI(message, type) {
+    let element = null;
     if (type === 'champion') {
-        document.getElementById('champion').innerText = message;
+        element = document.getElementById('champion');
     } else if (type === 'current_game') {
-        document.getElementById('current-game').innerText = message;
+        element = document.getElementById('current-game');
+    }
+    if (element) {
+        element.innerText = message;
     }
 }
 
@@ -136,8 +140,10 @@ var GameTour = {
 
     updateCanvasSize: function () {
         const div = document.querySelector('.responsive-div');
-        this.canvas.width = div.clientWidth * 2;
-        this.canvas.height = div.clientHeight * 2;
+        if (div && div.clientWidth && div.clientHeight) {
+            this.canvas.width = div.clientWidth * 2;
+            this.canvas.height = div.clientHeight * 2;
+        }
     },
     
     finalize: function() {
@@ -164,6 +170,7 @@ var GameTour = {
     },
     
     endGameMenu: function (text) {
+        if (!this.canvas || !this.context) return; // Add this line to prevent errors if canvas or context is null
         const rectWidth = this.canvas.width * 0.35; // 35% of canvas width
         const rectHeight = this.canvas.height * 0.1; // 10% of canvas height
         const rectX = (this.canvas.width / 2) - (rectWidth / 2); // Centered horizontally

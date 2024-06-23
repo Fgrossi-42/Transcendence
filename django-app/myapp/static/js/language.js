@@ -43,7 +43,7 @@ const translations = {
         game3D: "Gioco3D",
         localMultiplayer: "Multigiocatore Locale",
         ticTacToe: "Tris",
-        register: "Registrare",
+        register: "Registrazione",
         login: "Accesso",
     }
 };

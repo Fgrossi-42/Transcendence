@@ -1,53 +1,3 @@
-// gameLogic.js
-
-// Define your translations and current language
-const translations = {
-    en: {
-        gameTitle: "Game",
-        playButton: "Play"
-        // Add more translations as needed
-    },
-    es: {
-        gameTitle: "Juego",
-        playButton: "Jugar"
-        // Add more translations as needed
-    }
-};
-
-let currentLanguage = 'en'; // Default language
-
-// Function to update UI elements with current language
-function updateUI() {
-    document.getElementById('game-title').innerText = translations[currentLanguage].gameTitle;
-    document.getElementById('restartButton').innerText = translations[currentLanguage].playButton;
-    // Add more elements as needed
-}
-
-// Function to change language
-function changeLanguage() {
-    currentLanguage = currentLanguage === 'en' ? 'es' : 'en'; // Toggle between 'en' and 'es'
-    // Save currentLanguage to localStorage or cookies if needed
-    localStorage.setItem('currentLanguage', currentLanguage);
-    updateUI(); // Update UI with new language
-}
-
-// Initialize language based on saved preference (if any)
-function initializeLanguage() {
-    const savedLanguage = localStorage.getItem('currentLanguage');
-    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'es')) {
-        currentLanguage = savedLanguage;
-    }
-    updateUI(); // Initial UI update
-}
-
-// DOMContentLoaded event listener to initialize language and setup dynamic content
-document.addEventListener('DOMContentLoaded', function() {
-    initializeLanguage(); // Initialize language on page load
-    // Add any other initialization logic you need
-});
-
-// Export functions if needed for testing or modularity
-export { changeLanguage };
 
 const DIRECTION = {
     IDLE: 0,
@@ -113,26 +63,30 @@ const Game = {
 
     updateCanvasSize: function () {
         const div = document.querySelector('.responsive-div');
-        this.canvas.width = div.clientWidth * 2;
-        this.canvas.height = div.clientHeight * 2;
+        if (div.clientWidth && div.clientHeight) {
+            this.canvas.width = div.clientWidth * 2;
+            this.canvas.height = div.clientHeight * 2;
+        }
     },
 
     finalize: function() {
         this.running = false; 
         this.turn = null;
         this.timer = this.round = 0;
-        this.playerLeft = this.playerRight = this.ball = this.canvas = this.context = null;
+        this.playerLeft = this.playerRight = this.ball = null;
         this.color = '#212529';
         this.rounds = null;
     
         if (this.canvas) {
             this.canvas.style.width = '';
             this.canvas.style.height = '';
+            this.canvas = null;
         }
     
         document.removeEventListener('keydown', this.keydownHandler);
         document.removeEventListener('keyup', this.keyupHandler);
     },
+    
 
     restart: function(playerLeftName, playerRightName, rounds) {
         this.finalize();
@@ -140,16 +94,23 @@ const Game = {
     },
 
     endGameMenu: function (text) {
-        const rectWidth = this.canvas.width * 0.35; // 35% of canvas width
-        const rectHeight = this.canvas.height * 0.1; // 10% of canvas height
-        const rectX = (this.canvas.width / 2) - (rectWidth / 2); // Centered horizontally
-        const rectY = (this.canvas.height / 2) - (rectHeight / 2); // Centered vertically
+        if (!this.context) {
+            return;
+        }
+        // Clear the canvas
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     
-        this.context.font = `${Math.floor(this.canvas.height * 0.04)}px Courier New`; // 4% of canvas height
+        // Draw the background
         this.context.fillStyle = this.color;
-        this.context.fillRect(rectX, rectY, rectWidth, rectHeight);
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    
+        // Set the text properties
         this.context.fillStyle = '#ffffff';
-        this.context.fillText(text, this.canvas.width / 2, this.canvas.height / 2 + rectHeight * 0.15);
+        this.context.font = `${Math.floor(this.canvas.height * 0.1)}px Courier New`;
+        this.context.textAlign = 'center';
+    
+        // Draw the winning message
+        this.context.fillText(text, this.canvas.width / 2, this.canvas.height / 2);
     },
     
 
@@ -331,24 +292,28 @@ const Game = {
         this.ball = Ball.new.call(this);
         this.timer = (new Date()).getTime();
         victor.score++;
-
+    
         if (victor.score === this.rounds[this.round]) {
             if (!this.rounds[this.round + 1]) {
                 this.over = true;
                 const winnerName = victor === this.playerLeft ? this.playerLeft.name : this.playerRight.name;
-                setTimeout(() => this.endGameMenu(winnerName + ' Wins!'), 1000);
+                setTimeout(() => {
+                    this.endGameMenu(winnerName + ' Wins!');
+                    this.finalize(); // Ensure finalize is called after endGameMenu
+                }, 1000);
             } else {
                 this.advanceToNextRound();
             }
         }
     },
+    
 
     _turnDelayIsOver: function () {
         return ((new Date()).getTime() - this.timer >= 1000);
     }
 };
 
-const Pong = Object.assign({}, Game);
+var Pong = Object.assign({}, Game);
 
 document.addEventListener('DOMContentLoaded', (event) => {
     const restartButton = document.getElementById('restartButton');
