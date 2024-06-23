@@ -1,4 +1,3 @@
-// Global Variables
 var DIRECTION = {
     IDLE: 0,
     UP: 1,
@@ -7,7 +6,6 @@ var DIRECTION = {
     RIGHT: 4
 };
 
-// The ball object (The cube that bounces back and forth)
 var Ball = {
     new: function () {
         return {
@@ -22,7 +20,6 @@ var Ball = {
     }
 };
 
-// The paddle object (The two lines that move up and down)
 var Paddle = {
     new: function (side, position) {
         return {
@@ -46,15 +43,15 @@ var GameMulti = {
 
 
         this.playerLeft = Paddle.new.call(this, 'left', 0);
-        this.playerLeft2 = Paddle.new.call(this, 'left', 1);  // Additional left paddle
+        this.playerLeft2 = Paddle.new.call(this, 'left', 1);
         this.playerRight = Paddle.new.call(this, 'right', 0);
-        this.playerRight2 = Paddle.new.call(this, 'right', 1); // Additional right paddle
+        this.playerRight2 = Paddle.new.call(this, 'right', 1);
         this.ball = Ball.new.call(this);
 
         this.playerLeft.speed = 8;
-        this.playerLeft2.speed = 8;  // Speed for the additional left paddle
+        this.playerLeft2.speed = 8;
         this.playerRight.speed = 8;
-        this.playerRight2.speed = 8; // Speed for the additional right paddle
+        this.playerRight2.speed = 8;
 
         this.running = this.over = false;
         this.turn = this.playerRight;
@@ -85,9 +82,9 @@ var GameMulti = {
         this.turn = null;
         this.timer = this.round = 0;
         this.playerLeft = null;
-        this.playerLeft2 = null;  // Finalize additional left paddle
+        this.playerLeft2 = null; 
         this.playerRight = null;
-        this.playerRight2 = null; // Finalize additional right paddle
+        this.playerRight2 = null;
         this.ball = null;
         this.canvas = null;
         this.context = null;
@@ -100,12 +97,12 @@ var GameMulti = {
     },
 
     endGameMenu: function (text) {
-        const rectWidth = this.canvas.width * 0.35; // 35% of canvas width
-        const rectHeight = this.canvas.height * 0.1; // 10% of canvas height
-        const rectX = (this.canvas.width / 2) - (rectWidth / 2); // Centered horizontally
-        const rectY = (this.canvas.height / 2) - (rectHeight / 2); // Centered vertically
+        const rectWidth = this.canvas.width * 0.35;
+        const rectHeight = this.canvas.height * 0.1;
+        const rectX = (this.canvas.width / 2) - (rectWidth / 2);
+        const rectY = (this.canvas.height / 2) - (rectHeight / 2);
     
-        Pong.context.font = `${Math.floor(this.canvas.height * 0.04)}px Courier New`; // 4% of canvas height
+        Pong.context.font = `${Math.floor(this.canvas.height * 0.04)}px Courier New`;
         Pong.context.fillStyle = this.color;
         Pong.context.fillRect(rectX, rectY, rectWidth, rectHeight);
         Pong.context.fillStyle = '#ffffff';
@@ -115,12 +112,12 @@ var GameMulti = {
     menu: function () {
         Pong.draw();
 
-        const rectWidth = this.canvas.width * 0.35; // 35% of canvas width
-        const rectHeight = this.canvas.height * 0.1; // 10% of canvas height
-        const rectX = (this.canvas.width / 2) - (rectWidth / 2); // Centered horizontally
-        const rectY = (this.canvas.height / 2) - (rectHeight / 2); // Centered vertically
+        const rectWidth = this.canvas.width * 0.35;
+        const rectHeight = this.canvas.height * 0.1;
+        const rectX = (this.canvas.width / 2) - (rectWidth / 2);
+        const rectY = (this.canvas.height / 2) - (rectHeight / 2);
     
-        this.context.font = `${Math.floor(this.canvas.height * 0.05)}px Courier New`; // 5% of canvas height
+        this.context.font = `${Math.floor(this.canvas.height * 0.05)}px Courier New`;
         this.context.fillStyle = this.color;
         this.context.fillRect(rectX, rectY, rectWidth, rectHeight);
         this.context.fillStyle = '#ffffff';
@@ -131,9 +128,9 @@ var GameMulti = {
         if (!this.over) {
             this.handleBallBoundaries();
             this.handlePaddleMovement(this.playerLeft);
-            this.handlePaddleMovement(this.playerLeft2);  // Handle movement for additional left paddle
+            this.handlePaddleMovement(this.playerLeft2); 
             this.handlePaddleMovement(this.playerRight);
-            this.handlePaddleMovement(this.playerRight2); // Handle movement for additional right paddle
+            this.handlePaddleMovement(this.playerRight2);
 
             if (Pong._turnDelayIsOver.call(this) && this.turn) {
                 this.ball.moveX = this.turn === this.playerLeft || this.turn === this.playerLeft2 ? DIRECTION.LEFT : DIRECTION.RIGHT;
@@ -173,9 +170,9 @@ var GameMulti = {
 
     handleBallCollisions: function() {
         this.handlePaddleBallCollision(this.playerLeft, DIRECTION.RIGHT);
-        this.handlePaddleBallCollision(this.playerLeft2, DIRECTION.RIGHT);  // Collision handling for additional left paddle
+        this.handlePaddleBallCollision(this.playerLeft2, DIRECTION.RIGHT); 
         this.handlePaddleBallCollision(this.playerRight, DIRECTION.LEFT);
-        this.handlePaddleBallCollision(this.playerRight2, DIRECTION.LEFT); // Collision handling for additional right paddle
+        this.handlePaddleBallCollision(this.playerRight2, DIRECTION.LEFT);
     },
 
     handlePaddleBallCollision: function(paddle, direction) {
@@ -208,8 +205,8 @@ var GameMulti = {
     advanceToNextRound: function() {
         this.playerLeft.score = this.playerRight.score = 0;
         this.round += 1;
-        this.ball = Ball.new.call(this); // Reset the ball for the new round
-        this.turn = this.playerRight; // Ensure the turn is reset properly
+        this.ball = Ball.new.call(this);
+        this.turn = this.playerRight;
     },
 
     draw: function () {
@@ -218,45 +215,43 @@ var GameMulti = {
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.fillStyle = '#ffffff';
         this.drawPaddle(this.playerLeft);
-        this.drawPaddle(this.playerLeft2);  // Draw additional left paddle
+        this.drawPaddle(this.playerLeft2); 
         this.drawPaddle(this.playerRight);
-        this.drawPaddle(this.playerRight2); // Draw additional right paddle
+        this.drawPaddle(this.playerRight2);
         this.drawBall();
         this.drawNet();
-        this.context.font = `${Math.floor(this.canvas.height * 0.1)}px Courier New`; // 10% of canvas height
+        this.context.font = `${Math.floor(this.canvas.height * 0.1)}px Courier New`;
         this.context.textAlign = 'center';
-        this.context.fillText(this.playerLeft.score.toString(), (this.canvas.width / 2) - this.canvas.width * 0.15, this.canvas.height * 0.18); // 18% of canvas height
+        this.context.fillText(this.playerLeft.score.toString(), (this.canvas.width / 2) - this.canvas.width * 0.15, this.canvas.height * 0.18);
         this.context.fillText(this.playerRight.score.toString(), (this.canvas.width / 2) + this.canvas.width * 0.15, this.canvas.height * 0.18);
     
-        // Draw round number
-        this.context.font = `${Math.floor(this.canvas.height * 0.03)}px Courier New`; // 3% of canvas height
-        this.context.fillText('Round ' + (this.round + 1), (this.canvas.width / 2), this.canvas.height * 0.035); // 3.5% of canvas height
+        this.context.font = `${Math.floor(this.canvas.height * 0.03)}px Courier New`;
+        this.context.fillText('Round ' + (this.round + 1), (this.canvas.width / 2), this.canvas.height * 0.035);
     
-        // Draw current round score
-        this.context.font = `${Math.floor(this.canvas.height * 0.04)}px Courier`; // 4% of canvas height
-        this.context.fillText(this.rounds[this.round] ? this.rounds[this.round] : this.rounds[this.round - 1], (this.canvas.width / 2), this.canvas.height * 0.1); // 10% of canvas height
+        this.context.font = `${Math.floor(this.canvas.height * 0.04)}px Courier`;
+        this.context.fillText(this.rounds[this.round] ? this.rounds[this.round] : this.rounds[this.round - 1], (this.canvas.width / 2), this.canvas.height * 0.1);
     },
     
 
     drawPaddle: function(paddle) {
-        const paddleWidth = this.canvas.width * 0.009; // 0.9% of canvas width
-        const paddleHeight = this.canvas.height * 0.164; // 16.4% of canvas height
+        const paddleWidth = this.canvas.width * 0.009;
+        const paddleHeight = this.canvas.height * 0.164;
         this.context.fillRect(paddle.x, paddle.y, paddleWidth, paddleHeight);
     },
     
 
     drawBall: function() {
-        const ballWidth = this.canvas.width * 0.0125; // 1.25% of canvas width
-        const ballHeight = this.canvas.height * 0.0227; // 2.27% of canvas height
+        const ballWidth = this.canvas.width * 0.0125;
+        const ballHeight = this.canvas.height * 0.0227;
         this.context.fillRect(this.ball.x, this.ball.y, ballWidth, ballHeight);
     },
     
     drawNet: function() {
         this.context.beginPath();
-        this.context.setLineDash([this.canvas.height * 0.007, this.canvas.height * 0.015]); // Set line dash to percentage of canvas height
-        this.context.moveTo(this.canvas.width / 2, this.canvas.height * 0.127); // 12.7% of canvas height
-        this.context.lineTo(this.canvas.width / 2, this.canvas.height * 0.873); // 87.3% of canvas height
-        this.context.lineWidth = this.canvas.width * 0.005; // 0.5% of canvas width
+        this.context.setLineDash([this.canvas.height * 0.007, this.canvas.height * 0.015]);
+        this.context.moveTo(this.canvas.width / 2, this.canvas.height * 0.127);
+        this.context.lineTo(this.canvas.width / 2, this.canvas.height * 0.873);
+        this.context.lineWidth = this.canvas.width * 0.005;
         this.context.strokeStyle = '#ffffff';
         this.context.stroke();
     },
@@ -270,13 +265,11 @@ var GameMulti = {
             }
             key.preventDefault();
 
-            // Left player paddles
             if (key.key === 'q') Pong.playerLeft.move = DIRECTION.UP;
             if (key.key === 'w') Pong.playerLeft2.move = DIRECTION.UP;
             if (key.key === 'a') Pong.playerLeft.move = DIRECTION.DOWN;
             if (key.key === 's') Pong.playerLeft2.move = DIRECTION.DOWN;
 
-            // Right player paddles
             if (key.key === 'o') Pong.playerRight.move = DIRECTION.UP;
             if (key.key === 'i') Pong.playerRight2.move = DIRECTION.UP;
             if (key.key === 'l') Pong.playerRight.move = DIRECTION.DOWN;
@@ -284,11 +277,10 @@ var GameMulti = {
         });
 
         document.addEventListener('keyup', function (key) {
-            // Left player paddles
+        
             if (key.key === 'q' || key.key === 'a') Pong.playerLeft.move = DIRECTION.IDLE;
             if (key.key === 'w' || key.key === 's') Pong.playerLeft2.move = DIRECTION.IDLE;
 
-            // Right player paddles
             if (key.key === 'o' || key.key === 'l') Pong.playerRight.move = DIRECTION.IDLE;
             if (key.key === 'i' || key.key === 'k') Pong.playerRight2.move = DIRECTION.IDLE;
         });

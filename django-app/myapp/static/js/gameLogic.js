@@ -94,22 +94,14 @@ const Game = {
     },
 
     endGameMenu: function (text) {
-        if (!this.context) {
+        if (!this.context)
             return;
-        }
-        // Clear the canvas
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    
-        // Draw the background
         this.context.fillStyle = this.color;
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    
-        // Set the text properties
         this.context.fillStyle = '#ffffff';
         this.context.font = `${Math.floor(this.canvas.height * 0.1)}px Courier New`;
         this.context.textAlign = 'center';
-    
-        // Draw the winning message
         this.context.fillText(text, this.canvas.width / 2, this.canvas.height / 2);
     },
     
@@ -118,7 +110,7 @@ const Game = {
         this.draw();
     
         const rectWidth = this.canvas.width * 0.35; // 35% of canvas width
-        const rectHeight = this.canvas.height * 0.1; // 10% of canvas height
+        const rectHeight = this.canvas.height * 0.1;
         const rectX = (this.canvas.width / 2) - (rectWidth / 2); // Centered horizontally
         const rectY = (this.canvas.height / 2) - (rectHeight / 2); // Centered vertically
     
@@ -218,40 +210,36 @@ const Game = {
             this.drawPaddle(this.playerRight);
             this.drawBall();
             this.drawNet();
-            this.context.font = `${Math.floor(this.canvas.height * 0.1)}px Courier New`; // 10% of canvas height
+            this.context.font = `${Math.floor(this.canvas.height * 0.1)}px Courier New`;
             this.context.textAlign = 'center';
-            this.context.fillText(this.playerLeft.score.toString(), (this.canvas.width / 2) - this.canvas.width * 0.15, this.canvas.height * 0.18); // 18% of canvas height
+            this.context.fillText(this.playerLeft.score.toString(), (this.canvas.width / 2) - this.canvas.width * 0.15, this.canvas.height * 0.18);
             this.context.fillText(this.playerRight.score.toString(), (this.canvas.width / 2) + this.canvas.width * 0.15, this.canvas.height * 0.18);
-        
-            // Draw round number
             this.context.font = `${Math.floor(this.canvas.height * 0.03)}px Courier New`; // 3% of canvas height
             this.context.fillText('Round ' + (this.round + 1), (this.canvas.width / 2), this.canvas.height * 0.035); // 3.5% of canvas height
-        
-            // Draw current round score
             this.context.font = `${Math.floor(this.canvas.height * 0.04)}px Courier`; // 4% of canvas height
-            this.context.fillText(this.rounds[this.round] ? this.rounds[this.round] : this.rounds[this.round - 1], (this.canvas.width / 2), this.canvas.height * 0.1); // 10% of canvas height
+            this.context.fillText(this.rounds[this.round] ? this.rounds[this.round] : this.rounds[this.round - 1], (this.canvas.width / 2), this.canvas.height * 0.1);
         },
         
 
         drawPaddle: function(paddle) {
-            const paddleWidth = this.canvas.width * 0.009; // 0.9% of canvas width
-            const paddleHeight = this.canvas.height * 0.164; // 16.4% of canvas height
+            const paddleWidth = this.canvas.width * 0.009;
+            const paddleHeight = this.canvas.height * 0.164;
             this.context.fillRect(paddle.x, paddle.y, paddleWidth, paddleHeight);
         },
         
 
         drawBall: function() {
-            const ballWidth = this.canvas.width * 0.0125; // 1.25% of canvas width
-            const ballHeight = this.canvas.height * 0.0227; // 2.27% of canvas height
+            const ballWidth = this.canvas.width * 0.0125;
+            const ballHeight = this.canvas.height * 0.0227;
             this.context.fillRect(this.ball.x, this.ball.y, ballWidth, ballHeight);
         },
         
         drawNet: function() {
             this.context.beginPath();
-            this.context.setLineDash([this.canvas.height * 0.007, this.canvas.height * 0.015]); // Set line dash to percentage of canvas height
-            this.context.moveTo(this.canvas.width / 2, this.canvas.height * 0.127); // 12.7% of canvas height
-            this.context.lineTo(this.canvas.width / 2, this.canvas.height * 0.873); // 87.3% of canvas height
-            this.context.lineWidth = this.canvas.width * 0.005; // 0.5% of canvas width
+            this.context.setLineDash([this.canvas.height * 0.007, this.canvas.height * 0.015]);
+            this.context.moveTo(this.canvas.width / 2, this.canvas.height * 0.127);
+            this.context.lineTo(this.canvas.width / 2, this.canvas.height * 0.873);
+            this.context.lineWidth = this.canvas.width * 0.005;
             this.context.strokeStyle = '#ffffff';
             this.context.stroke();
         },
@@ -299,7 +287,7 @@ const Game = {
                 const winnerName = victor === this.playerLeft ? this.playerLeft.name : this.playerRight.name;
                 setTimeout(() => {
                     this.endGameMenu(winnerName + ' Wins!');
-                    this.finalize(); // Ensure finalize is called after endGameMenu
+                    this.finalize();
                 }, 1000);
             } else {
                 this.advanceToNextRound();
@@ -307,7 +295,6 @@ const Game = {
         }
     },
     
-
     _turnDelayIsOver: function () {
         return ((new Date()).getTime() - this.timer >= 1000);
     }
@@ -320,7 +307,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (restartButton) {
         restartButton.addEventListener('click', () => {
                         cancelAnimationFrame(this.loop);
-
             document.removeEventListener('keydown', this.keydownHandler);
             document.removeEventListener('keyup', this.keyupHandler);
 

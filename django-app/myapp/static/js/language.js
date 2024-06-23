@@ -1,5 +1,3 @@
-// language.js
-
 const translations = {
     en: {
         speedText: "Press again to speed up",
@@ -63,7 +61,6 @@ function updateUI() {
         { id: 'login-link-text', key: 'login' },
         { id: 'speed-text', key: 'speedText' },
         { id: 'game-title', key: 'gameTitle' },
-        // Add more elements as needed
     ];
 
     elementsToUpdate.forEach(({ id, key }) => {
@@ -90,7 +87,6 @@ function initializeLanguage() {
     if (savedLanguage && ['en', 'es', 'it'].includes(savedLanguage)) {
         currentLanguage = savedLanguage;
     } else {
-        // Default to English if no saved language is valid
         currentLanguage = 'en';
     }
     updateUI();

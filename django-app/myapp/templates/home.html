@@ -8,6 +8,7 @@
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'images/favicon.ico' %}" rel="shortcut icon" type="image/png"/>
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
 </head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -145,22 +146,21 @@
                 const page = $(this).data('page');
                 changeNavbarImage(getImagePathForPage(page));
                 loadPage(page);
-                $('#game-title').text($(this).text()); // Add this line to switch the h1 text
+                $('#game-title').text($(this).text());
                 if (page === 'login' || page === 'register') {
-                    $('#speed-text').hide(); // Set the content of the element with id 'speed-text' to empty
-                    $('#game-title').html(''); // Set the content of the element with id 'game-title' to empty
-                    $('#language-toggle-button').hide(); // Hide the element with id 'language-toggle-button
+                    $('#speed-text').hide();
+                    $('#game-title').html('');
+                    $('#language-toggle-button').hide();
                 }
                 else
                 {
-                    $('#language-toggle-button').show(); // Show the element with id 'language-toggle-button
-                    $('#speed-text').show(); // Show the element with id 'speed-text'
+                    $('#language-toggle-button').show();
+                    $('#speed-text').show();
                 }
             });
 
             initialLoad();
 
-            // Handle browser back/forward button
             window.onpopstate = function(event) {
                 if (event.state && event.state.page) {
                     changeNavbarImage(getImagePathForPage(event.state.page));
@@ -176,10 +176,8 @@
             $('#english-btn').click(function() { changeLanguage('en'); });
             $('#spanish-btn').click(function() { changeLanguage('es'); });
 
-
             const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
 
-            // Add click event listener to each navbar link
             navLinks.forEach(link => {
                 link.addEventListener('click', () => {
                     // Close the navbar collapse menu programmatically
@@ -191,6 +189,5 @@
             });
         });
     </script>
-
 </body>
 </html>

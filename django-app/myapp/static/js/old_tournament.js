@@ -7,16 +7,11 @@ var DIRECTION = {
     RIGHT: 4
 };
 
-
-
-// Global Variables for Tournament Management
 var players = [];
 var tournamentBracket = [];
 var currentMatch = 0;
 var matchResults = [];
 
-
-// Shuffle Array
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -24,7 +19,6 @@ function shuffle(array) {
     }
 }
 
-// Create Bracket
 function createBracket(players) {
     let bracket = [];
     for (let i = 0; i < players.length; i += 2) {
@@ -49,18 +43,17 @@ function startNextMatch() {
     if (currentMatch < tournamentBracket.length) {
         let match = tournamentBracket[currentMatch];
         Pong.finalize();
-        updateUI("Current game: " + match[0] + " vs " + match[1], 'current_game');
+        updateUI(" " + match[0] + " vs " + match[1], 'current_game');
         Pong.initialize(match[0], match[1]);
     } else {
         if (tournamentBracket.length > 1) {
             advanceTournament();
         } else {
-            updateUI("Champion: " + tournamentBracket[0][0], 'champion');
+            updateUI("Winner: " + tournamentBracket[0][0], 'champion');
         }
     }
 }
 
-// Advance Tournament
 function advanceTournament() {
     let winners = [];
     for (let i = 0; i < matchResults.length; i++) {
@@ -72,7 +65,6 @@ function advanceTournament() {
     startNextMatch();
 }
 
-// Record Match Winner
 function recordMatchWinner(winner) {
     matchResults.push(winner);
     currentMatch++;
@@ -81,7 +73,6 @@ function recordMatchWinner(winner) {
 
 var rounds = [3];
 
-// The ball object (The cube that bounces back and forth)
 var Ball = {
     new: function () {
         return {
@@ -96,7 +87,6 @@ var Ball = {
     }
 };
 
-// The paddle object (The two lines that move up and down)
 var Paddle = {
     new: function (side) {
         return {
@@ -147,7 +137,7 @@ var GameTour = {
     },
     
     finalize: function() {
-        this.running = false; // Stop the game loop
+        this.running = false;
         this.over = true;
         this.turn = null;
         this.timer = this.round = 0;
@@ -170,13 +160,13 @@ var GameTour = {
     },
     
     endGameMenu: function (text) {
-        if (!this.canvas || !this.context) return; // Add this line to prevent errors if canvas or context is null
-        const rectWidth = this.canvas.width * 0.35; // 35% of canvas width
-        const rectHeight = this.canvas.height * 0.1; // 10% of canvas height
-        const rectX = (this.canvas.width / 2) - (rectWidth / 2); // Centered horizontally
-        const rectY = (this.canvas.height / 2) - (rectHeight / 2); // Centered vertically
+        if (!this.canvas || !this.context) return;
+        const rectWidth = this.canvas.width * 0.35;
+        const rectHeight = this.canvas.height * 0.1;
+        const rectX = (this.canvas.width / 2) - (rectWidth / 2);
+        const rectY = (this.canvas.height / 2) - (rectHeight / 2);
     
-        this.context.font = `${Math.floor(this.canvas.height * 0.04)}px Courier New`; // 4% of canvas height
+        this.context.font = `${Math.floor(this.canvas.height * 0.04)}px Courier New`;
         this.context.fillStyle = this.color;
         this.context.fillRect(rectX, rectY, rectWidth, rectHeight);
         this.context.fillStyle = '#ffffff';
@@ -187,12 +177,12 @@ var GameTour = {
     menu: function () {
         this.draw();
     
-        const rectWidth = this.canvas.width * 0.35; // 35% of canvas width
-        const rectHeight = this.canvas.height * 0.1; // 10% of canvas height
-        const rectX = (this.canvas.width / 2) - (rectWidth / 2); // Centered horizontally
-        const rectY = (this.canvas.height / 2) - (rectHeight / 2); // Centered vertically
+        const rectWidth = this.canvas.width * 0.35;
+        const rectHeight = this.canvas.height * 0.1;
+        const rectX = (this.canvas.width / 2) - (rectWidth / 2);
+        const rectY = (this.canvas.height / 2) - (rectHeight / 2);
     
-        this.context.font = `${Math.floor(this.canvas.height * 0.05)}px Courier New`; // 5% of canvas height
+        this.context.font = `${Math.floor(this.canvas.height * 0.05)}px Courier New`;
         this.context.fillStyle = this.color;
         this.context.fillRect(rectX, rectY, rectWidth, rectHeight);
         this.context.fillStyle = '#ffffff';
@@ -276,7 +266,7 @@ var GameTour = {
     advanceToNextRound: function() {
         this.color = this.color;
         this.playerLeft.score = this.playerRight.score = 0;
-        this.ball = Ball.new.call(this); // Reset the ball for the new round
+        this.ball = Ball.new.call(this);
         this.round += 1;
     },
 
@@ -289,42 +279,41 @@ var GameTour = {
         this.drawPaddle(this.playerRight);
         this.drawBall();
         this.drawNet();
-        this.context.font = `${Math.floor(this.canvas.height * 0.1)}px Courier New`; // 10% of canvas height
+        this.context.font = `${Math.floor(this.canvas.height * 0.1)}px Courier New`;
         this.context.textAlign = 'center';
-        this.context.fillText(this.playerLeft.score.toString(), (this.canvas.width / 2) - this.canvas.width * 0.15, this.canvas.height * 0.18); // 18% of canvas height
+        this.context.fillText(this.playerLeft.score.toString(), (this.canvas.width / 2) - this.canvas.width * 0.15, this.canvas.height * 0.18);
         this.context.fillText(this.playerRight.score.toString(), (this.canvas.width / 2) + this.canvas.width * 0.15, this.canvas.height * 0.18);
     
-        // Draw round number
-        this.context.font = `${Math.floor(this.canvas.height * 0.03)}px Courier New`; // 3% of canvas height
-        this.context.fillText('Round ' + (this.round + 1), (this.canvas.width / 2), this.canvas.height * 0.035); // 3.5% of canvas height
+        this.context.font = `${Math.floor(this.canvas.height * 0.03)}px Courier New`;
+        this.context.fillText('Round ' + (this.round + 1), (this.canvas.width / 2), this.canvas.height * 0.035);
     },
     
 
     drawPaddle: function(paddle) {
-        const paddleWidth = this.canvas.width * 0.009; // 0.9% of canvas width
-        const paddleHeight = this.canvas.height * 0.164; // 16.4% of canvas height
+        const paddleWidth = this.canvas.width * 0.009;
+        const paddleHeight = this.canvas.height * 0.164;
         this.context.fillRect(paddle.x, paddle.y, paddleWidth, paddleHeight);
     },
     
 
     drawBall: function() {
-        const ballWidth = this.canvas.width * 0.0125; // 1.25% of canvas width
-        const ballHeight = this.canvas.height * 0.0227; // 2.27% of canvas height
+        const ballWidth = this.canvas.width * 0.0125;
+        const ballHeight = this.canvas.height * 0.0227;
         this.context.fillRect(this.ball.x, this.ball.y, ballWidth, ballHeight);
     },
     
     drawNet: function() {
         this.context.beginPath();
-        this.context.setLineDash([this.canvas.height * 0.007, this.canvas.height * 0.015]); // Set line dash to percentage of canvas height
-        this.context.moveTo(this.canvas.width / 2, this.canvas.height * 0.127); // 12.7% of canvas height
-        this.context.lineTo(this.canvas.width / 2, this.canvas.height * 0.873); // 87.3% of canvas height
-        this.context.lineWidth = this.canvas.width * 0.005; // 0.5% of canvas width
+        this.context.setLineDash([this.canvas.height * 0.007, this.canvas.height * 0.015]);
+        this.context.moveTo(this.canvas.width / 2, this.canvas.height * 0.127);
+        this.context.lineTo(this.canvas.width / 2, this.canvas.height * 0.873);
+        this.context.lineWidth = this.canvas.width * 0.005;
         this.context.strokeStyle = '#ffffff';
         this.context.stroke();
     },
 
     loop: function () {
-        if (Pong.over) return; // Stop the loop if the game is not running
+        if (Pong.over) return;
         if (!Pong.over) {
             Pong.update();
             Pong.draw();
@@ -372,7 +361,6 @@ var GameTour = {
         }
     },
     
-
     _turnDelayIsOver: function () {
         return ((new Date()).getTime() - this.timer >= 1000);
     },
@@ -380,7 +368,6 @@ var GameTour = {
 
 var Pong = Object.assign({}, GameTour);
 
-// Initialize Tournament
 export function initializeTournament() {
     players = [];
     for (let i = 0; i < 4; i++) {
@@ -402,10 +389,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const restartButton = document.getElementById('restartButtonTournament');
     if (restartButton) {
         restartButton.addEventListener('click', () => {
-            // Stop the game animation
             cancelAnimationFrame(this.loop);
-
-            // Remove event listeners
             document.removeEventListener('keydown', this.keydownHandler);
             document.removeEventListener('keyup', this.keyupHandler);
         });

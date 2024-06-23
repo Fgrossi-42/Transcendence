@@ -1,11 +1,4 @@
 {% load static %}
-
-<!DOCTYPE html>
-<html>
-<head>
-  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-  <title>Register</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     $(document).ready(function() {
       $('#speed-text').hide();
@@ -50,7 +43,6 @@
           url: $(this).attr('action'),
           data: formData,
           dataType: 'json',
-          // Include the CSRF token in the request header
           beforeSend: function(xhr, settings) {
             if (!this.crossDomain) {
               xhr.setRequestHeader("X-CSRFToken", $('input[name=csrfmiddlewaretoken]').val());
@@ -71,7 +63,6 @@
       });
     });
   </script>
-</head>
 <body>
 <section class="vh-100" style="background-color: #eee;">
   <div class="container h-100">
@@ -122,4 +113,3 @@
   </div>
 </section>
 </body>
-</html>
