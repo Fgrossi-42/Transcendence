@@ -62,15 +62,13 @@ var GameMulti = {
         this.playerRight.name = playerRightName;
         this.rounds = rounds;
 
-        window.addEventListener('resize', this.updateCanvasSize.bind(this));
-
         Pong.menu();
         Pong.listen();
     },
 
     updateCanvasSize: function () {
         const div = document.querySelector('.responsive-div');
-        if (div.clientWidth && div.clientHeight) {
+        if (div && div.clientWidth && div.clientHeight) {
             this.canvas.width = div.clientWidth * 2;
             this.canvas.height = div.clientHeight * 2;
         }

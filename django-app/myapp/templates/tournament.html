@@ -1,7 +1,7 @@
 {% load static %}
 
 <body class="d-flex flex-column h-100">
-    <h2 id="champion" class="text-center"><h2>
+    <h2 id="champion" class="text-center"> <span id="winner-text">Winner: </span><span id="score-text"></span><h2>
     <h4 id="current-game" class="text-center"></h4>
         <div class="position-relative text-center bg-dark mx-auto text-white pt-5 responsive-div">
             <canvas></canvas>
@@ -21,15 +21,19 @@
         <script src="{% static 'js/bootstrap.bundle.min.js' %}" defer></script>
     <script type="module" src="{% static 'js/old_tournament.js' %}" defer></script>
     <script>
+        $('#champion').hide();
         if (currentLanguage == 'en') {
             document.getElementById('restartButtonTournament').innerHTML = 'Play';
             document.getElementById('commands').innerHTML = 'Left: W S  |  Right: O L';
+            document.getElementById('winner-text').innerHTML = 'Winner: ';
         } else if (currentLanguage == 'it') {
             document.getElementById('restartButtonTournament').innerHTML = 'Gioca';
             document.getElementById('commands').innerHTML = 'Sinistra: W S  |  Destra: O L';
+            document.getElementById('winner-text').innerHTML = 'Vincitore: ';
         } else {
             document.getElementById('restartButtonTournament').innerHTML = 'Jugar';
             document.getElementById('commands').innerHTML = 'Izquierda: W S  |  Derecha: O L';
+            document.getElementById('winner-text').innerHTML = 'Ganador: ';
         }
     </script>
 </body>

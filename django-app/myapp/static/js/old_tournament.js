@@ -29,8 +29,8 @@ function createBracket(players) {
 
 function updateUI(message, type) {
     let element = null;
-    if (type === 'champion') {
-        element = document.getElementById('champion');
+    if (type === 'score-text') {
+        element = document.getElementById('score-text');
     } else if (type === 'current_game') {
         element = document.getElementById('current-game');
     }
@@ -49,7 +49,7 @@ function startNextMatch(winner) {
             advanceTournament();
         } else {
             $('#champion').show();
-            updateUI("Winner: " + winner, 'champion');
+            updateUI(' ' + winner, 'score-text');
         }
     }
 }

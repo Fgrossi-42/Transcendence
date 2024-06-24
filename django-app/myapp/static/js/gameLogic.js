@@ -15,7 +15,7 @@ const Ball = {
             y: (this.canvas.height / 2) - (this.canvas.width * 0.0125 / 2),
             moveX: DIRECTION.IDLE,
             moveY: DIRECTION.IDLE,
-            speed: this.canvas.width * 0.014
+            speed: this.canvas.width * 0.004
         };
     }
 };
@@ -29,7 +29,7 @@ const Paddle = {
             y: (this.canvas.height / 2) - (this.canvas.height * 0.15 / 2),
             score: 0,
             move: DIRECTION.IDLE,
-            speed: this.canvas.height * 0.02
+            speed: this.canvas.height * 0.007
         };
     }
 };
@@ -53,7 +53,7 @@ const Game = {
         this.playerLeft.name = playerLeftName;
         this.playerRight.name = playerRightName;
         this.rounds = rounds;
-        
+
         this.menu();
         this.listen();
     },

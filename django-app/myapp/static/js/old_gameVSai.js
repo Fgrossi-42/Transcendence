@@ -47,13 +47,11 @@ var GameAI = {
         this.ai = Ai.new.call(this, 'right');
         this.ball = Ball.new.call(this);
 
-        this.ai.speed = this.canvas.height * 0.005;
+        this.ai.speed = this.canvas.height * 0.007;
         this.running = this.over = false;
         this.turn = this.ai;
         this.timer = this.round = 0;
         this.color = '#212529';
-
-        window.addEventListener('resize', this.updateCanvasSize.bind(this));
 
         PongAI.menu();
         PongAI.listen();
@@ -61,29 +59,9 @@ var GameAI = {
     
     updateCanvasSize: function () {
         const div = document.querySelector('.responsive-div');
-        if (div.clientWidth && div.clientHeight) {
+        if (div && div.clientWidth && div.clientHeight) {
             this.canvas.width = div.clientWidth * 2;
             this.canvas.height = div.clientHeight * 2;
-
-            if (this.player && this.ai && this.ball) {
-                this.player.width = this.canvas.width * 0.009;
-                this.player.height = this.canvas.height * 0.15;
-                this.player.x = this.canvas.width * 0.075;
-                this.player.y = (this.canvas.height / 2) - (this.player.height / 2);
-                this.player.speed = this.canvas.height * 0.007;
-
-                this.ai.width = this.canvas.width * 0.009;
-                this.ai.height = this.canvas.height * 0.15;
-                this.ai.x = this.canvas.width - this.canvas.width * 0.075;
-                this.ai.y = (this.canvas.height / 2) - (this.ai.height / 2);
-                this.ai.speed = this.canvas.height * 0.007;
-
-                this.ball.width = this.canvas.width * 0.0125;
-                this.ball.height = this.canvas.width * 0.0125;
-                this.ball.x = (this.canvas.width / 2) - (this.ball.width / 2);
-                this.ball.y = (this.canvas.height / 2) - (this.ball.height / 2);
-                this.ball.speed = this.canvas.width * 0.004;
-            }
         }
     },
 
@@ -138,44 +116,56 @@ var GameAI = {
             if (this.ball.x >= this.canvas.width - this.ball.width) PongAI._resetTurn.call(this, this.player, this.ai);
             if (this.ball.y <= 0) this.ball.moveY = DIRECTION.DOWN;
             if (this.ball.y >= this.canvas.height - this.ball.height) this.ball.moveY = DIRECTION.UP;
-
+    
             if (this.player.move === DIRECTION.UP) this.player.y -= this.player.speed;
             else if (this.player.move === DIRECTION.DOWN) this.player.y += this.player.speed;
-
+    
             if (PongAI._turnDelayIsOver.call(this) && this.turn) {
                 this.ball.moveX = this.turn === this.player ? DIRECTION.LEFT : DIRECTION.RIGHT;
                 this.ball.moveY = [DIRECTION.UP, DIRECTION.DOWN][Math.round(Math.random())];
                 this.ball.y = Math.floor(Math.random() * this.canvas.height - 200) + 200;
                 this.turn = null;
             }
-
+    
             if (this.player.y <= 0) this.player.y = 0;
             else if (this.player.y >= (this.canvas.height - this.player.height)) this.player.y = (this.canvas.height - this.player.height);
-
+    
             if (this.ball.moveY === DIRECTION.UP) this.ball.y -= (this.ball.speed / 1.5);
             else if (this.ball.moveY === DIRECTION.DOWN) this.ball.y += (this.ball.speed / 1.5);
             if (this.ball.moveX === DIRECTION.LEFT) this.ball.x -= this.ball.speed;
             else if (this.ball.moveX === DIRECTION.RIGHT) this.ball.x += this.ball.speed;
-
-            if (this.ai.y > this.ball.y - (this.ai.height / 2)) {
-                if (this.ball.moveX === DIRECTION.RIGHT) this.ai.y -= this.ai.speed / 1.5;
-                else this.ai.y -= this.ai.speed / 4;
+    
+            if (!this.lastAIUpdate || Date.now() - this.lastAIUpdate > 1000) {
+                this.lastAIUpdate = Date.now();
+                console.log('AI update');
+                var predictedY = this.ball.y + (this.ball.moveY === DIRECTION.UP ? -1 : 1) * (this.canvas.height / this.ball.speed);
+    
+                if (this.ai.y > predictedY - (this.ai.height / 2)) {
+                    if (this.ball.moveX === DIRECTION.RIGHT) this.ai.y -= this.ai.speed / 1.5;
+                    else this.ai.y -= this.ai.speed / 4;
+                }
+                if (this.ai.y < predictedY - (this.ai.height / 2)) {
+                    if (this.ball.moveX === DIRECTION.RIGHT) this.ai.y += this.ai.speed / 1.5;
+                    else this.ai.y += this.ai.speed / 4;
+                }
+            } else {
+                if (this.ball.moveY === DIRECTION.UP && this.ai.y > this.ball.y) {
+                    this.ai.y -= this.ai.speed / 2;
+                } else if (this.ball.moveY === DIRECTION.DOWN && this.ai.y < this.ball.y) {
+                    this.ai.y += this.ai.speed / 2;
+                }
             }
-            if (this.ai.y < this.ball.y - (this.ai.height / 2)) {
-                if (this.ball.moveX === DIRECTION.RIGHT) this.ai.y += this.ai.speed / 1.5;
-                else this.ai.y += this.ai.speed / 4;
-            }
-
+    
             if (this.ai.y >= this.canvas.height - this.ai.height) this.ai.y = this.canvas.height - this.ai.height;
             else if (this.ai.y <= 0) this.ai.y = 0;
-
+    
             if (this.ball.x - this.ball.width <= this.player.x && this.ball.x >= this.player.x - this.player.width) {
                 if (this.ball.y <= this.player.y + this.player.height && this.ball.y + this.ball.height >= this.player.y) {
                     this.ball.x = (this.player.x + this.ball.width);
                     this.ball.moveX = DIRECTION.RIGHT;
                 }
             }
-
+    
             if (this.ball.x - this.ball.width <= this.ai.x && this.ball.x >= this.ai.x - this.ai.width) {
                 if (this.ball.y <= this.ai.y + this.ai.height && this.ball.y + this.ball.height >= this.ai.y) {
                     this.ball.x = (this.ai.x - this.ball.width);
@@ -183,7 +173,7 @@ var GameAI = {
                 }
             }
         }
-
+    
         if (this.player.score === rounds[this.round]) {
             if (!rounds[this.round + 1]) {
                 this.over = true;
@@ -198,7 +188,7 @@ var GameAI = {
             setTimeout(function () { PongAI.endGameMenu('Game Over!'); }, 1000);
         }
     },
-
+      
     draw: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.fillStyle = this.color;
