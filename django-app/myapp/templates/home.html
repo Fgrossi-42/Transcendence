@@ -69,8 +69,8 @@
         </div>
     </footer>    
     
-    <script src="{% static 'js/language.js' %}"></script>
     <script src="{% static 'js/old_tournament.js' %}"></script>
+    <script src="{% static 'js/language.js' %}"></script>
     <script>
         $(document).ready(function() {
             function changeNavbarImage(imagePath) {
@@ -180,7 +180,7 @@
             $('#english-btn').click(function() { changeLanguage('en'); });
             $('#spanish-btn').click(function() { changeLanguage('es'); });
 
-            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link')
 
             navLinks.forEach(link => {
                 link.addEventListener('click', () => {

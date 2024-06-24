@@ -80,7 +80,7 @@ function changeLanguage(newLanguage) {
     if (['en', 'es', 'it'].includes(newLanguage)) {
         currentLanguage = newLanguage;
         localStorage.setItem('currentLanguage', currentLanguage);
-        console.log('Changed language to:', currentLanguage);
+        ('Changed language to:', currentLanguage);
         updateUI();
     }
 }

@@ -39,7 +39,7 @@ function updateUI(message, type) {
     }
 }
 
-function startNextMatch() {
+function startNextMatch(winner) {
     if (currentMatch < tournamentBracket.length) {
         let match = tournamentBracket[currentMatch];
         updateUI(" " + match[0] + " vs " + match[1], 'current_game');
@@ -48,7 +48,8 @@ function startNextMatch() {
         if (tournamentBracket.length > 1) {
             advanceTournament();
         } else {
-            updateUI("Winner: " + tournamentBracket[0][0], 'champion');
+            $('#champion').show();
+            updateUI("Winner: " + winner, 'champion');
         }
     }
 }
@@ -67,7 +68,7 @@ function advanceTournament() {
 function recordMatchWinner(winner) {
     matchResults.push(winner);
     currentMatch++;
-    startNextMatch();
+    startNextMatch(winner);
 }
 
 var rounds = [3];
@@ -120,9 +121,6 @@ var GameTour = {
     
         this.playerLeft.name = playerLeftName;
         this.playerRight.name = playerRightName;
-
-        window.addEventListener('resize', this.updateCanvasSize.bind(this));
-
         Pong.menu();
         Pong.listen();
     },
@@ -136,7 +134,7 @@ var GameTour = {
     },
     
     finalize: function() {
-        console.log('Finalize');
+        ('Finalize');
         this.running = false;
         this.over = true;
         this.turn = null;
@@ -155,6 +153,7 @@ var GameTour = {
     },
 
     restartTournament: function() {
+        $('#champion').hide();
         initializeTournament();
     },
     
@@ -166,8 +165,6 @@ var GameTour = {
         const rectY = (this.canvas.height / 2) - (rectHeight / 2);
     
         this.context.font = `${Math.floor(this.canvas.height * 0.04)}px Courier New`;
-        this.context.fillStyle = this.color;
-        this.context.fillRect(rectX, rectY, rectWidth, rectHeight);
         this.context.fillStyle = '#ffffff';
         this.context.fillText(text, this.canvas.width / 2, this.canvas.height / 2 + rectHeight * 0.15);
     },
@@ -248,14 +245,14 @@ var GameTour = {
         if (this.playerLeft.score === rounds[this.round]) {
             if (!rounds[this.round + 1]) {
                 this.over = true;
-                setTimeout(function () { Pong.endGameMenu('Left Player Wins!'); }, 1000);
+                setTimeout(function () { Pong.endGameMenu(' '); }, 1000);
             } else {
                 this.advanceToNextRound();
             }
         } else if (this.playerRight.score === rounds[this.round]) {
             if (!rounds[this.round + 1]) {
                 this.over = true;
-                setTimeout(function () { Pong.endGameMenu('Right Player Wins!'); }, 1000);
+                setTimeout(function () { Pong.endGameMenu(' '); }, 1000);
             } else {
                 this.advanceToNextRound();
             }
@@ -422,8 +419,6 @@ var GameTour = {
             rightDownButton.addEventListener('mouseup', () => {
                 if (Pong.playerRight) Pong.playerRight.move = DIRECTION.IDLE;
             });
-        } else {
-            console.warn('Control buttons not found in the DOM.');
         }
     },
     
@@ -439,7 +434,7 @@ var GameTour = {
                 this.over = true;
                 let winnerName = victor === this.playerLeft ? this.playerLeft.name : this.playerRight.name;
                 setTimeout(function () {
-                    Pong.endGameMenu(winnerName + ' Wins!');
+                    Pong.endGameMenu(' ');
                     recordMatchWinner(winnerName);
                 }, 1000);
             } else {
@@ -454,7 +449,7 @@ var GameTour = {
 
     over : function()
 {
-    console.log('Game Over');
+    ('Game Over');
     Pong.finalize();
 
 },

@@ -123,7 +123,7 @@
   function declareWinner(winner) {
     stopRender();
     $('#declaration').show();
-    console.log('Player ' + winner + ' wins!');
+    ('Player ' + winner + ' wins!');
     champion.textContent = ' ' + winner;
   }
 
