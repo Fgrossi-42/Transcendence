@@ -347,6 +347,56 @@ var GameMulti = {
             Pong.playerRight2.move = DIRECTION.DOWN;
         });
         rightDownButton2.addEventListener('touchend', () => Pong.playerRight2.move = DIRECTION.IDLE);
+
+
+
+        leftUpButton.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            Pong.playerLeft.move = DIRECTION.UP;
+        });
+        leftUpButton.addEventListener('mouseup', () => Pong.playerLeft.move = DIRECTION.IDLE);
+    
+        leftDownButton.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            Pong.playerLeft.move = DIRECTION.DOWN;
+        });
+        leftDownButton.addEventListener('mouseup', () => Pong.playerLeft.move = DIRECTION.IDLE);
+    
+        rightUpButton.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            Pong.playerRight.move = DIRECTION.UP;
+        });
+        rightUpButton.addEventListener('mouseup', () => Pong.playerRight.move = DIRECTION.IDLE);
+    
+        rightDownButton.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            Pong.playerRight.move = DIRECTION.DOWN;
+        });
+        rightDownButton.addEventListener('mouseup', () => Pong.playerRight.move = DIRECTION.IDLE);
+        
+        leftUpButton2.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            Pong.playerLeft2.move = DIRECTION.UP;
+        });
+        leftUpButton2.addEventListener('mouseup', () => Pong.playerLeft2.move = DIRECTION.IDLE);
+
+        leftDownButton2.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            Pong.playerLeft2.move = DIRECTION.DOWN;
+        });
+        leftDownButton2.addEventListener('mouseup', () => Pong.playerLeft2.move = DIRECTION.IDLE);
+
+        rightUpButton2.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            Pong.playerRight2.move = DIRECTION.UP;
+        });
+        rightUpButton2.addEventListener('mouseup', () => Pong.playerRight2.move = DIRECTION.IDLE);
+
+        rightDownButton2.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            Pong.playerRight2.move = DIRECTION.DOWN;
+        });
+        rightDownButton2.addEventListener('mouseup', () => Pong.playerRight2.move = DIRECTION.IDLE);
     },
 
     loop: function () {

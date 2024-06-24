@@ -375,6 +375,31 @@ var GameTour = {
             Pong.playerRight.move = DIRECTION.DOWN;
         });
         rightDownButton.addEventListener('touchend', () => Pong.playerRight.move = DIRECTION.IDLE);
+
+
+        leftUpButton.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            Pong.playerLeft.move = DIRECTION.UP;
+        });
+        leftUpButton.addEventListener('mouseup', () => Pong.playerLeft.move = DIRECTION.IDLE);
+    
+        leftDownButton.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            Pong.playerLeft.move = DIRECTION.DOWN;
+        });
+        leftDownButton.addEventListener('mouseup', () => Pong.playerLeft.move = DIRECTION.IDLE);
+    
+        rightUpButton.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            Pong.playerRight.move = DIRECTION.UP;
+        });
+        rightUpButton.addEventListener('mouseup', () => Pong.playerRight.move = DIRECTION.IDLE);
+    
+        rightDownButton.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            Pong.playerRight.move = DIRECTION.DOWN;
+        });
+        rightDownButton.addEventListener('mouseup', () => Pong.playerRight.move = DIRECTION.IDLE);
     },
 
     _resetTurn: function (victor, loser) {

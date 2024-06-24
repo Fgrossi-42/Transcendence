@@ -275,6 +275,19 @@ var GameAI = {
         PongAI.player.move = DIRECTION.DOWN;
     });
     leftDownButton.addEventListener('touchend', () => PongAI.player.move = DIRECTION.IDLE);
+
+
+    leftUpButton.addEventListener('mousedown', () => {
+        startGameIfNotRunning();
+        PongAI.player.move = DIRECTION.UP;
+    });
+    leftUpButton.addEventListener('mouseup', () => PongAI.player.move = DIRECTION.IDLE);
+
+    leftDownButton.addEventListener('mousedown', () => {
+        startGameIfNotRunning();
+        PongAI.player.move = DIRECTION.DOWN;
+    });
+    leftDownButton.addEventListener('mouseup', () => PongAI.player.move = DIRECTION.IDLE);
 },
 
     _resetTurn: function(victor, loser) {

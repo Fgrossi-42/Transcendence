@@ -13,6 +13,7 @@ const translations = {
         ticTacToe: "Tic Tac Toe",
         register: "Register",
         login: "Login",
+        footerText: "made by Fgrossi, Gfezzuog, Marimatt, and Cbuszzkzisnsksnisiy",
     },
     es: {
         speedText: "Presiona de nuevo para acelerar",
@@ -28,6 +29,7 @@ const translations = {
         ticTacToe: "Tres en Raya",
         register: "Registrar",
         login: "Iniciar Sesión",
+        footerText: "hecho por Fgrossi, Gfezzuog, Marimatt, y Cbuszzkzisnsksnisiy",
     }, 
     it: {
         speedText: "Premi di nuovo per accelerare",
@@ -43,6 +45,7 @@ const translations = {
         ticTacToe: "Tris",
         register: "Registrazione",
         login: "Accesso",
+        footerText: "fatto da Fgrossi, Gfezzuog, Marimatt, e Cbuszzkzisnsksnisiy",
     }
 };
 
@@ -60,7 +63,7 @@ function updateUI() {
         { id: 'register-link-text', key: 'register' },
         { id: 'login-link-text', key: 'login' },
         { id: 'speed-text', key: 'speedText' },
-        { id: 'game-title', key: 'gameTitle' },
+        { id: 'footer', key: 'footerText' },
     ];
 
     elementsToUpdate.forEach(({ id, key }) => {

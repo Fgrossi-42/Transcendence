@@ -309,6 +309,30 @@ const Game = {
             this.playerRight.move = DIRECTION.DOWN;
         });
         rightDownButton.addEventListener('touchend', () => this.playerRight.move = DIRECTION.IDLE);
+        
+        leftUpButton.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            this.playerLeft.move = DIRECTION.UP;
+        });
+        leftUpButton.addEventListener('mouseup', () => this.playerLeft.move = DIRECTION.IDLE);
+    
+        leftDownButton.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            this.playerLeft.move = DIRECTION.DOWN;
+        });
+        leftDownButton.addEventListener('mouseup', () => this.playerLeft.move = DIRECTION.IDLE);
+    
+        rightUpButton.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            this.playerRight.move = DIRECTION.UP;
+        });
+        rightUpButton.addEventListener('mouseup', () => this.playerRight.move = DIRECTION.IDLE);
+    
+        rightDownButton.addEventListener('mousedown', () => {
+            startGameIfNotRunning();
+            this.playerRight.move = DIRECTION.DOWN;
+        });
+        rightDownButton.addEventListener('mouseup', () => this.playerRight.move = DIRECTION.IDLE);
     },
     
 
