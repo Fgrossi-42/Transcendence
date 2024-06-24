@@ -42,7 +42,6 @@ function updateUI(message, type) {
 function startNextMatch() {
     if (currentMatch < tournamentBracket.length) {
         let match = tournamentBracket[currentMatch];
-        Pong.finalize();
         updateUI(" " + match[0] + " vs " + match[1], 'current_game');
         Pong.initialize(match[0], match[1]);
     } else {
@@ -137,6 +136,7 @@ var GameTour = {
     },
     
     finalize: function() {
+        console.log('Finalize');
         this.running = false;
         this.over = true;
         this.turn = null;
@@ -144,7 +144,7 @@ var GameTour = {
         this.playerLeft = this.playerRight = this.ball = this.canvas = this.context = null;
         this.color = '#212529';
         this.rounds = null;
-    
+        
         if (this.canvas) {
             this.canvas.style.width = '';
             this.canvas.style.height = '';
@@ -155,7 +155,6 @@ var GameTour = {
     },
 
     restartTournament: function() {
-        this.finalize();
         initializeTournament();
     },
     
@@ -323,23 +322,30 @@ var GameTour = {
 
     listen: function () {
         document.addEventListener('keydown', function (key) {
-            if (Pong.running === false) {
+            if (Pong.over) {
+                return;
+            }
+            if (Pong.running === false && Pong.over === false) {
                 Pong.running = true;
                 window.requestAnimationFrame(Pong.loop);
             }
             key.preventDefault();
-
-            if (key.key === 'w') Pong.playerLeft.move = DIRECTION.UP;
-            if (key.key === 'o') Pong.playerRight.move = DIRECTION.UP;
-            if (key.key === 's') Pong.playerLeft.move = DIRECTION.DOWN;
-            if (key.key === 'l') Pong.playerRight.move = DIRECTION.DOWN;
+    
+            if (Pong.playerLeft && Pong.playerRight) {
+                if (key.key === 'w') Pong.playerLeft.move = DIRECTION.UP;
+                if (key.key === 'o') Pong.playerRight.move = DIRECTION.UP;
+                if (key.key === 's') Pong.playerLeft.move = DIRECTION.DOWN;
+                if (key.key === 'l') Pong.playerRight.move = DIRECTION.DOWN;
+            }
         });
-
+    
         document.addEventListener('keyup', function (key) {
-            if (key.key === 'w' || key.key === 's') Pong.playerLeft.move = DIRECTION.IDLE;
-            if (key.key === 'o' || key.key === 'l') Pong.playerRight.move = DIRECTION.IDLE;
+            if (Pong.playerLeft && Pong.playerRight) {
+                if (key.key === 'w' || key.key === 's') Pong.playerLeft.move = DIRECTION.IDLE;
+                if (key.key === 'o' || key.key === 'l') Pong.playerRight.move = DIRECTION.IDLE;
+            }
         });
-
+    
         const leftUpButton = document.getElementById('left-up');
         const leftDownButton = document.getElementById('left-down');
         const rightUpButton = document.getElementById('right-up');
@@ -352,55 +358,75 @@ var GameTour = {
             }
         };
     
-        leftUpButton.addEventListener('touchstart', () => {
-            startGameIfNotRunning();
-            Pong.playerLeft.move = DIRECTION.UP;
-        });
-        leftUpButton.addEventListener('touchend', () => Pong.playerLeft.move = DIRECTION.IDLE);
+        if (leftUpButton && leftDownButton && rightUpButton && rightDownButton) {
+            leftUpButton.addEventListener('touchstart', () => {
+                startGameIfNotRunning();
+                if (Pong.playerLeft) Pong.playerLeft.move = DIRECTION.UP;
+            });
+            leftUpButton.addEventListener('touchend', () => {
+                if (Pong.playerLeft) Pong.playerLeft.move = DIRECTION.IDLE;
+            });
     
-        leftDownButton.addEventListener('touchstart', () => {
-            startGameIfNotRunning();
-            Pong.playerLeft.move = DIRECTION.DOWN;
-        });
-        leftDownButton.addEventListener('touchend', () => Pong.playerLeft.move = DIRECTION.IDLE);
+            leftDownButton.addEventListener('touchstart', () => {
+                startGameIfNotRunning();
+                if (Pong.playerLeft) Pong.playerLeft.move = DIRECTION.DOWN;
+            });
+            leftDownButton.addEventListener('touchend', () => {
+                if (Pong.playerLeft) Pong.playerLeft.move = DIRECTION.IDLE;
+            });
     
-        rightUpButton.addEventListener('touchstart', () => {
-            startGameIfNotRunning();
-            Pong.playerRight.move = DIRECTION.UP;
-        });
-        rightUpButton.addEventListener('touchend', () => Pong.playerRight.move = DIRECTION.IDLE);
+            rightUpButton.addEventListener('touchstart', () => {
+                startGameIfNotRunning();
+                if (Pong.playerRight) Pong.playerRight.move = DIRECTION.UP;
+            });
+            rightUpButton.addEventListener('touchend', () => {
+                if (Pong.playerRight) Pong.playerRight.move = DIRECTION.IDLE;
+            });
     
-        rightDownButton.addEventListener('touchstart', () => {
-            startGameIfNotRunning();
-            Pong.playerRight.move = DIRECTION.DOWN;
-        });
-        rightDownButton.addEventListener('touchend', () => Pong.playerRight.move = DIRECTION.IDLE);
-
-
-        leftUpButton.addEventListener('mousedown', () => {
-            startGameIfNotRunning();
-            Pong.playerLeft.move = DIRECTION.UP;
-        });
-        leftUpButton.addEventListener('mouseup', () => Pong.playerLeft.move = DIRECTION.IDLE);
+            rightDownButton.addEventListener('touchstart', () => {
+                startGameIfNotRunning();
+                if (Pong.playerRight) Pong.playerRight.move = DIRECTION.DOWN;
+            });
+            rightDownButton.addEventListener('touchend', () => {
+                if (Pong.playerRight) Pong.playerRight.move = DIRECTION.IDLE;
+            });
     
-        leftDownButton.addEventListener('mousedown', () => {
-            startGameIfNotRunning();
-            Pong.playerLeft.move = DIRECTION.DOWN;
-        });
-        leftDownButton.addEventListener('mouseup', () => Pong.playerLeft.move = DIRECTION.IDLE);
+            leftUpButton.addEventListener('mousedown', () => {
+                startGameIfNotRunning();
+                if (Pong.playerLeft) Pong.playerLeft.move = DIRECTION.UP;
+            });
+            leftUpButton.addEventListener('mouseup', () => {
+                if (Pong.playerLeft) Pong.playerLeft.move = DIRECTION.IDLE;
+            });
     
-        rightUpButton.addEventListener('mousedown', () => {
-            startGameIfNotRunning();
-            Pong.playerRight.move = DIRECTION.UP;
-        });
-        rightUpButton.addEventListener('mouseup', () => Pong.playerRight.move = DIRECTION.IDLE);
+            leftDownButton.addEventListener('mousedown', () => {
+                startGameIfNotRunning();
+                if (Pong.playerLeft) Pong.playerLeft.move = DIRECTION.DOWN;
+            });
+            leftDownButton.addEventListener('mouseup', () => {
+                if (Pong.playerLeft) Pong.playerLeft.move = DIRECTION.IDLE;
+            });
     
-        rightDownButton.addEventListener('mousedown', () => {
-            startGameIfNotRunning();
-            Pong.playerRight.move = DIRECTION.DOWN;
-        });
-        rightDownButton.addEventListener('mouseup', () => Pong.playerRight.move = DIRECTION.IDLE);
+            rightUpButton.addEventListener('mousedown', () => {
+                startGameIfNotRunning();
+                if (Pong.playerRight) Pong.playerRight.move = DIRECTION.UP;
+            });
+            rightUpButton.addEventListener('mouseup', () => {
+                if (Pong.playerRight) Pong.playerRight.move = DIRECTION.IDLE;
+            });
+    
+            rightDownButton.addEventListener('mousedown', () => {
+                startGameIfNotRunning();
+                if (Pong.playerRight) Pong.playerRight.move = DIRECTION.DOWN;
+            });
+            rightDownButton.addEventListener('mouseup', () => {
+                if (Pong.playerRight) Pong.playerRight.move = DIRECTION.IDLE;
+            });
+        } else {
+            console.warn('Control buttons not found in the DOM.');
+        }
     },
+    
 
     _resetTurn: function (victor, loser) {
         this.ball = Ball.new.call(this);
@@ -425,11 +451,18 @@ var GameTour = {
     _turnDelayIsOver: function () {
         return ((new Date()).getTime() - this.timer >= 1000);
     },
+
+    over : function()
+{
+    console.log('Game Over');
+    Pong.finalize();
+
+},
 };
 
 var Pong = Object.assign({}, GameTour);
 
-export function initializeTournament() {
+function initializeTournament() {
     players = [];
     for (let i = 0; i < 4; i++) {
         let playerName = prompt("Enter name for Player " + (i + 1));
@@ -448,6 +481,17 @@ export function initializeTournament() {
 
 document.addEventListener('DOMContentLoaded', (event) => {
     const restartButton = document.getElementById('restartButtonTournament');
+    if (restartButton) {
+        restartButton.addEventListener('click', () => {
+            cancelAnimationFrame(this.loop);
+            document.removeEventListener('keydown', this.keydownHandler);
+            document.removeEventListener('keyup', this.keyupHandler);
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const restartButton = document.getElementById('stop');
     if (restartButton) {
         restartButton.addEventListener('click', () => {
             cancelAnimationFrame(this.loop);

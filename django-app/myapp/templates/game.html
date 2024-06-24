@@ -13,6 +13,7 @@
         <button id="right-down" class="control-button">▼</button>
     </div>
     <div class="text-center mt-3">
+        <h4 id="commands" class="text-black">Left: W S  |  Right: O L</h4>
         <button id="restartButton" onclick="Game.restart('Player 1', 'Player 2', [5])" style="background:#212529;color:white;" type="button" class="btn btn-primary btn-lg play-button">Play</button>
         <script src="{% static 'js/bootstrap.bundle.min.js' %}" defer></script>
         <script type="module" src="{% static 'js/gameLogic.js' %}" defer></script>
@@ -20,10 +21,13 @@
             $('#speed-text').hide();
             if (currentLanguage == 'en') {
                 document.getElementById('restartButton').innerHTML = 'Play';
+                document.getElementById('commands').innerHTML = 'Left: W S  |  Right: O L';
             } else if (currentLanguage == 'it') {
                 document.getElementById('restartButton').innerHTML = 'Gioca';
+                document.getElementById('commands').innerHTML = 'Sinistra: W S  |  Destra: O L';
             } else {
                 document.getElementById('restartButton').innerHTML = 'Jugar';
+                document.getElementById('commands').innerHTML = 'Izquierda: W S  |  Derecha: O L';
             }
         </script>
     </div>

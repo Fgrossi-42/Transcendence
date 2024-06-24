@@ -21,6 +21,7 @@
         <button id="right-down2" class="control-button">▼</button>
     </div>
     <div class="text-center mt-3">
+        <h4 id="commands" class="text-black">Left: Q A / W S |  Right: I K / O L</h4>
         <button id="restartButtonMulti" onclick="GameMulti.restartMulti('Player 1', 'Player 2', [5])" style="background:#212529;color:white;" type="button" class="btn btn-primary btn-lg">Play</button>
     </div>
 
@@ -29,10 +30,13 @@
     <script>
         if (currentLanguage == 'en') {
             document.getElementById('restartButtonMulti').innerHTML = 'Play';
+            document.getElementById('commands').innerHTML = 'Left: Q A / W S |  Right: I K / O L';
         } else if (currentLanguage == 'it') {
             document.getElementById('restartButtonMulti').innerHTML = 'Gioca';
+            document.getElementById('commands').innerHTML = 'Sinistra: Q A / W S |  Destra: I K / O L';
         } else {
             document.getElementById('restartButtonMulti').innerHTML = 'Jugar';
+            document.getElementById('commands').innerHTML = 'Izquierda: Q A / W S |  Derecha: I K / O L';
         }
     </script>
 </body>

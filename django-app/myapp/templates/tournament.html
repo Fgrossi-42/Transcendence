@@ -16,16 +16,20 @@
         </div>
         </div>
     <div class="text-center mt-3">
+        <h4 id="commands" class="text-black">Left: W S  |  Right: O L</h4>
         <button id="restartButtonTournament" onclick="GameTour.restartTournament()" style="background:#212529;color:white;" type="button" class="btn btn-primary btn-lg">Play</button>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}" defer></script>
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}" defer></script>
     <script type="module" src="{% static 'js/old_tournament.js' %}" defer></script>
     <script>
         if (currentLanguage == 'en') {
             document.getElementById('restartButtonTournament').innerHTML = 'Play';
+            document.getElementById('commands').innerHTML = 'Left: W S  |  Right: O L';
         } else if (currentLanguage == 'it') {
             document.getElementById('restartButtonTournament').innerHTML = 'Gioca';
+            document.getElementById('commands').innerHTML = 'Sinistra: W S  |  Destra: O L';
         } else {
             document.getElementById('restartButtonTournament').innerHTML = 'Jugar';
+            document.getElementById('commands').innerHTML = 'Izquierda: W S  |  Derecha: O L';
         }
     </script>
 </body>

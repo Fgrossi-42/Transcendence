@@ -10,6 +10,7 @@
     </div>
     </div>
     <div class="text-center mt-3">
+        <h4 id="commands" class="text-black">Left: W S</h4>
         <button id="restartButtonAI" onclick="GameAI.restartAI()" style="background:#212529;color:white;" type="button" class="btn btn-primary btn-lg">Play</button>
 
     <script src="{% static 'js/bootstrap.bundle.min.js' %}" defer></script>
@@ -17,10 +18,13 @@
     <script>
         if (currentLanguage == 'en') {
             document.getElementById('restartButtonAI').innerHTML = 'Play';
+            document.getElementById('commands').innerHTML = 'Left: W S';
         } else if (currentLanguage == 'it') {
             document.getElementById('restartButtonAI').innerHTML = 'Gioca';
+            document.getElementById('commands').innerHTML = 'Sinistra: W S';
         } else {
             document.getElementById('restartButtonAI').innerHTML = 'Jugar';
+            document.getElementById('commands').innerHTML = 'Izquierda: W S';
         }
     </script>
 </body>

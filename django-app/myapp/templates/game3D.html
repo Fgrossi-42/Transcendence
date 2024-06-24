@@ -2,6 +2,7 @@
 
 <body>
   <div class="text-center">  
+    <h4 id="declaration"> <span id="champion" class="text-center">Player </span><span id="winner">1</span><span id="winner-message"> wins!</span></h4>
     <h3><span id="player1">Player 1:</span> <span id="player1Score">0</span><span id="player2"> Player 2:</span> <span id="player2Score">0</span></h3>
   </div>
   <div id="container" class="position-relative bg-dark mx-auto text-white pt-5 responsive-div">
@@ -16,22 +17,33 @@
     <button id="right-down" class="control-button">►</button>
   </div>
   <div class="text-center mt-3">
+    <h4 id="commands" class="text-black">Left: A D  |  Right: ◄ ►</h4>
     <button id="restartButton" style="background:#212529;color:white;" type="button" class="btn btn-primary btn-lg">Play</button>
   </div>
   <script src="/public/js/pong3D.js"></script>
   <script>
+      $('#declaration').hide();
     if (currentLanguage == 'en') {
       document.getElementById('restartButton').innerHTML = 'Play';
       document.getElementById('player1').innerHTML = 'Player 1: ';
       document.getElementById('player2').innerHTML = ' Player 2: ';
+      document.getElementById('champion').innerHTML = 'Player ';
+      document.getElementById('winner-message').innerHTML = ' wins!';
+      document.getElementById('commands').innerHTML = 'Left: A D  |  Right: ◄ ►';
     } else if (currentLanguage == 'it') {
       document.getElementById('restartButton').innerHTML = 'Gioca';
       document.getElementById('player1').innerHTML = 'Giocatore 1: ';
       document.getElementById('player2').innerHTML = ' Giocatore 2: ';
+      document.getElementById('champion').innerHTML = 'Giocatore ';
+      document.getElementById('winner-message').innerHTML = ' vince!';
+      document.getElementById('commands').innerHTML = 'Sinistra: A D  |  Destra: ◄ ►';
     } else {
       document.getElementById('restartButton').innerHTML = 'Jugar';
       document.getElementById('player1').innerHTML = 'Jugador 1: ';
       document.getElementById('player2').innerHTML = ' Jugador 2: ';
+      document.getElementById('champion').innerHTML = 'Jugador ';
+      document.getElementById('winner-message').innerHTML = ' gana!';
+      document.getElementById('commands').innerHTML = 'Izquierda: A D  |  Derecha: ◄ ►';
     }
   </script>
 </body>

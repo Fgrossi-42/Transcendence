@@ -8,6 +8,7 @@
   WINNING_SCORE = 5,
   player1Score = document.getElementById('player1Score'),
   player2Score = document.getElementById('player2Score'),
+  champion = document.getElementById('winner'),
   container, renderer, camera, mainLight,
   scene, ball, paddle1, paddle2, field, running,
   score = {
@@ -113,15 +114,17 @@
 
   function checkForWinner() {
     if (score.player1 >= WINNING_SCORE) {
-      declareWinner('Player 1');
+      declareWinner('1');
     } else if (score.player2 >= WINNING_SCORE) {
-      declareWinner('Player 2');
+      declareWinner('2');
     }
   }
 
   function declareWinner(winner) {
     stopRender();
-    alert(winner + ' wins!');
+    $('#declaration').show();
+    console.log('Player ' + winner + ' wins!');
+    champion.textContent = ' ' + winner;
   }
 
   function stopBall() {
@@ -302,6 +305,20 @@ document.getElementById('right-down').addEventListener('touchstart', function() 
   movePlayer2('down');
 });
 
+document.getElementById('left-left').addEventListener('mousedown', function() {
+  movePlayer1('up');
+});
+document.getElementById('left-right').addEventListener('mousedown', function() {
+  movePlayer1('down');
+});
+document.getElementById('right-up').addEventListener('mousedown', function() {
+  movePlayer2('up');
+});
+document.getElementById('right-down').addEventListener('mousedown', function() {
+  movePlayer2('down');
+});
+
+
 // Stop movement when buttons are released
 document.getElementById('left-left').addEventListener('touchend', function() {
   stopMovePlayer1();
@@ -313,6 +330,20 @@ document.getElementById('right-up').addEventListener('touchend', function() {
   stopMovePlayer2();
 });
 document.getElementById('right-down').addEventListener('touchend', function() {
+  stopMovePlayer2();
+});
+
+
+document.getElementById('left-left').addEventListener('mouseup', function() {
+  stopMovePlayer1();
+});
+document.getElementById('left-right').addEventListener('mouseup', function() {
+  stopMovePlayer1();
+});
+document.getElementById('right-up').addEventListener('mouseup', function() {
+  stopMovePlayer2();
+});
+document.getElementById('right-down').addEventListener('mouseup', function() {
   stopMovePlayer2();
 });
 
@@ -336,6 +367,7 @@ document.getElementById('right-down').addEventListener('touchend', function() {
   document.getElementById('restartButton').addEventListener('click', restartGame);
 
   function restartGame() {
+    $('#declaration').hide();
     reset();
     init();
   }
