@@ -7,6 +7,7 @@ var DIRECTION = {
 };
 
 var rounds = [5];
+var BallLastaiUpdate = null;
 
 var Ball = {
     new: function () {
@@ -42,7 +43,7 @@ var GameAI = {
         this.context = this.canvas.getContext('2d');
 
         this.updateCanvasSize();
-
+        
         this.player = Ai.new.call(this, 'left');
         this.ai = Ai.new.call(this, 'right');
         this.ball = Ball.new.call(this);
@@ -141,18 +142,16 @@ var GameAI = {
                 var predictedY = this.ball.y + (this.ball.moveY === DIRECTION.UP ? -1 : 1) * (this.canvas.height / this.ball.speed);
     
                 if (this.ai.y > predictedY - (this.ai.height / 2)) {
-                    if (this.ball.moveX === DIRECTION.RIGHT) this.ai.y -= this.ai.speed / 1.5;
-                    else this.ai.y -= this.ai.speed / 4;
+                    BallLastaiUpdate = true;
                 }
                 if (this.ai.y < predictedY - (this.ai.height / 2)) {
-                    if (this.ball.moveX === DIRECTION.RIGHT) this.ai.y += this.ai.speed / 1.5;
-                    else this.ai.y += this.ai.speed / 4;
+                    BallLastaiUpdate = false;
                 }
             } else {
-                if (this.ball.moveY === DIRECTION.UP && this.ai.y > this.ball.y) {
-                    this.ai.y -= this.ai.speed / 2;
-                } else if (this.ball.moveY === DIRECTION.DOWN && this.ai.y < this.ball.y) {
-                    this.ai.y += this.ai.speed / 2;
+                if (BallLastaiUpdate && this.ai.y > this.ball.y) {
+                    this.ai.y -= this.ai.speed;
+                } else if (!BallLastaiUpdate && this.ai.y < this.ball.y) {
+                    this.ai.y += this.ai.speed;
                 }
             }
     
